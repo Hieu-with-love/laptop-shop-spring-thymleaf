@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+    <title th:text="${pageTitle}"></title>
+</head>
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <div th:replace="fragments/header :: header"></div>
+        <div th:replace="fragments/content :: content"></div>
+    </div>
+</div>
+</body>
+
+</html>
