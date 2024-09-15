@@ -14,9 +14,9 @@ public class AdminController {
         return "index";
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/cruds/categories")
     public String categories(Model model) {
         model.addAttribute("pageTitle", "Categories");
-        return "admin/html/categories";
+        return "admin/cruds/categories";
     }
 }

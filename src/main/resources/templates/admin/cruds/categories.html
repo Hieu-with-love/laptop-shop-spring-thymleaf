@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title th:text="${pageTitle}">Title</title>
 </head>
 <body>
-
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <div th:replace="fragments/header :: header"></div>
+        <div class="container-fluid" th:fragment="content">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title d-flex align-items-center gap-2 mb-4">
+                                Danh mục sản phẩm
+                                <span>
+                                <iconify-icon icon="solar:question-circle-bold" class="fs-7 d-flex text-muted"
+                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                              data-bs-custom-class="tooltip-success"
+                                              data-bs-title="Traffic Overview"></iconify-icon>
+                            </span>
+                            </h5>
+                            <div id="traffic-overview">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
