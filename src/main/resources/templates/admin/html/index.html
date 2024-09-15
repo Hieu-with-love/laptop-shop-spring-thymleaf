@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title layout:title-parttern="$CONTENT_TITLE | $LAYOUT_TITLE">AdminShop</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{/assets/admin/resource_admin/images/logos/seodashlogo.png}"/>
+    <link rel="stylesheet" th:href="@{/assets/admin/resource_admin/css/styles.min.css}"/>
+</head>
+
+<body>
+<div th:replace="admin/menu :: header"></div>
+
+<div layout:fragment="content"></div>
+
+<div th:replace="admin/menu :: footer"></div>
+
+<script th:src="@{/assets/admin/resource_admin/libs/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{/assets/admin/resource_admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/admin/resource_admin/libs/apexcharts/dist/apexcharts.min.js}"></script>
+<script th:src="@{/assets/admin/resource_admin/libs/simplebar/dist/simplebar.js}"></script>
+<script th:src="@{/assets/admin/resource_admin/js/sidebarmenu.js}"></script>
+<script th:src="@{/assets/admin/resource_admin/js/app.min.js}"></script>
+<script th:src="@{/assets/admin/resource_admin/js/dashboard.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+
+</body>
+
+</html>
