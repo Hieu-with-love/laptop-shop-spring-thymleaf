@@ -1,22 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="fragments/head :: head">
-    <title th:text="${pageTitle}"></title>
+    <title th:text="${pageTitle}">Title</title>
 </head>
 <body>
-<!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
      data-sidebar-position="fixed" data-header-position="fixed">
     <div th:replace="fragments/sidebar :: sidebar"></div>
-    <!--  Main wrapper -->
+    <!--Main wrapped-->
     <div class="body-wrapper">
-        <div th:replace="fragments/header :: header"></div>
-        <div th:replace="fragments/content :: content"></div>
-        <div th:replace="fragments/footer :: footer"></div>
+
     </div>
 </div>
+
 <div th:replace="fragments/scripts :: scripts"></div>
 </body>
-
 </html>
