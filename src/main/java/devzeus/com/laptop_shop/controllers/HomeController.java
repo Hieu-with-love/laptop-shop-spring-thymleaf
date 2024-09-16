@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/user/products")
-public class ProductController {
+@RequestMapping("/user")
+public class HomeController {
     @GetMapping
     public String products(Model model) {
-        model.addAttribute("pageTitle", "Products");
-        return "user/product";
+        model.addAttribute("pageTitle", "Home");
+        return "user/index";
     }
 }
