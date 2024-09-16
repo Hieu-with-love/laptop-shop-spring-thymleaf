@@ -5,6 +5,7 @@ import devzeus.com.laptop_shop.models.Product;
 import devzeus.com.laptop_shop.repositories.ProductRepository;
 import devzeus.com.laptop_shop.services.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override

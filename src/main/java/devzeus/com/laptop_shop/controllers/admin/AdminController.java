@@ -11,7 +11,7 @@ public class AdminController {
     @GetMapping()
     public String admin(Model model) {
         model.addAttribute("pageTitle", "Home Admin");
-        return "index";
+        return "admin/index";
     }
 
     @GetMapping("/categories")
