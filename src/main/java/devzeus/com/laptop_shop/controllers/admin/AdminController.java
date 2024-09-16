@@ -19,10 +19,4 @@ public class AdminController {
         model.addAttribute("pageTitle", "Categories");
         return "admin/cruds/categories";
     }
-
-    @GetMapping("/products")
-    public String products(Model model) {
-        model.addAttribute("pageTitle", "Products");
-        return "admin/cruds/products";
-    }
 }
