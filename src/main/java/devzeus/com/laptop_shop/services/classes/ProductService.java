@@ -88,7 +88,7 @@ public class ProductService implements IProductService {
 
     @Override
     public void deleteProduct(Long productId) {
-
+        productRepository.deleteById(productId);
     }
 
     @Override
@@ -98,8 +98,8 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getProductById(Long productId) {
-        return null;
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Cannot found product with id = " + productId));
     }
-
 
 }

@@ -25,7 +25,7 @@ public class ProductDTO {
 
     @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Max(value = 1000000000, message = "Price must be less than or equal to 1 million")
-    private float price;
+    private double price;
 
     private String ram;
     private Long quantity;

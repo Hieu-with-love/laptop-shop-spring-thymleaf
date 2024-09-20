@@ -132,18 +132,41 @@ public class AdminProductController {
         return uniqueFileName;
     }
 
-    private String generateRandomString() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder result = new StringBuilder();
-        int length = 10;
-        Random random = new Random();
+    @GetMapping("/update")
+    public String showUpdateProductForm(Model model, @RequestParam Long id) {
+        Product productExisting = productService.getProductById(id);
+        model.addAttribute("product", productExisting);
 
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(characters.length());
-            result.append(characters.charAt(index));
-        }
+        ProductDTO productDTO = ProductDTO.builder()
+                .name(productExisting.getName())
+                .price(productExisting.getPrice())
+                .ram(productExisting.getRam())
+                .batteryCapacity(productExisting.getBatteryCapacity())
+                .monitor(productExisting.getMonitor())
+                .description(productExisting.getDescription())
+                .brandId(productExisting.getBrand().getId())
+                .categoryId(productExisting.getCategory().getId())
+                .build();
+        // Get list brands
+        List<Brand> brands = brandService.getAllBrands();
+        // Get list categories
+        List<Category> categories = categoryService.getAllCategories();
 
-        return result.toString();
+        model.addAttribute("pageTitle", "Update Product");
+        model.addAttribute("productDTO", productDTO);
+        model.addAttribute("brandsList", brands);
+        model.addAttribute("categoriesList", categories);
+        return "admin/products/UpdateProduct";
     }
 
+    @PostMapping("/update")
+    public String updateProduct(
+            @Valid @ModelAttribute ProductDTO productDTO,
+            @RequestParam("fileImage") MultipartFile file,
+            BindingResult bindingResult,
+            Model model
+    ) {
+
+        return "redirect:/admin/products";
+    }
 }
