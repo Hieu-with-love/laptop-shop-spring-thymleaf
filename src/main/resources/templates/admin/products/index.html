@@ -48,7 +48,7 @@
                                     <td th:text="${product.monitor}"></td>
                                     <td th:text="${product.quantity}"></td>
                                     <td>
-                                        <img th:src="@{'/uploads' + ${product.thumbnail}}" alt="Ảnh sản phẩm"
+                                        <img th:src="@{'/uploads/' + ${product.thumbnail}}" alt="Ảnh sản phẩm"
                                              width="100px;">
                                     </td>
                                     <td th:text="${product.category.name}"></td>
@@ -56,10 +56,12 @@
                                     <td>
                                         <div class="d-flex">
                                             <a class="btn btn-warning btn-sm mx-2" style="width: 70px;"
-                                               th:href="@{/products/edit (id=${product.id})}">Edit</a>
+                                               th:href="@{/products/edit (id=${product.id})}"><i
+                                                    class="bi bi-pencil-square"></i> Edit</a>
                                             <a class="btn btn-danger btn-sm" style="width: 70px;"
                                                th:href="@{/products/delete (id=${product.id})}"
-                                               onclick="return confirm('Are you sure?')">Delete</a>
+                                               onclick="return confirm('Are you sure?')"><i class="bi bi-trash3"></i>
+                                                Delete</a>
                                         </div>
                                     </td>
                                 </tr>

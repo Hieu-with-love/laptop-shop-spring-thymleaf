@@ -24,19 +24,17 @@ public class ProductDTO {
     private String description;
 
     @Min(value = 0, message = "Price must be greater than or equal to 0")
-    @Max(value = 10000000, message = "Price must be less than or equal to 10000000")
+    @Max(value = 1000000000, message = "Price must be less than or equal to 1 million")
     private float price;
 
     private String ram;
     private Long quantity;
     private String batteryCapacity;
     private String monitor;
-
-    @NotBlank(message = "Category is required")
     private Long categoryId;
-    @NotBlank(message = "Category is required")
     private Long brandId;
+    private String thumbnail;
 
-    private MultipartFile image;
+    private MultipartFile fileImage;
 
 }

@@ -2,8 +2,106 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head">
     <title th:text="${pageTitle}"></title>
+    <script type="text/javascript">
+        function showError(message) {
+            if (message) {
+                alert(message)
+            }
+        }
+    </script>
 </head>
 <body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto rounded border p-4 m-4">
+            <h2>Create new product</h2>
+            <form action="/admin/products/create" method="post" enctype="multipart/form-data"
+                  th:object="${productDTO}">
+                <div class="mb-3">
+                    <label for="name" class="form-label" th:field="${productDTO.name}">Product Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <span th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger"
+                          th:errors="${productDTO.name}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label" th:field="${productDTO.price}">Price</label>
+                    <input type="number" class="form-control" id="price" name="price" required>
+                    <span th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger"
+                          th:errors="${productDTO.price}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label" th:field="${productDTO.description}">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" required>
+                    <span th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger"
+                          th:errors="${productDTO.description}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="ram" class="form-label" th:field="${productDTO.ram}">Ram Type</label>
+                    <input type="text" class="form-control" id="ram" name="ram">
+                    <span th:if="${#fields.hasErrors('ram')}" th:errorclass="text-danger"
+                          th:errors="${productDTO.ram}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="batteryCapacity" class="form-label" th:field="${productDTO.batteryCapacity}">Battery
+                        Capacity</label>
+                    <input type="text" class="form-control" id="batteryCapacity" name="batteryCapacity">
+                    <span th:if="${#fields.hasErrors('batteryCapacity')}" th:errorclass="text-danger"
+                          th:errors="${productDTO.batteryCapacity}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="monitor" class="form-label" th:field="${productDTO.monitor}">Monitor</label>
+                    <input type="text" class="form-control" id="monitor" name="monitor">
+                    <span th:if="${#fields.hasErrors('monitor')}" th:errorclass="text-danger"
+                          th:errors="${productDTO.monitor}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="brandId" class="form-label">Brand</label>
+                    <select id="brandId" name="brandId" class="form-select" required>
+                        <option selected disabled>Choose brand</option>
+                        <option
+                                th:each="brand : ${brandsList}"
+                                th:value="${brand.id}"
+                                th:text="${brand.name}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="categoryId" class="form-label">Category</label>
+                    <select id="categoryId" name="categoryId" class="form-select" required>
+                        <option selected disabled>Choose category</option>
+                        <option
+                                th:each="category : ${categoriesList}"
+                                th:value="${category.id}"
+                                th:text="${category.name}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">Image</label>
+                    <input id="file" name="fileImage" class="form-control" type="file"
+                           th:object="${productDTO.thumbnail}" required>
+                    <span th:if="${#fields.hasErrors('thumbnail')}" th:errorclass="text-danger"
+                          th:errors="${productDTO.thumbnail}"></span>
+                </div>
+
+                <div class="row">
+                    <button class="col-md-6 btn btn-primary mx-3" style="width: 300px;">
+                        Create product
+                    </button>
+                    <button class="col-md-6 btn btn-secondary" style="width: 300px;">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4 rounded border mx-3">
+
+        </div>
+    </div>
+</div>
+
+<!-- Gọi hàm JavaScript hiển thị lỗi nếu có -->
+<script type="text/javascript">
+    /* Thêm thuộc tính th:text vào thẻ span để lấy thông báo lỗi từ Model */
+    let errorMessage = /*[[${errorMessage}]]*/ '';
+    showError(errorMessage);
+</script>
 
 </body>
 </html>
