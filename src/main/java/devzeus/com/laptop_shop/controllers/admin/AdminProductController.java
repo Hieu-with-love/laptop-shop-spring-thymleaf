@@ -134,18 +134,19 @@ public class AdminProductController {
 
     @GetMapping("/update")
     public String showUpdateProductForm(Model model, @RequestParam Long id) {
-        Product productExisting = productService.getProductById(id);
-        model.addAttribute("product", productExisting);
+        Product existingProduct = productService.getProductById(id);
+        model.addAttribute("product", existingProduct);
 
         ProductDTO productDTO = ProductDTO.builder()
-                .name(productExisting.getName())
-                .price(productExisting.getPrice())
-                .ram(productExisting.getRam())
-                .batteryCapacity(productExisting.getBatteryCapacity())
-                .monitor(productExisting.getMonitor())
-                .description(productExisting.getDescription())
-                .brandId(productExisting.getBrand().getId())
-                .categoryId(productExisting.getCategory().getId())
+                .name(existingProduct.getName())
+                .price(existingProduct.getPrice())
+                .ram(existingProduct.getRam())
+                .batteryCapacity(existingProduct.getBatteryCapacity())
+                .monitor(existingProduct.getMonitor())
+                .description(existingProduct.getDescription())
+                .quantity(existingProduct.getQuantity())
+                .brandId(existingProduct.getBrand().getId())
+                .categoryId(existingProduct.getCategory().getId())
                 .build();
         // Get list brands
         List<Brand> brands = brandService.getAllBrands();
@@ -161,12 +162,25 @@ public class AdminProductController {
 
     @PostMapping("/update")
     public String updateProduct(
+            @RequestParam Long id,
             @Valid @ModelAttribute ProductDTO productDTO,
             @RequestParam("fileImage") MultipartFile file,
             BindingResult bindingResult,
             Model model
-    ) {
-
+    ) throws IOException {
+        Product existingProduct = productService.getProductById(id);
+        model.addAttribute("product", existingProduct);
+        model.addAttribute("productDTO", productDTO);
+        if (existingProduct == null) {
+            bindingResult.addError(new FieldError("productDTO", "product", "The product is required"));
+        }
+        if (bindingResult.hasErrors()) {
+            return "admin/products/UpdateProduct";
+        }
+        Product product = productService.updateProduct(id, productDTO);
+        if (product == null) {
+            // handle exception with alert, use js code
+        }
         return "redirect:/admin/products";
     }
 }

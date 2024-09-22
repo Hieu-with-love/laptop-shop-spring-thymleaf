@@ -17,8 +17,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -52,20 +57,77 @@ public class ProductService implements IProductService {
     }
 
     // has completed yet
-    @Override
-    public List<String> storeMultiFile(List<MultipartFile> files) {
-        List<String> errors = new ArrayList<>();
-        if (files.size() > ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
-        }
-        String uploadDir = "uploads/";
-        List<String> imagePaths = new ArrayList<>();
-        for (MultipartFile file : files) {
-            try {
+    private boolean isValidImage(String img) {
+        return img.endsWith(".jpg") || img.endsWith(".jpeg") ||
+                img.endsWith(".png") || img.endsWith(".gif") ||
+                img.endsWith(".bmp");
+    }
 
-            } catch (Exception e) {
-                throw new RuntimeException("Cannot store multi file");
-            }
+    private boolean isImage(MultipartFile file) {
+        String contentType = file.getContentType();
+        return contentType != null && contentType.startsWith("image/");
+    }
+
+    private String storeFile(MultipartFile file) throws IOException {
+        if (file.getSize() == 0)
+            return "Anh bi rong";
+        if (file.getSize() > 10 * 1024 * 1024) {
+            return "File is too large. Maximum size is 10MB";
         }
+        if (!isImage(file)) {
+            return "File is not an image";
+        }
+        // get file name
+        String fileName = file.getOriginalFilename();
+        // generate code random base on UUID
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+        java.nio.file.Path uploadDir = Paths.get("uploads");
+        // check and create if haven't existed
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectory(uploadDir);
+        }
+        java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFileName);
+        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+        return uniqueFileName;
+    }
+
+    @Override
+    public Product updateProduct(Long productId, ProductDTO productDTO) throws IOException {
+        Category categoryExisting = categoryRepository.findById(productDTO.getCategoryId())
+                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
+        Brand brandExisting = brandRepository.findById(productDTO.getBrandId())
+                .orElseThrow(() -> new NotFoundException("Cannot found brand with id = " + productDTO.getBrandId()));
+        // get product old by id
+        Product existingProduct = getProductById(productId);
+
+        // handle delete old image if has image uploaded
+        if (!productDTO.getFileImage().isEmpty()) {
+            String uploadDir = "uploads/";
+            java.nio.file.Path oldImagePath = Paths.get(uploadDir + existingProduct.getThumbnail());
+            try {
+                Files.delete(oldImagePath);
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot delete old image." + e.getMessage());
+            }
+            // store file be able to exception
+            String newThumbnail = storeFile(productDTO.getFileImage());
+            existingProduct.setThumbnail(newThumbnail);
+        }
+
+        existingProduct.setName(productDTO.getName());
+        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setRam(productDTO.getRam());
+        existingProduct.setBatteryCapacity(productDTO.getBatteryCapacity());
+        existingProduct.setDescription(productDTO.getDescription());
+        existingProduct.setMonitor(productDTO.getMonitor());
+        existingProduct.setQuantity(productDTO.getQuantity());
+        existingProduct.setCategory(categoryExisting);
+        existingProduct.setBrand(brandExisting);
+
+        // create if chua ton tai, update if ton tai
+        productRepository.save(existingProduct);
+
         return null;
     }
 
@@ -79,11 +141,6 @@ public class ProductService implements IProductService {
                 .build();
 
         productImageRepository.save(newProductImage);
-    }
-
-    @Override
-    public Product updateProduct(Long productId, ProductDTO productDTO) {
-        return null;
     }
 
     @Override

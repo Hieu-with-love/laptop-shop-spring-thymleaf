@@ -19,6 +19,7 @@
                   th:object="${productDTO}">
                 <div class="row">
                     <div class="col-lg-8">
+                        <input type="hidden" name="id" th:field="${product.id}">
                         <div class="mb-3">
                             <label for="name" class="form-label">Product Name</label>
                             <input type="text" class="form-control" id="name" th:field="*{name}" required>
@@ -34,7 +35,7 @@
                         <div class="mb-3">
                             <label for="description" class="form-label"
                             >Description</label>
-                            <input type="text" class="form-control" id="description" th:field="*{description}" required>
+                            <input type="text" class="form-control" id="description" th:value="*{description}" required>
                             <span th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.description}"></span>
                         </div>
@@ -65,7 +66,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="brandId" class="form-label">Brand</label>
-                            <select id="brandId" th:field="*{brandId}" class="form-select" required>
+                            <select id="brandId" name="brandId" class="form-select" required>
                                 <option selected disabled>Choose brand</option>
                                 <option
                                         th:each="brand : ${brandsList}"
@@ -75,7 +76,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="categoryId" class="form-label">Category</label>
-                            <select id="categoryId" th:field="*{categoryId}" class="form-select" required>
+                            <select id="categoryId" name="categoryId" class="form-select" required>
                                 <option selected disabled>Choose category</option>
                                 <option
                                         th:each="category : ${categoriesList}"
@@ -86,7 +87,7 @@
                         <div class="mb-3">
                             <label for="file" class="form-label">Image</label>
                             <input id="file" class="form-control" type="file"
-                                   th:field="*{fileImage}" required>
+                                   name="fileImage">
                             <span th:if="${#fields.hasErrors('fileImage')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.fileImage}"></span>
                         </div>
