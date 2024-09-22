@@ -20,46 +20,52 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="mb-3">
-                            <label for="name" class="form-label" th:field="${productDTO.name}">Product Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="name" th:field="*{name}" required>
                             <span th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.name}"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="price" class="form-label" th:field="${productDTO.price}">Price</label>
-                            <input type="number" class="form-control" id="price" name="price" required>
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="price" th:field="*{price}" required>
                             <span th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.price}"></span>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label"
-                                   th:field="${productDTO.description}">Description</label>
-                            <input type="text" class="form-control" id="description" name="description" required>
+                            >Description</label>
+                            <input type="text" class="form-control" id="description" th:field="*{description}" required>
                             <span th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.description}"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="ram" class="form-label" th:field="${productDTO.ram}">Ram Type</label>
-                            <input type="text" class="form-control" id="ram" name="ram">
+                            <label for="ram" class="form-label">Ram Type</label>
+                            <input type="text" class="form-control" id="ram" th:field="*{ram}">
                             <span th:if="${#fields.hasErrors('ram')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.ram}"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="batteryCapacity" class="form-label" th:field="${productDTO.batteryCapacity}">Battery
+                            <label for="batteryCapacity" class="form-label">Battery
                                 Capacity</label>
-                            <input type="text" class="form-control" id="batteryCapacity" name="batteryCapacity">
+                            <input type="text" class="form-control" id="batteryCapacity" th:field="*{batteryCapacity}">
                             <span th:if="${#fields.hasErrors('batteryCapacity')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.batteryCapacity}"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="monitor" class="form-label" th:field="${productDTO.monitor}">Monitor</label>
-                            <input type="text" class="form-control" id="monitor" name="monitor">
+                            <label for="monitor" class="form-label">Monitor</label>
+                            <input type="text" class="form-control" id="monitor" th:field="*{monitor}">
                             <span th:if="${#fields.hasErrors('monitor')}" th:errorclass="text-danger"
                                   th:errors="${productDTO.monitor}"></span>
                         </div>
                         <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantities</label>
+                            <input type="text" class="form-control" id="quantity" th:field="*{quantity}">
+                            <span th:if="${#fields.hasErrors('quantity')}" th:errorclass="text-danger"
+                                  th:errors="${productDTO.quantity}"></span>
+                        </div>
+                        <div class="mb-3">
                             <label for="brandId" class="form-label">Brand</label>
-                            <select id="brandId" name="brandId" class="form-select" required>
+                            <select id="brandId" th:field="*{brandId}" class="form-select" required>
                                 <option selected disabled>Choose brand</option>
                                 <option
                                         th:each="brand : ${brandsList}"
@@ -69,7 +75,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="categoryId" class="form-label">Category</label>
-                            <select id="categoryId" name="categoryId" class="form-select" required>
+                            <select id="categoryId" th:field="*{categoryId}" class="form-select" required>
                                 <option selected disabled>Choose category</option>
                                 <option
                                         th:each="category : ${categoriesList}"
@@ -79,10 +85,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="file" class="form-label">Image</label>
-                            <input id="file" name="fileImage" class="form-control" type="file"
-                                   th:object="${productDTO.thumbnail}" required>
-                            <span th:if="${#fields.hasErrors('thumbnail')}" th:errorclass="text-danger"
-                                  th:errors="${productDTO.thumbnail}"></span>
+                            <input id="file" class="form-control" type="file"
+                                   th:field="*{fileImage}" required>
+                            <span th:if="${#fields.hasErrors('fileImage')}" th:errorclass="text-danger"
+                                  th:errors="${productDTO.fileImage}"></span>
                         </div>
                         <div class="row">
                             <button class="col-md-6 btn btn-primary mx-3" style="width: 200px; text-align: center">
