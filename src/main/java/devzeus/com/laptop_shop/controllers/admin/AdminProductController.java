@@ -115,7 +115,7 @@ public class AdminProductController {
         return "admin/products/UpdateProduct";
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public String updateProduct(
             @PathVariable Long id,
             @Valid @ModelAttribute ProductDTO productDTO,
@@ -135,6 +135,12 @@ public class AdminProductController {
         if (product == null) {
             // handle exception with alert, use js code
         }
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/delete")
+    public String deleteProduct(@RequestParam Long id) {
+        productService.deleteProduct(id);
         return "redirect:/admin/products";
     }
 }
