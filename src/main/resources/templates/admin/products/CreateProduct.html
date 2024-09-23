@@ -63,7 +63,7 @@
                 <div class="mb-3">
                     <label for="brandId" class="form-label">Brand</label>
                     <select id="brandId" name="brandId" class="form-select" required>
-                        <option selected disabled>Choose brand</option>
+                        <option selected disabled>-- Choose brand --</option>
                         <option
                                 th:each="brand : ${brandsList}"
                                 th:value="${brand.id}"
@@ -73,7 +73,7 @@
                 <div class="mb-3">
                     <label for="categoryId" class="form-label">Category</label>
                     <select id="categoryId" name="categoryId" class="form-select" required>
-                        <option selected disabled>Choose category</option>
+                        <option selected disabled>-- Choose category --</option>
                         <option
                                 th:each="category : ${categoriesList}"
                                 th:value="${category.id}"

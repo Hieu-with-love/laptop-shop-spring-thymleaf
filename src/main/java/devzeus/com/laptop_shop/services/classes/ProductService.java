@@ -13,8 +13,10 @@ import devzeus.com.laptop_shop.repositories.ProductImageRepository;
 import devzeus.com.laptop_shop.repositories.ProductRepository;
 import devzeus.com.laptop_shop.services.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -35,29 +38,38 @@ public class ProductService implements IProductService {
     private final ProductImageRepository productImageRepository;
 
     @Override
-    public Product createProduct(ProductDTO productDTO, String imagePath) throws NotFoundException {
+    public Product createProduct(ProductDTO productDTO, MultipartFile file) throws NotFoundException, IOException {
         Category categoryExisting = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
         Brand brandExisting = brandRepository.findById(productDTO.getBrandId())
                 .orElseThrow(() -> new NotFoundException("Cannot found brand with id = " + productDTO.getBrandId()));
+        try {
+            if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+                throw new BadRequestException("Image is not valid");
+            }
+            String img = storeFile(file);
+            Product product = Product.builder()
+                    .name(productDTO.getName())
+                    .price(productDTO.getPrice())
+                    .ram(productDTO.getRam())
+                    .batteryCapacity(productDTO.getBatteryCapacity())
+                    .description(productDTO.getDescription())
+                    .monitor(productDTO.getMonitor())
+                    .quantity(productDTO.getQuantity())
+                    .thumbnail(img)
+                    .category(categoryExisting)
+                    .brand(brandExisting)
+                    .build();
+            return productRepository.save(product);
+            // validated product
 
-        Product product = Product.builder()
-                .name(productDTO.getName())
-                .price(productDTO.getPrice())
-                .ram(productDTO.getRam())
-                .batteryCapacity(productDTO.getBatteryCapacity())
-                .description(productDTO.getDescription())
-                .monitor(productDTO.getMonitor())
-                .quantity(productDTO.getQuantity())
-                .thumbnail(imagePath)
-                .category(categoryExisting)
-                .brand(brandExisting)
-                .build();
-        return productRepository.save(product);
+        } catch (IOException ioe) {
+            throw new IOException("Cannot create product" + ioe.getMessage());
+        }
     }
 
     // has completed yet
-    private boolean isValidImage(String img) {
+    private boolean isValidSuffixImage(String img) {
         return img.endsWith(".jpg") || img.endsWith(".jpeg") ||
                 img.endsWith(".png") || img.endsWith(".gif") ||
                 img.endsWith(".bmp");
@@ -103,6 +115,9 @@ public class ProductService implements IProductService {
 
         // handle delete old image if has image uploaded
         if (!productDTO.getFileImage().isEmpty()) {
+            if (!isValidSuffixImage(Objects.requireNonNull(productDTO.getFileImage().getOriginalFilename()))) {
+                throw new NotFoundException("File is not an image");
+            }
             String uploadDir = "uploads/";
             java.nio.file.Path oldImagePath = Paths.get(uploadDir + existingProduct.getThumbnail());
             try {
@@ -126,9 +141,8 @@ public class ProductService implements IProductService {
         existingProduct.setBrand(brandExisting);
 
         // create if chua ton tai, update if ton tai
-        productRepository.save(existingProduct);
+        return productRepository.save(existingProduct);
 
-        return null;
     }
 
     @Override

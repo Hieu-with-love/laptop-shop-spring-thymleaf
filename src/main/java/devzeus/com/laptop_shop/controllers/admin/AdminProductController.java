@@ -68,7 +68,7 @@ public class AdminProductController {
             @RequestParam("fileImage") MultipartFile file,
             BindingResult bindingResult,
             Model model
-    ) {
+    ) throws IOException {
         if (productDTO.getFileImage().isEmpty()) {
             bindingResult.addError(new FieldError("productDTO", "image", "The image is required"));
         }
@@ -77,59 +77,14 @@ public class AdminProductController {
             return "admin/products/CreateProduct";
         }
 
-        MultipartFile multipartFile = productDTO.getFileImage();
-        try {
-            String img = storeFile(file);
-            if (!isValidImage(img)) {
-                bindingResult.addError(new FieldError("productDTO", "image", "The image is invalid"));
-            }
-            // validated product
-            Product product = productService.createProduct(productDTO, img);
-            if (product == null) {
-                model.addAttribute("error", "Sản phẩm bị null, có lẽ bạn nhập sai. Vui lòng thử lại !");
-                return "admin/products/CreateProduct";
-            }
-        } catch (IOException ioe) {
-            model.addAttribute("error", "Tạo sản phẩm thất bại. Vui lòng thử lại !");
+        Product product = productService.createProduct(productDTO, file);
+        if (product == null) {
+            model.addAttribute("error", "Sản phẩm bị null, có lẽ bạn nhập sai. Vui lòng thử lại !");
             return "admin/products/CreateProduct";
         }
+
         // return to products page
         return "redirect:/admin/products";
-    }
-
-    private boolean isValidImage(String img) {
-        return img.endsWith(".jpg") || img.endsWith(".jpeg") ||
-                img.endsWith(".png") || img.endsWith(".gif") ||
-                img.endsWith(".bmp");
-    }
-
-    private boolean isImage(MultipartFile file) {
-        String contentType = file.getContentType();
-        return contentType != null && contentType.startsWith("image/");
-    }
-
-    private String storeFile(MultipartFile file) throws IOException {
-        if (file.getSize() == 0)
-            return "Anh bi rong";
-        if (file.getSize() > 10 * 1024 * 1024) {
-            return "File is too large. Maximum size is 10MB";
-        }
-        if (!isImage(file)) {
-            return "File is not an image";
-        }
-        // get file name
-        String fileName = file.getOriginalFilename();
-        // generate code random base on UUID
-        String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
-        java.nio.file.Path uploadDir = Paths.get("uploads");
-        // check and create if haven't existed
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectory(uploadDir);
-        }
-        java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFileName);
-        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-
-        return uniqueFileName;
     }
 
     @GetMapping("/update")
@@ -170,7 +125,6 @@ public class AdminProductController {
     ) throws IOException {
         Product existingProduct = productService.getProductById(id);
         model.addAttribute("product", existingProduct);
-        model.addAttribute("productDTO", productDTO);
         if (existingProduct == null) {
             bindingResult.addError(new FieldError("productDTO", "product", "The product is required"));
         }
