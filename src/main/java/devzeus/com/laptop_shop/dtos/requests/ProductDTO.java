@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +27,7 @@ public class ProductDTO {
 
     @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Max(value = 1000000000, message = "Price must be less than or equal to 1 million")
-    private double price;
+    private BigDecimal price;
 
     private String ram;
     private Long quantity;

@@ -27,9 +27,6 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Ram</th>
-                                    <th scope="col">Battery Capacity</th>
-                                    <th scope="col">Monitor</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Thumbnail</th>
                                     <th scope="col">Category</th>
@@ -43,9 +40,6 @@
                                     <td th:text="${product.name}"></td>
                                     <td th:text="${product.price}"></td>
                                     <td th:text="${product.description}"></td>
-                                    <td th:text="${product.ram}"></td>
-                                    <td th:text="${product.batteryCapacity}"></td>
-                                    <td th:text="${product.monitor}"></td>
                                     <td th:text="${product.quantity}"></td>
                                     <td>
                                         <img th:src="@{'/uploads/' + ${product.thumbnail}}" alt="Ảnh sản phẩm"

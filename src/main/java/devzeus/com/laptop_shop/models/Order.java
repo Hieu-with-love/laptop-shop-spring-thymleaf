@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -25,7 +26,7 @@ public class Order extends TrackingDate {
 
     private String note;
 
-    private double totalMoney;
+    private BigDecimal totalMoney;
 
     private LocalDate orderDate;
 

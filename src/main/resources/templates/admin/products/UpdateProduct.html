@@ -15,11 +15,11 @@
     <div class="row">
         <div class="col-md-8 mx-auto rounded border p-4 m-4">
             <h2>Update product</h2>
-            <form action="/admin/products/update" method="post" enctype="multipart/form-data"
+            <form th:action="@{/admin/products/update/{id}(id=${product.id})}" method="post"
+                  enctype="multipart/form-data"
                   th:object="${productDTO}">
                 <div class="row">
                     <div class="col-lg-8">
-                        <input type="hidden" name="id" th:field="${product.id}">
                         <div class="mb-3">
                             <label for="name" class="form-label">Product Name</label>
                             <input type="text" class="form-control" id="name" th:field="*{name}" required>
@@ -66,26 +66,23 @@
                         </div>
                         <div class="mb-3">
                             <label for="brandId" class="form-label">Brand</label>
-                            <select id="brandId" name="brandId" class="form-select" required>
-                                <option selected disabled
-                                        th:value="${product.brand.id}"
-                                        th:text="${product.brand.name}"></option>
-                                <option
-                                        th:each="brand : ${brandsList}"
+                            <select id="brandId" th:field="*{brandId}" class="form-control" required>
+                                <option value="" disabled>Select a brand</option>
+                                <!-- Hiển thị danh sách brand, chọn brand hiện tại của sản phẩm -->
+                                <option th:each="brand : ${brandsList}"
                                         th:value="${brand.id}"
+                                        th:selected="${brand.id == product.brand.id}"
                                         th:text="${brand.name}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="categoryId" class="form-label">Category</label>
-                            <select id="categoryId" name="categoryId" class="form-select" required>
-                                <option selected disabled
-                                        th:value="${product.category.id}"
-                                        th:text="${product.category.name}">
-                                </option>
-                                <option
-                                        th:each="category : ${categoriesList}"
+                            <select id="categoryId" th:field="*{categoryId}" class="form-control" required>
+                                <option value="" disabled>Select a brand</option>
+                                <!-- Hiển thị danh sách brand, chọn brand hiện tại của sản phẩm -->
+                                <option th:each="category : ${categoriesList}"
                                         th:value="${category.id}"
+                                        th:selected="${category.id == product.brand.id}"
                                         th:text="${category.name}"></option>
                             </select>
                         </div>

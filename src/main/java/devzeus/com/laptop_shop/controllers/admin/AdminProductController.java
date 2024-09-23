@@ -115,9 +115,9 @@ public class AdminProductController {
         return "admin/products/UpdateProduct";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/update/{id}")
     public String updateProduct(
-            @RequestParam Long id,
+            @PathVariable Long id,
             @Valid @ModelAttribute ProductDTO productDTO,
             @RequestParam("fileImage") MultipartFile file,
             BindingResult bindingResult,
