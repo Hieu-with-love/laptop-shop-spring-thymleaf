@@ -159,6 +159,15 @@ public class ProductService implements IProductService {
 
     @Override
     public void deleteProduct(Long productId) {
+        Product product = getProductById(productId);
+        if (product == null)
+            throw new NotFoundException("Product with id = " + productId + " not found");
+        java.nio.file.Path oldImagePath = Paths.get("uploads/", product.getThumbnail());
+        try {
+            Files.delete(oldImagePath);
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot delete old image. \n" + e.getMessage());
+        }
         productRepository.deleteById(productId);
     }
 
