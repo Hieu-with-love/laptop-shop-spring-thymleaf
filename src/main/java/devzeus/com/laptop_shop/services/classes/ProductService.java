@@ -44,10 +44,15 @@ public class ProductService implements IProductService {
         Brand brandExisting = brandRepository.findById(productDTO.getBrandId())
                 .orElseThrow(() -> new NotFoundException("Cannot found brand with id = " + productDTO.getBrandId()));
         try {
-            if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
-                throw new BadRequestException("Image is not valid");
+            String thumbnail = "";
+            if (file == null) {
+                thumbnail = "/uploads/default-product.jpg";
+            } else {
+                if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+                    throw new BadRequestException("Image is not valid");
+                }
+                thumbnail = storeFile(file);
             }
-            String img = storeFile(file);
             Product product = Product.builder()
                     .name(productDTO.getName())
                     .price(productDTO.getPrice())
@@ -56,7 +61,7 @@ public class ProductService implements IProductService {
                     .description(productDTO.getDescription())
                     .monitor(productDTO.getMonitor())
                     .quantity(productDTO.getQuantity())
-                    .thumbnail(img)
+                    .thumbnail(thumbnail)
                     .category(categoryExisting)
                     .brand(brandExisting)
                     .build();

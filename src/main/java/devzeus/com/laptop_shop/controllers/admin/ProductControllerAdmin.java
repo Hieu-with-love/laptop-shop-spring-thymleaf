@@ -4,15 +4,11 @@ import devzeus.com.laptop_shop.dtos.requests.ProductDTO;
 import devzeus.com.laptop_shop.models.Brand;
 import devzeus.com.laptop_shop.models.Category;
 import devzeus.com.laptop_shop.models.Product;
-import devzeus.com.laptop_shop.repositories.CategoryRepository;
-import devzeus.com.laptop_shop.repositories.ProductImageRepository;
 import devzeus.com.laptop_shop.services.classes.BrandService;
 import devzeus.com.laptop_shop.services.classes.CategoryService;
 import devzeus.com.laptop_shop.services.classes.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,22 +16,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin/products")
 @RequiredArgsConstructor
-public class AdminProductController {
+public class ProductControllerAdmin {
     private final ProductService productService;
     private final BrandService brandService;
     private final CategoryService categoryService;
@@ -65,7 +52,7 @@ public class AdminProductController {
     @PostMapping("/create")
     public String createProduct(
             @Valid @ModelAttribute ProductDTO productDTO,
-            @RequestParam("fileImage") MultipartFile file,
+            @RequestParam(value = "fileImage") MultipartFile file,
             BindingResult bindingResult,
             Model model
     ) throws IOException {
@@ -115,7 +102,7 @@ public class AdminProductController {
         return "admin/products/UpdateProduct";
     }
 
-    @PutMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public String updateProduct(
             @PathVariable Long id,
             @Valid @ModelAttribute ProductDTO productDTO,
