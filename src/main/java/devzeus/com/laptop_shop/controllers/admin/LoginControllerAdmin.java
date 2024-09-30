@@ -6,15 +6,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/auth")
 public class LoginControllerAdmin {
-    @GetMapping("/login")
-    public String login() {
+    @GetMapping("/home")
+    public String home() {
 
         return "admin/login/index";
     }
 
-    @PostMapping
+    @GetMapping("/login")
+    public String login() {
+
+        return "admin/login/login";
+    }
+
+    @PostMapping("/register")
     public String register() {
         return "admin/login/register";
     }
