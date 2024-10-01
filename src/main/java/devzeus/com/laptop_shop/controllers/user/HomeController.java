@@ -1,4 +1,4 @@
-package devzeus.com.laptop_shop.controllers;
+package devzeus.com.laptop_shop.controllers.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
