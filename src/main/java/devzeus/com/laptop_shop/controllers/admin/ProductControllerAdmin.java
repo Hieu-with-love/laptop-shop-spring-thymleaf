@@ -106,7 +106,6 @@ public class ProductControllerAdmin {
     public String updateProduct(
             @PathVariable Long id,
             @Valid @ModelAttribute ProductDTO productDTO,
-            @RequestParam("fileImage") MultipartFile file,
             BindingResult bindingResult,
             Model model
     ) throws IOException {

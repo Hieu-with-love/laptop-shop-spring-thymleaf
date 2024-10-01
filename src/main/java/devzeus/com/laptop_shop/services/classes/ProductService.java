@@ -116,7 +116,7 @@ public class ProductService implements IProductService {
         Brand brandExisting = brandRepository.findById(productDTO.getBrandId())
                 .orElseThrow(() -> new NotFoundException("Cannot found brand with id = " + productDTO.getBrandId()));
         // get product old by id
-        Product existingProduct = getProductById(productId);
+        Product existingProduct = this.getProductById(productId);
 
         // handle delete old image if has image uploaded
         if (!productDTO.getFileImage().isEmpty()) {
@@ -126,7 +126,9 @@ public class ProductService implements IProductService {
             String uploadDir = "uploads/";
             java.nio.file.Path oldImagePath = Paths.get(uploadDir + existingProduct.getThumbnail());
             try {
-                Files.delete(oldImagePath);
+                if (!oldImagePath.getFileName().toString().equals("default-product.jpg")) {
+                    Files.delete(oldImagePath);
+                }
             } catch (Exception e) {
                 throw new RuntimeException("Cannot delete old image." + e.getMessage());
             }
@@ -169,7 +171,9 @@ public class ProductService implements IProductService {
             throw new NotFoundException("Product with id = " + productId + " not found");
         java.nio.file.Path oldImagePath = Paths.get("uploads/", product.getThumbnail());
         try {
-            Files.delete(oldImagePath);
+            if (!oldImagePath.getFileName().toString().equals("default-product.jpg")) {
+                Files.delete(oldImagePath);
+            }
         } catch (Exception e) {
             throw new RuntimeException("Cannot delete old image. \n" + e.getMessage());
         }

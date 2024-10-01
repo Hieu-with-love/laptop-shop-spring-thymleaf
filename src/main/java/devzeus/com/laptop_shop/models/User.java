@@ -1,20 +1,18 @@
 package devzeus.com.laptop_shop.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
-public class User extends TrackingDate{
+public class User extends TrackingDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,5 +36,4 @@ public class User extends TrackingDate{
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
 }
