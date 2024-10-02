@@ -55,6 +55,7 @@ public class LoginControllerAdmin {
             return "/admin/login/register";
         }
         // Đăng ký người dùng mới
+        model.addAttribute("userDTO", userDTO);
         userService.registerUser(userDTO);
         return "redirect:/login"; // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
     }

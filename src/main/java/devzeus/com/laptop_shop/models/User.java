@@ -20,6 +20,9 @@ public class User extends TrackingDate {
     @Column(name = "phone_number", nullable = false, length = 10)
     private String phoneNumber;
 
+    @Column(nullable = false, length = 100)
+    private String email;
+
     @Column(name = "full_name", length = 100)
     private String fullName;
 
@@ -29,6 +32,8 @@ public class User extends TrackingDate {
 
     @Column(name = "day_of_birth")
     private LocalDate dayOfBirth;
+
+    private String gender;
 
     @Column(name = "active", nullable = false, columnDefinition = "TINYINT(1) default 1")
     private boolean isActive;

@@ -15,12 +15,14 @@ import java.time.LocalDate;
 public class UserDTO {
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
-
+    @NotBlank(message = "Email is required")
+    private String email;
     private String password;
     private String fullName;
     private String address;
     private boolean isActive;
     private LocalDate dayOfBirth;
+    private String gender;
 
     private LocalDate createdAt;
     private LocalDate updatedAt;

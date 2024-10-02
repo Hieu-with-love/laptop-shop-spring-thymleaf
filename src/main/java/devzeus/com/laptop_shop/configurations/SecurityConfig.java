@@ -3,6 +3,7 @@ package devzeus.com.laptop_shop.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -11,9 +12,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain configSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf(AbstractHttpConfigurer::disable)  // Đây là cú pháp mới
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home").permitAll()
+                        .requestMatchers("/register", "/user/products").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .anyRequest().authenticated()
