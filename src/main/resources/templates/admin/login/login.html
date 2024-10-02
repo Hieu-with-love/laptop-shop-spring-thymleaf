@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <h1>Day la trang login ma khi khong chap nhan request voi cua hinh spring security</h1>
+<h1>Login</h1>
+<form th:action="@{/login}" method="post">
+    <div>
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="username" required/>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required/>
+    </div>
+    <div>
+        <button type="submit">Login</button>
+        <a th:href="@{/register}">Đăng ký</a>
+    </div>
+</form>
 </body>
 </html>

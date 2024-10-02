@@ -16,11 +16,14 @@ public class UserDTO {
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 
+    private String password;
     private String fullName;
     private String address;
-    private String password;
-
+    private boolean isActive;
     private LocalDate dayOfBirth;
+
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
     private Long roleId;
 }

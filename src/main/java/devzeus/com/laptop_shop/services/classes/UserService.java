@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -23,28 +24,47 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final SecurityConfig securityConfig;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User registerUser(UserDTO userDTO) {
         Role role = roleRepository.findById(userDTO.getRoleId())
                 .orElseThrow(() -> new NotFoundException("Role not found"));
-        User user = User.builder()
+        return User.builder()
+                .phoneNumber(userDTO.getPhoneNumber())
+                .password(securityConfig.passwordEncoder().encode(userDTO.getPassword()))
+                .fullName(userDTO.getFullName())
+                .address(userDTO.getAddress())
+                .dayOfBirth(userDTO.getDayOfBirth())
+                .isActive(true)
+                .role(role)
                 .build();
-        return null;
     }
 
     @Override
-    public boolean authenticate(String username, String password) {
-        return false;
+    public boolean authenticate(String phoneNumber, String password) {
+        User existingUser = this.getUserByPhoneNumber(phoneNumber);
+        String passwordEncoder = securityConfig.passwordEncoder().encode(password);
+        return existingUser != null && existingUser.getPassword().equals(passwordEncoder);
     }
 
     @Override
     public User getUserByPhoneNumber(String phoneNumber) {
-        return null;
+        return userRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Override
     public User updateUser(UserDTO userDTO) {
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElseThrow(() -> new NotFoundException("Role not found"));
+        User existingUser = this.getUserByPhoneNumber(userDTO.getPhoneNumber());
+        existingUser.setPhoneNumber(userDTO.getPhoneNumber());
+        existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        existingUser.setFullName(userDTO.getFullName());
+        existingUser.setAddress(userDTO.getAddress());
+        existingUser.setDayOfBirth(userDTO.getDayOfBirth());
+        existingUser.setRole(role);
         return null;
     }
 
