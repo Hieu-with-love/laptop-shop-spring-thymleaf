@@ -35,14 +35,14 @@ public class LoginControllerAdmin {
     }
 
     @GetMapping("/login")
-    public String login() {
-
+    public String login(Model model) {
+        model.addAttribute("myUser", new UserDTO());
         return "admin/login/login";
     }
 
     @GetMapping("/register")
     public String showRegister(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("newUserDTO", new UserDTO());
         return "admin/login/register";
     }
 
@@ -55,7 +55,10 @@ public class LoginControllerAdmin {
             return "/admin/login/register";
         }
         // Đăng ký người dùng mới
-        model.addAttribute("userDTO", userDTO);
+        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+            model.addAttribute("error", "Mật khẩu xác nhận không khớp");
+            return "/admin/login/register";
+        }
         userService.registerUser(userDTO);
         return "redirect:/login"; // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
     }

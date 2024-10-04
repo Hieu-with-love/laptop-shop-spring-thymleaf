@@ -159,7 +159,7 @@
 <body>
 <section class="container">
     <header>Registration Form</header>
-    <form action="/register" method="post" class="form" th:object="${userDTO}">
+    <form action="/register" method="post" class="form" th:object="${newUserDTO}">
         <div class="input-box">
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" th:field="*{fullName}" placeholder="Enter full name" required/>
@@ -181,20 +181,33 @@
                 <input type="date" id="dayOfBirth" th:field="*{dayOfBirth}" placeholder="Enter birth date" required/>
             </div>
         </div>
+        <div class="column">
+            <div class="input-box">
+                <label for="password">Password</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="Enter password" required>
+            </div>
+        </div>
+        <div class="column">
+            <div class="input-box">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Enter password"
+                       required>
+            </div>
+        </div>
         <div class="gender-box">
             <h3>Gender</h3>
             <div class="gender-option">
                 <div class="gender">
-                    <input type="radio" id="check-male" name="gender" checked/>
-                    <label for="check-male">male</label>
+                    <input type="radio" id="check-male" th:field="*{gender}" value="male" checked/>
+                    <label for="check-male">Male</label>
                 </div>
                 <div class="gender">
-                    <input type="radio" id="check-female" name="gender"/>
+                    <input type="radio" id="check-female" th:field="*{gender}" value="female"/>
                     <label for="check-female">Female</label>
                 </div>
                 <div class="gender">
-                    <input type="radio" id="check-other" name="gender"/>
-                    <label for="check-other">prefer not to say</label>
+                    <input type="radio" id="check-other" th:field="*{gender}" value="no"/>
+                    <label for="check-other">Prefer not to say</label>
                 </div>
             </div>
         </div>

@@ -28,17 +28,26 @@ public class UserService implements IUserService {
 
     @Override
     public User registerUser(UserDTO userDTO) {
-        Role role = roleRepository.findById(userDTO.getRoleId())
-                .orElseThrow(() -> new NotFoundException("Role not found"));
-        return User.builder()
+        Role role = null;
+        if (userDTO.getRoleId() == null) {
+            role = roleRepository.findById(1L)
+                    .orElseThrow(() -> new NotFoundException("Role not found"));
+        } else {
+            role = roleRepository.findById(userDTO.getRoleId())
+                    .orElseThrow(() -> new NotFoundException("Role not found"));
+        }
+        User user = User.builder()
                 .phoneNumber(userDTO.getPhoneNumber())
                 .password(securityConfig.passwordEncoder().encode(userDTO.getPassword()))
+                .email(userDTO.getEmail())
                 .fullName(userDTO.getFullName())
+                .gender(userDTO.getGender())
                 .address(userDTO.getAddress())
                 .dayOfBirth(userDTO.getDayOfBirth())
                 .isActive(true)
                 .role(role)
                 .build();
+        return userRepository.save(user);
     }
 
     @Override
@@ -50,8 +59,7 @@ public class UserService implements IUserService {
 
     @Override
     public User getUserByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        return userRepository.findByPhoneNumber(phoneNumber);
     }
 
     @Override
@@ -85,8 +93,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
-        devzeus.com.laptop_shop.models.User user = userRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with phone number: " + phoneNumber));
+        devzeus.com.laptop_shop.models.User user = userRepository.findByPhoneNumber(phoneNumber);
 
         // get user's role, exchange to GrantedAuthority
         String role = "ROLE_" + user.getRole().getName().toUpperCase();
