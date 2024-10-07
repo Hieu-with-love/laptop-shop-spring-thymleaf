@@ -15,17 +15,19 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)  // Đây là cú pháp mới
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/user/products").permitAll()
+                        .requestMatchers("/dashboard").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .successHandler(new CustomAuthSuccessHandler())
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )

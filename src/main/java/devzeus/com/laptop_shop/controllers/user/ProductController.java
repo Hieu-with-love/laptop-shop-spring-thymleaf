@@ -11,6 +11,6 @@ public class ProductController {
     @GetMapping
     public String products(Model model) {
         model.addAttribute("pageTitle", "Products");
-        return "user/product";
+        return "/user/product";
     }
 }

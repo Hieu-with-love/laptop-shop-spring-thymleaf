@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
-    <title th:text="${pageTitle}">Title</title>
+<head th:include="fragments/head :: head">
+    <title th:text="${pageTitle}"></title>
 </head>
 <body>
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -15,6 +15,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
+                            <p>Welcome, <span th:text="${session.username}">!</span></p>
                             <h5 class="card-title d-flex align-items-center gap-2 mb-4">
                                 Quản lý sản phẩm
                             </h5>

@@ -31,6 +31,7 @@ public class ProductControllerAdmin {
     public String showProducts(Model model) {
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
+        model.addAttribute("pageTitle", "Product Management");
         return "admin/products/index";
     }
 

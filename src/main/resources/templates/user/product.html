@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments_user/head :: head">
+    <title th:text="${pageTitle}">Title</title>
 </head>
 <body>
+<div th:replace="fragments_user/header :: header"></div>
+<div th:replace="fragments_user/navigation :: navigation"></div>
 
+<div>
+    <h1>Trang xem sản phẩm</h1>
+</div>
+
+<div th:replace="fragments_user/footer :: footer"></div>
+<div th:replace="fragments_user/scripts :: script"></div>
 </body>
 </html>
