@@ -13,4 +13,5 @@ public class ProductController {
         model.addAttribute("pageTitle", "Products");
         return "/user/product";
     }
+    
 }

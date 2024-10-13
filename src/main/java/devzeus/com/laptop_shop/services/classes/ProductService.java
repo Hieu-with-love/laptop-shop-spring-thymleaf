@@ -165,6 +165,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<Product> searchProductsByKeyword(String keyword) {
+        return productRepository.searchProducts(keyword);
+    }
+
+    @Override
     public void deleteProduct(Long productId) {
         Product product = getProductById(productId);
         if (product == null)

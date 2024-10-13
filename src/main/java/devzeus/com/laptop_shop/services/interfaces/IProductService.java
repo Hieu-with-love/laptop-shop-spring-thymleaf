@@ -21,4 +21,5 @@ public interface IProductService {
 
     void createProductImage(Long productId, ProductImageDTO productDTO);
 
+    List<Product> searchProductsByKeyword(String keyword);
 }

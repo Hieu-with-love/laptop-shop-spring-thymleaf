@@ -9,6 +9,7 @@ import devzeus.com.laptop_shop.services.classes.CategoryService;
 import devzeus.com.laptop_shop.services.classes.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,8 +29,12 @@ public class ProductControllerAdmin {
     private final CategoryService categoryService;
 
     @GetMapping
-    public String showProducts(Model model) {
+    public String showProducts(Model model, @Param("keyword") String keyword) {
         List<Product> products = productService.getAllProducts();
+        if (keyword != null) {
+            model.addAttribute("keyword", keyword);
+            products = productService.searchProductsByKeyword(keyword);
+        }
         model.addAttribute("products", products);
         model.addAttribute("pageTitle", "Product Management");
         return "admin/products/index";
