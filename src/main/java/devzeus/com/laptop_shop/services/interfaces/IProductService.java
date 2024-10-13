@@ -3,6 +3,7 @@ package devzeus.com.laptop_shop.services.interfaces;
 import devzeus.com.laptop_shop.dtos.requests.ProductDTO;
 import devzeus.com.laptop_shop.dtos.requests.ProductImageDTO;
 import devzeus.com.laptop_shop.models.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,4 +23,6 @@ public interface IProductService {
     void createProductImage(Long productId, ProductImageDTO productDTO);
 
     List<Product> searchProductsByKeyword(String keyword);
+
+    Page<Product> getAllProducts(int pageNo);
 }

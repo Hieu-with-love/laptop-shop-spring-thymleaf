@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <div th:replace="~{fragments/head :: head}"></div>
+    <div th:insert="~{fragments/head :: head}"></div>
     <title th:text="${titleDashboard}"></title>
 </head>
 <body>
@@ -12,9 +12,9 @@
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
     <!--  Main wrapper -->
     <div class="body-wrapper">
-        <div th:replace="~{fragments/header :: header}"></div>
-        <div th:replace="~{fragments/content :: content}"></div>
-        <div th:replace="~{fragments/footer :: footer}"></div>
+        <div th:insert="~{fragments/header :: header}"></div>
+        <div th:insert="~{fragments/content :: content}"></div>
+        <div th:insert="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 <div th:replace="~{fragments/scripts :: scripts}"></div>

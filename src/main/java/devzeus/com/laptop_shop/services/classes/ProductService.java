@@ -14,6 +14,9 @@ import devzeus.com.laptop_shop.repositories.ProductRepository;
 import devzeus.com.laptop_shop.services.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
@@ -170,6 +173,23 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Page<Product> getAllProducts(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Cannot found product with id = " + productId));
+    }
+
+    @Override
     public void deleteProduct(Long productId) {
         Product product = getProductById(productId);
         if (product == null)
@@ -183,17 +203,6 @@ public class ProductService implements IProductService {
             throw new RuntimeException("Cannot delete old image. \n" + e.getMessage());
         }
         productRepository.deleteById(productId);
-    }
-
-    @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-    }
-
-    @Override
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Cannot found product with id = " + productId));
     }
 
 }
