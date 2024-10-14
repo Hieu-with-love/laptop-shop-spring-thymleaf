@@ -5,8 +5,11 @@
     <title th:text="${pageTitle}">Title</title>
 </head>
 <body>
-<div th:insert="~{common-user/header :: topbar}"></div>
-<div th:insert="~{common-user/header :: logo-search}"></div>
+<div th:insert="~{common-user/header :: title}"></div>
+<div th:insert="~{common-user/header :: login-bar}"></div>
+<div th:insert="~{common-user/header :: feature-bar}"></div>
+
+
 <div th:insert="~{common-user/footer :: footer}"></div>
 </body>
 </html>

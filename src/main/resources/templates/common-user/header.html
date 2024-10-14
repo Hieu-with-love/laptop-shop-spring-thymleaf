@@ -62,11 +62,11 @@
             <div class="container">
                 <div class="header-navbar">
                     <div class="header-brand">
-                        <a href="index.html" class="logo logo-dark">
-                            <img src="assets/images/logo/logo.png" alt="Site Logo">
+                        <a href="#" class="logo logo-dark">
+                            <img th:src="@{etrade/assets/images/logo/logo.png}" alt="Site Logo">
                         </a>
-                        <a href="index.html" class="logo logo-light">
-                            <img src="assets/images/logo/logo-light.png" alt="Site Logo">
+                        <a href="#" class="logo logo-light">
+                            <img th:src="@{etrade/assets/images/logo/logo-light.png}" alt="Site Logo">
                         </a>
                     </div>
                     <div class="header-main-nav">
@@ -75,23 +75,12 @@
                             <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i></button>
                             <div class="mobile-nav-brand">
                                 <a href="index.html" class="logo">
-                                    <img src="assets/images/logo/logo.png" alt="Site Logo">
+                                    <img th:src="@{etrade/assets/images/logo/logo.png}" alt="Site Logo">
                                 </a>
                             </div>
                             <ul class="mainmenu">
                                 <li class="menu-item-has-children">
-                                    <a href="#">Home</a>
-                                    <ul class="axil-submenu">
-                                        <li><a href="index-1.html">Home - Electronics</a></li>
-                                        <li><a href="index-2.html">Home - NFT</a></li>
-                                        <li><a href="index-3.html">Home - Fashion</a></li>
-                                        <li><a href="index-4.html">Home - Jewellery</a></li>
-                                        <li><a href="index-5.html">Home - Furniture</a></li>
-                                        <li><a href="index-7.html">Home - Multipurpose</a></li>
-                                        <li><a href="https://new.axilthemes.com/demo/template/etrade-rtl/">RTL
-                                            Version</a>
-                                        </li>
-                                    </ul>
+                                    <a th:href="@{/user}">Home</a>
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="#">Shop</a>
