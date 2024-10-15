@@ -21,6 +21,6 @@ public class HomeController {
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
         model.addAttribute("pageTitle", "Home");
-        return "user/index";
+        return "user/product/index";
     }
 }
