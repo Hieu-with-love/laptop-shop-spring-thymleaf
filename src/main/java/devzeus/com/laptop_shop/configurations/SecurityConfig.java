@@ -14,6 +14,7 @@ public class SecurityConfig {
     public SecurityFilterChain configSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)  // Đây là cú pháp mới
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/etrade/assets/**").permitAll()
                         .requestMatchers("/register", "/user/products").permitAll()
                         .requestMatchers("/dashboard").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")

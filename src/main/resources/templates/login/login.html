@@ -1,34 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/head :: head}"></div>
+<head>
+    <div th:insert="~{common-user/head :: head}"></div>
+    <title>Login</title>
+</head>
 <body>
-<div class="container mt-3 pt-5">
-    <div class="row">
-        <img th:src="@{/assets/admin/resource_admin/images/logos/UTElogo.png}" alt="University logo"
-             class="rounded-circle mx-auto" style="width: 200px; height: 180px;">
-    </div>
-    <div class="row">
-        <div class="col-12 col-sm-8 col-md-6 m-auto border">
-            <div class="card">
-                <div class="card-title text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
-                         class="bi bi-person-circle mx-auto" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                        <path fill-rule="evenodd"
-                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                    </svg>
+<div class="axil-signin-area">
+    <!-- Start Header -->
+    <div class="signin-header">
+        <div class="row align-items-center">
+            <div class="col-sm-4">
+                <a href="index.html" class="site-logo"><img th:src="@{assets/images/logo/logo.png}" alt="logo"></a>
+            </div>
+            <div class="col-sm-8">
+                <div class="singin-header-btn">
+                    <p>Not a member?</p>
+                    <a th:href="@{/register}" class="axil-btn btn-bg-secondary sign-up-btn">Sign Up Now</a>
                 </div>
-                <div class="card-body">
-                    <form th:action="@{/login}" method="post">
-                        <input type="text" name="username" placeholder="Phone number"
-                               class="form-control my-4 py-2" required/>
-                        <input type="password" placeholder="Password" name="password"
-                               class="form-control my-4 py-2" required/>
-                        <div class="text-center my-2">
-                            <button type="submit" class="btn btn-primary mb-2">Login</button>
-                            <a th:href="@{/register}" class="nav-link mx-auto text-decoration-none hover-underline">Already
-                                have an
-                                account ?</a>
+            </div>
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <div class="row">
+        <div class="col-xl-4 col-lg-6">
+            <div class="axil-signin-banner bg_image bg_image--9">
+                <h3 class="title">We Offer the Best Products</h3>
+            </div>
+        </div>
+        <div class="col-lg-6 offset-xl-2">
+            <div class="axil-signin-form-wrap">
+                <div class="axil-signin-form">
+                    <h3 class="title">Sign in to eTrade.</h3>
+                    <p class="b2 mb--55">Enter your detail below</p>
+                    <form class="singin-form" method="post" th:action="@{/login}">
+                        <div class="form-group">
+                            <label>Phone number</label>
+                            <input type="text" class="form-control" name="username"
+                                   placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name="password"
+                                   placeholder="Enter password">
+                        </div>
+                        <div class="form-group d-flex align-items-center justify-content-between">
+                            <button type="submit" class="axil-btn btn-bg-primary submit-btn">Sign In</button>
+                            <a href="forgot-password.html" class="forgot-btn">Forget password?</a>
                         </div>
                     </form>
                 </div>
@@ -36,8 +54,8 @@
         </div>
     </div>
 </div>
-<div th:replace="~{fragments/footer :: footer}">
 
-</div>
+<div th:insert="~{common-user/script :: script}"></div>
+
 </body>
 </html>
