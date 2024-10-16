@@ -47,14 +47,14 @@ public class LoginController {
 
     @PostMapping("/register")
     public String register(Model model,
-                           @ModelAttribute("userDTO") UserDTO userDTO) {
+                           @ModelAttribute("registerUser") UserDTO userDTO) {
         // Kiểm tra nếu số điện thoại đã tồn tại
         if (userService.existingPhoneNumber(userDTO.getPhoneNumber())) {
             model.addAttribute("error", "Số điện thoại đã tồn tại");
             return "login/register";
         }
         // Đăng ký người dùng mới
-        if (userService.isPassword(userDTO.getPhoneNumber(), userDTO.getPassword())) {
+        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
             model.addAttribute("error", "Mật khẩu xác nhận không khớp");
             return "login/register";
         }

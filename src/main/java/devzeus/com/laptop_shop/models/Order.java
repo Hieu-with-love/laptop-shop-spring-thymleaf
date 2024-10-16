@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -25,4 +27,7 @@ public class Order extends TrackingDate {
 
     @Column(name = "active")
     private boolean isActive;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<OrderDetail> orderDetails = new HashSet<>();
 }

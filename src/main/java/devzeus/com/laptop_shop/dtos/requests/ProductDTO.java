@@ -35,6 +35,11 @@ public class ProductDTO {
     private Long quantity;
     private String batteryCapacity;
     private String monitor;
+    private String graphicCard;
+    private String hardDrive;
+    private String screenTechnology;
+    private String ports;
+    private String cpu;
     private Long categoryId;
     private Long brandId;
     private String thumbnail;

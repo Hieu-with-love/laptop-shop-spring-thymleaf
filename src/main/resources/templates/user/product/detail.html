@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{common-user/head :: head}">
+<head>
     <title>Product Detail</title>
+    <div th:insert="~{common-user/head :: head}"></div>
 </head>
 <body class="sticky-header">
 <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
@@ -24,35 +25,35 @@
                                         <img th:src="@{/etrade/assets/images/product/furniture/product-1.png}"
                                              alt="Product Images">
                                     </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-2.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-3.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-4.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-5.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-6.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-7.png}"
-                                             alt="Product Images">
-                                    </div>
+                                    <!--                                    <div class="thumbnail">-->
+                                    <!--                                        <img th:src="@{/etrade/assets/images/product/furniture/product-2.png}"-->
+                                    <!--                                             alt="Product Images">-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="thumbnail">-->
+                                    <!--                                        <img th:src="@{/etrade/assets/images/product/furniture/product-3.png}"-->
+                                    <!--                                             alt="Product Images">-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="thumbnail">-->
+                                    <!--                                        <img th:src="@{/etrade/assets/images/product/furniture/product-4.png}"-->
+                                    <!--                                             alt="Product Images">-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="thumbnail">-->
+                                    <!--                                        <img th:src="@{/etrade/assets/images/product/furniture/product-5.png}"-->
+                                    <!--                                             alt="Product Images">-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="thumbnail">-->
+                                    <!--                                        <img th:src="@{/etrade/assets/images/product/furniture/product-6.png}"-->
+                                    <!--                                             alt="Product Images">-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="thumbnail">-->
+                                    <!--                                        <img th:src="@{/etrade/assets/images/product/furniture/product-7.png}"-->
+                                    <!--                                             alt="Product Images">-->
+                                    <!--                                    </div>-->
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="small-thumb-wrapper product-small-thumb-2 small-thumb-style-two small-thumb-style-three">
-                                    <div class="small-thumb-img ">
+                                    <div class="small-thumb-img">
                                         <img th:src="@{/etrade/assets/images/product/furniture/product-1.png}"
                                              alt="samll-thumb">
                                     </div>
@@ -194,54 +195,54 @@
                 </div>
                 <!-- End .product-desc-wrapper -->
                 <div class="additional-info pb--40 pb_sm--20">
-                    <h4 class="mb--60">Additional Information</h4>
+                    <h4 class="mb--60">Device Information</h4>
                     <div class="product-additional-info">
                         <div class="table-responsive">
-                            <table>
+                            <table th:object="${product}">
                                 <tbody>
                                 <tr>
-                                    <th>Stand Up</th>
-                                    <td>35″L x 24″W x 37-45″H(front to back wheel)</td>
+                                    <th>Loại card đồ hoạ</th>
+                                    <td th:text="*{graphicCard}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Folded (w/o wheels)</th>
-                                    <td>32.5″L x 18.5″W x 16.5″H</td>
+                                    <th>Dung lượng RAM</th>
+                                    <td th:text="*{ram}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Folded (w/ wheels)</th>
-                                    <td>32.5″L x 24″W x 18.5″H</td>
+                                    <th>Ổ cứng</th>
+                                    <td th:text="*{hardDrive}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Door Pass Through</th>
-                                    <td>24</td>
+                                    <th>Kích thước màn hình</th>
+                                    <td th:text="*{monitor}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Frame</th>
-                                    <td>Aluminum</td>
+                                    <th>Công nghệ màn hình</th>
+                                    <td th:text="*{screenTechnology}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Weight (w/o wheels)</th>
-                                    <td>20 LBS</td>
+                                    <th>Pin</th>
+                                    <td th:text="*{batteryCapacity}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Weight Capacity</th>
-                                    <td>60 LBS</td>
+                                    <th>Hệ điều hành</th>
+                                    <td th:text="*{brand.os}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Width</th>
-                                    <td>24″</td>
+                                    <th>Độ phân giải màn hình</th>
+                                    <td th:text="*{monitor}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Handle height (ground to handle)</th>
-                                    <td>37-45″</td>
+                                    <th>Loại CPU</th>
+                                    <td th:text="*{cpu}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Wheels</th>
-                                    <td>Aluminum</td>
+                                    <th>Cổng giao tiếp</th>
+                                    <td th:text="*{ports}"></td>
                                 </tr>
                                 <tr>
-                                    <th>Size</th>
-                                    <td>S, M, X, XL</td>
+                                    <th>Tình trạng</th>
+                                    <td>Còn hàng</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -772,25 +773,6 @@
         </div>
     </div>
     <!-- End Recently Viewed Product Area  -->
-    <!-- Start Axil Newsletter Area  -->
-    <div class="axil-newsletter-area axil-section-gap pt--0">
-        <div class="container">
-            <div class="etrade-newsletter-wrapper bg_image bg_image--5">
-                <div class="newsletter-content">
-                    <span class="title-highlighter highlighter-primary2"><i class="fas fa-envelope-open"></i>Newsletter</span>
-                    <h2 class="title mb--40 mb_sm--30">Get weekly update</h2>
-                    <div class="input-group newsletter-form">
-                        <div class="position-relative newsletter-inner mb--15">
-                            <input placeholder="example@gmail.com" type="text">
-                        </div>
-                        <button type="submit" class="axil-btn mb--15">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End .container -->
-    </div>
-    <!-- End Axil Newsletter Area  -->
 </main>
 
 <div th:insert="~{common-user/content :: service-area}"></div>

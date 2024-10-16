@@ -6,6 +6,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -34,16 +36,41 @@ public class Product extends TrackingDate {
 
     private String monitor;
 
+    @Column(name = "graphic_card", length = 200)
+    private String graphicCard;
+
+    @Column(name = "hard_drive", length = 300)
+    private String hardDrive;
+
+    @Column(name = "screen_technology", length = 300)
+    private String screenTechnology;
+
+    @Column(name = "ports", length = 500)
+    private String ports;
+
+    @Column(name = "cpu", length = 500)
+    private String cpu;
+
     private String thumbnail;
 
     @Column(columnDefinition = "double default 0.0")
     private double discount;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ProductImage> productImages = new HashSet<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<OrderDetail> orderDetails = new HashSet<>();
 }
