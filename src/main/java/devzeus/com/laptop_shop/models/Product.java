@@ -21,7 +21,7 @@ public class Product extends TrackingDate {
 
     private String name;
 
-    private BigDecimal price;
+    private double price;
 
     private String description;
 
@@ -35,6 +35,9 @@ public class Product extends TrackingDate {
     private String monitor;
 
     private String thumbnail;
+
+    @Column(columnDefinition = "double default 0.0")
+    private double discount;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

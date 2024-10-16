@@ -22,4 +22,8 @@ public interface IUserService extends UserDetailsService {
 
     // hard delete
     void deleteUser(String phoneNumber);
+
+    boolean existingPhoneNumber(String phoneNumber);
+
+    boolean isPassword(String phoneNumber, String password);
 }

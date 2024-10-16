@@ -92,6 +92,18 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean existingPhoneNumber(String phoneNumber) {
+        User user = userRepository.findByPhoneNumber(phoneNumber);
+        return user != null;
+    }
+
+    @Override
+    public boolean isPassword(String phoneNumber, String password) {
+        User user = userRepository.findByPhoneNumber(phoneNumber);
+        return user.getPassword().equals(password);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
         devzeus.com.laptop_shop.models.User user = userRepository.findByPhoneNumber(phoneNumber);
 

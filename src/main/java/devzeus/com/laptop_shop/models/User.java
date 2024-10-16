@@ -28,6 +28,7 @@ public class User extends TrackingDate {
 
     private String address;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "day_of_birth")

@@ -12,9 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequiredArgsConstructor
+@SessionAttributes("userDTO")
 public class LoginController {
     private final UserDetailsService userDetailsService;
     private final UserService userService;
@@ -37,7 +41,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String showRegister(Model model) {
-        model.addAttribute("newUserDTO", new UserDTO());
+        model.addAttribute("registerUser", new UserDTO());
         return "login/register";
     }
 
@@ -45,16 +49,23 @@ public class LoginController {
     public String register(Model model,
                            @ModelAttribute("userDTO") UserDTO userDTO) {
         // Kiểm tra nếu số điện thoại đã tồn tại
-        if (userService.getUserByPhoneNumber(userDTO.getPhoneNumber()) != null) {
+        if (userService.existingPhoneNumber(userDTO.getPhoneNumber())) {
             model.addAttribute("error", "Số điện thoại đã tồn tại");
             return "login/register";
         }
         // Đăng ký người dùng mới
-        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+        if (userService.isPassword(userDTO.getPhoneNumber(), userDTO.getPassword())) {
             model.addAttribute("error", "Mật khẩu xác nhận không khớp");
             return "login/register";
         }
         userService.registerUser(userDTO);
         return "redirect:/login"; // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
+    }
+
+    @GetMapping("/logout")
+    public String logout(@ModelAttribute("userDTO") UserDTO userDTO, WebRequest request, SessionStatus status) {
+        status.setComplete();
+        request.removeAttribute("userDTO", WebRequest.SCOPE_SESSION);
+        return "redirect:/login";
     }
 }
