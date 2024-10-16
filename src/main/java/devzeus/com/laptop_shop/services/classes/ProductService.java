@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -100,7 +101,7 @@ public class ProductService implements IProductService {
         // get file name
         String fileName = file.getOriginalFilename();
         // generate code random base on UUID
-        String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + LocalDate.now() + "_" + fileName;
         java.nio.file.Path uploadDir = Paths.get("uploads");
         // check and create if haven't existed
         if (!Files.exists(uploadDir)) {

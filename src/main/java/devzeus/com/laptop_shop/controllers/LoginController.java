@@ -68,4 +68,10 @@ public class LoginController {
         request.removeAttribute("userDTO", WebRequest.SCOPE_SESSION);
         return "redirect:/login";
     }
+
+    @GetMapping("/forgot-password")
+    public String forgotPassword(Model model) {
+
+        return "login/forgot-password";
+    }
 }

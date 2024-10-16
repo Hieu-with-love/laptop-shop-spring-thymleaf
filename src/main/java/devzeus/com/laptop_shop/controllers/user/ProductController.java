@@ -27,10 +27,16 @@ public class ProductController {
         return "/user/product/detail";
     }
 
-    @PostMapping
+    @GetMapping("/cart")
+    public String showCart(Model model) {
+
+        return "/user/product/cart";
+    }
+
+    @PostMapping("/add-to-card/id")
     public String addToCart(Model model) {
 
-        return "/user/product/add-to-cart";
+        return "/user/product/cart";
     }
 
 
