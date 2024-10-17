@@ -23,4 +23,10 @@ public class HomeController {
         model.addAttribute("pageTitle", "Home");
         return "user/product/index";
     }
+
+    @GetMapping("/about-us")
+    public String showAboutUs(Model model) {
+
+        return "user/about-us";
+    }
 }

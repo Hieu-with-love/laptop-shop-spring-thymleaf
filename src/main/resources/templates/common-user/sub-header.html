@@ -1,13 +1,4 @@
-<header th:fragment="header" class="header axil-header header-style-1">
-
-    <div th:fragment="title" class="header-top-campaign">
-        <div class="container position-relative">
-            <div class="campaign-content">
-                <p>Open Doors To A World Of Fashion <a href="#">Discover More</a></p>
-            </div>
-        </div>
-        <button class="remove-campaign"><i class="fal fa-times"></i></button>
-    </div>
+<header th:fragment="sub-header" class="header axil-header header-style-1">
 
     <div th:fragment="login-bar">
         <div class="axil-header-top">
@@ -114,7 +105,7 @@
                                         <li><a href="typography.html">Typography</a></li>
                                     </ul>
                                 </li>
-                                <li><a th:href="@{/user/about-us}">About</a></li>
+                                <li><a href="about-us.html">About</a></li>
                                 <li class="menu-item-has-children">
                                     <a href="#">Blog</a>
                                     <ul class="axil-submenu">
@@ -189,6 +180,15 @@
             </div>
         </div>
         <!-- End Mainmenu Area -->
+    </div>
+
+    <div th:fragment="title" class="header-top-campaign">
+        <div class="container position-relative">
+            <div class="campaign-content">
+                <p>Open Doors To A World Of Fashion <a href="#">Discover More</a></p>
+            </div>
+        </div>
+        <button class="remove-campaign"><i class="fal fa-times"></i></button>
     </div>
 </header>
 
