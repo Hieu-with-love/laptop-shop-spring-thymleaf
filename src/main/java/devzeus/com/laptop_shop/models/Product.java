@@ -64,9 +64,8 @@ public class Product extends TrackingDate {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+    @ManyToMany(mappedBy = "products")
+    private Set<Cart> carts;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductImage> productImages = new HashSet<>();
