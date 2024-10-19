@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler(new CustomAuthSuccessHandler())
+                        .failureHandler(new CustomAuthFailureHandler())
                         .permitAll()
                 )
                 .logout(logout -> logout

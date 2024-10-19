@@ -18,7 +18,6 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("userDTO")
 public class LoginController {
     private final UserDetailsService userDetailsService;
     private final UserService userService;
@@ -28,6 +27,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String currentPhoneNumber = auth.getName();
         devzeus.com.laptop_shop.models.User user = userService.getUserByPhoneNumber(currentPhoneNumber);
+        session.setAttribute("userSession", user);
         model.addAttribute("user", user);
         model.addAttribute("titleDashboard", "Dashboard");
         return "admin/index";

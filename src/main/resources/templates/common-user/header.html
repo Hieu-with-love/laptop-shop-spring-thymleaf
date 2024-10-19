@@ -76,7 +76,7 @@
                             <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i>
                             </button>
                             <div class="mobile-nav-brand">
-                                <a href="index.html" class="logo">
+                                <a th:href="@{/user}" class="logo">
                                     <img th:src="@{etrade/assets/images/logo/logo.png}" alt="Site Logo">
                                 </a>
                             </div>
@@ -158,7 +158,7 @@
                                     <span class="title">QUICKLINKS</span>
                                     <ul>
                                         <li>
-                                            <a href="my-account.html">My Account</a>
+                                            <a th:href="@{/user/my-account}"></a>
                                         </li>
                                         <li>
                                             <a href="#">Initiate return</a>

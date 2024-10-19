@@ -1,12 +1,13 @@
 package devzeus.com.laptop_shop.controllers.user;
 
 import devzeus.com.laptop_shop.models.Product;
+import devzeus.com.laptop_shop.models.User;
 import devzeus.com.laptop_shop.services.classes.ProductService;
+import devzeus.com.laptop_shop.services.classes.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class HomeController {
     private final ProductService productService;
+    private final UserService userService;
 
     @GetMapping
     public String products(Model model) {
@@ -24,9 +26,22 @@ public class HomeController {
         return "user/product/index";
     }
 
+    @PostMapping("/forgot-password")
+    public String processForgotPassword(@RequestParam("email") String email, Model model) {
+        // Ki
+        return "login/forgot-password";
+    }
+
     @GetMapping("/about-us")
     public String showAboutUs(Model model) {
 
         return "user/about-us";
+    }
+
+    @GetMapping("/my-account/phoneNumber")
+    public String myAccount(@RequestParam("phoneNumber") String phoneNumber, Model model) {
+        User userAccount = userService.getUserByPhoneNumber(phoneNumber);
+        model.addAttribute("userAccount", userAccount);
+        return "user/my-account";
     }
 }
