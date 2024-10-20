@@ -1,6 +1,7 @@
 package devzeus.com.laptop_shop.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ public class Order extends TrackingDate {
     private String phoneNumber;
     private String address;
     private String note;
+    @Min(value = 1, message = "Product' price must be granter than 0")
     private BigDecimal totalMoney;
     private LocalDate orderDate;
 

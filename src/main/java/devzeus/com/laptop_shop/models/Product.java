@@ -2,11 +2,11 @@ package devzeus.com.laptop_shop.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -23,7 +23,8 @@ public class Product extends TrackingDate {
 
     private String name;
 
-    private double price;
+    @Min(value = 1, message = "Product' price must be granter than 0")
+    private BigDecimal price;
 
     private String description;
 
@@ -64,8 +65,8 @@ public class Product extends TrackingDate {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Cart> carts;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartDetail> cartDetails;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductImage> productImages = new HashSet<>();
