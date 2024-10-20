@@ -17,11 +17,11 @@ public class User extends TrackingDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
     @Column(name = "phone_number", nullable = false, length = 10)
     private String phoneNumber;
-
-    @Column(nullable = false, length = 100)
-    private String email;
 
     @Column(name = "full_name", length = 100)
     private String fullName;

@@ -41,16 +41,19 @@
                           th:object="${registerUser}"
                     >
                         <div class="form-group">
-                            <label>Phone Number</label>
+                            <label>Email</label>
                             <input type="text" class="form-control"
-                                   th:field="*{phoneNumber}"
+                                   th:field="*{email}"
                                    placeholder="Enter phone number"
                                    required
                             >
+                            <div th:if="${existingEmail}" class="alert alert-danger">
+                                <span th:text="${existingEmail}"></span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" th:field="*{email}"
+                            <label>Phone Number</label>
+                            <input type="email" class="form-control" th:field="*{phoneNumber}"
                                    placeholder="Enter email"
                                    required
                             >
@@ -68,6 +71,9 @@
                                    placeholder="Enter password again"
                                    required
                             >
+                            <div th:if="${notMatchPass}" class="alert alert-danger">
+                                <span th:text="${notMatchPass}"></span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Full Name</label>

@@ -25,8 +25,8 @@ public class LoginController {
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String currentPhoneNumber = auth.getName();
-        devzeus.com.laptop_shop.models.User user = userService.getUserByPhoneNumber(currentPhoneNumber);
+        String currentEmail = auth.getName();
+        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(currentEmail);
         session.setAttribute("userSession", user);
         model.addAttribute("user", user);
         model.addAttribute("titleDashboard", "Dashboard");
@@ -49,13 +49,13 @@ public class LoginController {
     public String register(Model model,
                            @ModelAttribute("registerUser") UserDTO userDTO) {
         // Kiểm tra nếu số điện thoại đã tồn tại
-        if (userService.existingPhoneNumber(userDTO.getPhoneNumber())) {
-            model.addAttribute("error", "Số điện thoại đã tồn tại");
+        if (userService.existingEmail(userDTO.getEmail())) {
+            model.addAttribute("existingEmail", "Email đã tồn tại");
             return "login/register";
         }
         // Đăng ký người dùng mới
         if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
-            model.addAttribute("error", "Mật khẩu xác nhận không khớp");
+            model.addAttribute("notMatchPass", "Mật khẩu xác nhận không khớp");
             return "login/register";
         }
         userService.registerUser(userDTO);

@@ -11,19 +11,19 @@ public interface IUserService extends UserDetailsService {
     // authenticate user with phoneNumber and password
     boolean authenticate(String username, String password);
 
-    User getUserByPhoneNumber(String phoneNumber);
+    User getUserByEmail(String email);
 
     User updateUser(UserDTO user);
 
-    void changePassword(String phoneNumber, String newPassword);
+    void changePassword(String email, String newPassword);
 
     // soft delete
     void toggleUserActivation(String phoneNumber, boolean isActive);
 
     // hard delete
-    void deleteUser(String phoneNumber);
+    void deleteUser(String email);
 
-    boolean existingPhoneNumber(String phoneNumber);
+    boolean existingEmail(String email);
 
     boolean isPassword(String phoneNumber, String password);
 }

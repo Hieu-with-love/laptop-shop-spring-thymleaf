@@ -51,27 +51,30 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean authenticate(String phoneNumber, String password) {
-        User existingUser = this.getUserByPhoneNumber(phoneNumber);
+    public boolean authenticate(String email, String password) {
+        User existingUser = this.getUserByEmail(email);
         String passwordEncoder = securityConfig.passwordEncoder().encode(password);
         return existingUser != null && existingUser.getPassword().equals(passwordEncoder);
     }
 
     @Override
-    public User getUserByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber);
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
     public User updateUser(UserDTO userDTO) {
         Role role = roleRepository.findById(userDTO.getRoleId())
                 .orElseThrow(() -> new NotFoundException("Role not found"));
-        User existingUser = this.getUserByPhoneNumber(userDTO.getPhoneNumber());
+        User existingUser = this.getUserByEmail(userDTO.getEmail());
         existingUser.setPhoneNumber(userDTO.getPhoneNumber());
+        existingUser.setEmail(userDTO.getEmail());
         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         existingUser.setFullName(userDTO.getFullName());
         existingUser.setAddress(userDTO.getAddress());
         existingUser.setDayOfBirth(userDTO.getDayOfBirth());
+        existingUser.setGender(userDTO.getGender());
+        existingUser.setActive(userDTO.isActive());
         existingUser.setRole(role);
         return null;
     }
@@ -92,24 +95,26 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean existingPhoneNumber(String phoneNumber) {
-        User user = userRepository.findByPhoneNumber(phoneNumber);
+    public boolean existingEmail(String email) {
+        User user = userRepository.findByEmail(email);
         return user != null;
     }
 
     @Override
-    public boolean isPassword(String phoneNumber, String password) {
-        User user = userRepository.findByPhoneNumber(phoneNumber);
+    public boolean isPassword(String email, String password) {
+        User user = userRepository.findByEmail(email);
         return user.getPassword().equals(password);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
-        devzeus.com.laptop_shop.models.User user = userRepository.findByPhoneNumber(phoneNumber);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        devzeus.com.laptop_shop.models.User user = userRepository.findByEmail(email);
 
         // get user's role, exchange to GrantedAuthority
         String role = "ROLE_" + user.getRole().getName().toUpperCase();
+        // create authenticate for user
         GrantedAuthority auth = new SimpleGrantedAuthority(role);
+        // return granted user
         return new org.springframework.security.core.userdetails.User(
                 user.getPhoneNumber(),
                 user.getPassword(),

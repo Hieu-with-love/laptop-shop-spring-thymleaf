@@ -38,9 +38,9 @@ public class HomeController {
         return "user/about-us";
     }
 
-    @GetMapping("/my-account/phoneNumber")
-    public String myAccount(@RequestParam("phoneNumber") String phoneNumber, Model model) {
-        User userAccount = userService.getUserByPhoneNumber(phoneNumber);
+    @GetMapping("/my-account/email")
+    public String myAccount(@RequestParam("email") String email, Model model) {
+        User userAccount = userService.getUserByEmail(email);
         model.addAttribute("userAccount", userAccount);
         return "user/my-account";
     }
