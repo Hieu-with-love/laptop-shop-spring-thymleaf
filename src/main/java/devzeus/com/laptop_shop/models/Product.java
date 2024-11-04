@@ -65,9 +65,6 @@ public class Product extends TrackingDate {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartDetail> cartDetails;
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductImage> productImages = new HashSet<>();
 

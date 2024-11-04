@@ -4,12 +4,9 @@ import devzeus.com.laptop_shop.dtos.requests.UserDTO;
 import devzeus.com.laptop_shop.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface IUserService extends UserDetailsService {
+public interface IUserService {
     // register user
     User registerUser(UserDTO user);
-
-    // authenticate user with phoneNumber and password
-    boolean authenticate(String username, String password);
 
     User getUserByEmail(String email);
 
@@ -24,6 +21,4 @@ public interface IUserService extends UserDetailsService {
     void deleteUser(String email);
 
     boolean existingEmail(String email);
-
-    boolean isPassword(String phoneNumber, String password);
 }

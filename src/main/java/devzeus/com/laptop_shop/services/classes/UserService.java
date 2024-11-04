@@ -9,21 +9,14 @@ import devzeus.com.laptop_shop.repositories.RoleRepository;
 import devzeus.com.laptop_shop.repositories.UserRepository;
 import devzeus.com.laptop_shop.services.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final SecurityConfig securityConfig;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -38,7 +31,7 @@ public class UserService implements IUserService {
         }
         User user = User.builder()
                 .phoneNumber(userDTO.getPhoneNumber())
-                .password(securityConfig.passwordEncoder().encode(userDTO.getPassword()))
+                .password(passwordEncoder.encode(userDTO.getPassword()))
                 .email(userDTO.getEmail())
                 .fullName(userDTO.getFullName())
                 .gender(userDTO.getGender())
@@ -51,15 +44,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean authenticate(String email, String password) {
-        User existingUser = this.getUserByEmail(email);
-        String passwordEncoder = securityConfig.passwordEncoder().encode(password);
-        return existingUser != null && existingUser.getPassword().equals(passwordEncoder);
-    }
-
-    @Override
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email"));
     }
 
     @Override
@@ -96,29 +83,7 @@ public class UserService implements IUserService {
 
     @Override
     public boolean existingEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        return user != null;
+        return userRepository.findByEmail(email).isPresent();
     }
 
-    @Override
-    public boolean isPassword(String email, String password) {
-        User user = userRepository.findByEmail(email);
-        return user.getPassword().equals(password);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        devzeus.com.laptop_shop.models.User user = userRepository.findByEmail(email);
-
-        // get user's role, exchange to GrantedAuthority
-        String role = "ROLE_" + user.getRole().getName().toUpperCase();
-        // create authenticate for user
-        GrantedAuthority auth = new SimpleGrantedAuthority(role);
-        // return granted user
-        return new org.springframework.security.core.userdetails.User(
-                user.getPhoneNumber(),
-                user.getPassword(),
-                Collections.singletonList(auth)
-        );
-    }
 }
