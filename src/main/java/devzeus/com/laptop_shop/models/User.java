@@ -20,7 +20,7 @@ public class User extends TrackingDate {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(name = "phone_number", nullable = false, length = 10)
+    @Column(name = "phone_number", length = 10)
     private String phoneNumber;
 
     @Column(name = "full_name", length = 100)

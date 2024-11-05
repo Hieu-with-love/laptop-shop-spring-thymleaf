@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
+<head>
     <title th:text="${pageTitle}"></title>
+    <div th:insert="~{fragments/head :: head}"></div>
     <script type="text/javascript">
         function showError(message) {
             if (message) {
@@ -21,44 +22,68 @@
                     <label for="name" class="form-label">Product Name</label>
                     <input type="text" class="form-control" id="name" th:field="*{name}" required>
                     <span th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger"
-                          th:errors="${productDTO.name}"></span>
+                          th:errors="*{name}"></span>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <input type="number" class="form-control" id="price" th:field="*{price}" required>
                     <span th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger"
-                          th:errors="${productDTO.price}"></span>
+                          th:errors="*{price}"></span>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <input type="text" class="form-control" id="description" th:field="*{description}" required>
                     <span th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger"
-                          th:errors="${productDTO.description}"></span>
+                          th:errors="*{description}"></span>
                 </div>
                 <div class="mb-3">
                     <label for="ram" class="form-label">Ram Type</label>
                     <input type="text" class="form-control" id="ram" th:field="*{ram}">
                     <span th:if="${#fields.hasErrors('ram')}" th:errorclass="text-danger"
-                          th:errors="${productDTO.ram}"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="batteryCapacity" class="form-label">Battery
-                        Capacity</label>
-                    <input type="text" class="form-control" id="batteryCapacity" th:field="*{batteryCapacity}">
-                    <span th:if="${#fields.hasErrors('batteryCapacity')}" th:errorclass="text-danger"
-                          th:errors="${productDTO.batteryCapacity}"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="monitor" class="form-label">Monitor</label>
-                    <input type="text" class="form-control" id="monitor" th:field="*{monitor}">
-                    <span th:if="${#fields.hasErrors('monitor')}" th:errorclass="text-danger"
-                          th:errors="${productDTO.monitor}"></span>
+                          th:errors="*{ram}"></span>
                 </div>
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Quantities</label>
                     <input type="number" class="form-control" id="quantity" th:field="*{quantity}">
                     <span th:if="${#fields.hasErrors('quantity')}" th:errorclass="text-danger"
                           th:errors="${productDTO.quantity}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="batteryCapacity" class="form-label">Battery
+                        Capacity</label>
+                    <input type="text" class="form-control" id="batteryCapacity" th:field="*{batteryCapacity}">
+                    <span th:if="${#fields.hasErrors('batteryCapacity')}" th:errorclass="text-danger"
+                          th:errors="*{batteryCapacity}"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Monitor</label>
+                    <input type="text" class="form-control" th:field="*{graphicCard}">
+                    <span th:if="${#fields.hasErrors('graphicCard')}" th:errorclass="text-danger"
+                          th:errors="*{graphicCard}"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Hard Driver</label>
+                    <input type="text" class="form-control" th:field="*{hardDrive}">
+                    <span th:if="${#fields.hasErrors('hardDrive')}" th:errorclass="text-danger"
+                          th:errors="*{hardDrive}"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Screen Technology</label>
+                    <input type="text" class="form-control" th:field="*{screenTechnology}">
+                    <span th:if="${#fields.hasErrors('screenTechnology')}" th:errorclass="text-danger"
+                          th:errors="*{screenTechnology}"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Port</label>
+                    <input type="text" class="form-control" th:field="*{ports}">
+                    <span th:if="${#fields.hasErrors('ports')}" th:errorclass="text-danger"
+                          th:errors="*{ports}"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">CPU</label>
+                    <input type="text" class="form-control" th:field="*{cpu}">
+                    <span th:if="${#fields.hasErrors('cpu')}" th:errorclass="text-danger"
+                          th:errors="*{cpu}"></span>
                 </div>
                 <div class="mb-3">
                     <label for="brandId" class="form-label">Brand</label>
@@ -84,8 +109,6 @@
                     <label for="file" class="form-label">Image</label>
                     <input id="file" class="form-control" type="file"
                            th:field="*{fileImage}" required>
-                    <span th:if="${#fields.hasErrors('fileImage')}" th:errorclass="text-danger"
-                          th:errors="${productDTO.fileImage}"></span>
                 </div>
 
                 <div class="row">

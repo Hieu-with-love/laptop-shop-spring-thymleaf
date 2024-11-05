@@ -63,14 +63,10 @@ public class ProductControllerAdmin {
     @PostMapping("/create")
     public String createProduct(
             @Valid @ModelAttribute ProductDTO productDTO,
-            @RequestParam(value = "fileImage") MultipartFile file,
             BindingResult bindingResult,
+            @RequestParam(value = "fileImage") MultipartFile file,
             Model model
     ) throws IOException {
-        if (productDTO.getFileImage().isEmpty()) {
-            bindingResult.addError(new FieldError("productDTO", "image", "The image is required"));
-        }
-
         if (bindingResult.hasErrors()) {
             return "admin/products/CreateProduct";
         }

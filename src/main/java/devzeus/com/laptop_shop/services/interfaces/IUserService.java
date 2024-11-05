@@ -3,10 +3,11 @@ package devzeus.com.laptop_shop.services.interfaces;
 import devzeus.com.laptop_shop.dtos.requests.UserDTO;
 import devzeus.com.laptop_shop.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.validation.BindingResult;
 
 public interface IUserService {
     // register user
-    User registerUser(UserDTO user);
+    boolean registerUser(UserDTO userDTO, BindingResult result);
 
     User getUserByEmail(String email);
 
