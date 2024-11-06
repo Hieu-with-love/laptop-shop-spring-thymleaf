@@ -4,8 +4,23 @@ import devzeus.com.laptop_shop.dtos.requests.BrandDTO;
 import devzeus.com.laptop_shop.models.Brand;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IBrandService {
+    List<Brand> findByName(String name);
+
+    List<Brand> findAll();
+
+    <S extends Brand> S save(S entity);
+
+    Optional<Brand> findById(Long aLong);
+
+    boolean existsById(Long aLong);
+
+    long count();
+
+    void deleteById(Long aLong);
+
     Brand createBrand(BrandDTO brandDTO);
     Brand updateBrand(BrandDTO brandDTO, Long brandId);
     void deleteBrand(Long brandId);
