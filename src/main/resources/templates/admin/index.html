@@ -1,23 +1,31 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <div th:insert="~{fragments/head :: head}"></div>
-    <title th:text="${titleDashboard}"></title>
+    <title>Dashboard</title>
+    <div th:insert="~{common-admin/head::head}"></div>
 </head>
-<body>
-<!--  Body Wrapper -->
-<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-     data-sidebar-position="fixed" data-header-position="fixed">
-    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
-        <div th:insert="~{fragments/header :: header}"></div>
-        <div th:insert="~{fragments/content :: content}"></div>
-        <div th:insert="~{fragments/footer :: footer}"></div>
+<body class="  ">
+<!-- loader Start -->
+<div id="loading">
+    <div id="loading-center">
     </div>
 </div>
-<div th:replace="~{fragments/scripts :: scripts}"></div>
-</body>
+<!-- loader END -->
+<!-- Wrapper Start -->
+<div class="wrapper">
 
+    <div th:insert="~{common-admin/sidebar::sidebar}"></div>
+
+    <div th:insert="~{common-admin/header::header}"></div>
+
+    <!-- Day se duoc custom neu co -->
+    <div th:insert="~{common-admin/content::content}"></div>
+    
+</div>
+<!-- Wrapper End-->
+
+<div th:insert="~{common-admin/footer::footer}"></div>
+
+<div th:insert="~{common-admin/script::script}"></div>
+</body>
 </html>
