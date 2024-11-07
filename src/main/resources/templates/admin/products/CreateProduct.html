@@ -20,19 +20,19 @@
                   th:object="${productDTO}">
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>
-                    <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                    <input type="text" class="form-control" id="name" th:field="*{name}">
                     <span th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger"
                           th:errors="*{name}"></span>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
-                    <input type="number" class="form-control" id="price" th:field="*{price}" required>
+                    <input type="number" class="form-control" id="price" th:field="*{price}">
                     <span th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger"
                           th:errors="*{price}"></span>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <input type="text" class="form-control" id="description" th:field="*{description}" required>
+                    <input type="text" class="form-control" id="description" th:field="*{description}">
                     <span th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger"
                           th:errors="*{description}"></span>
                 </div>

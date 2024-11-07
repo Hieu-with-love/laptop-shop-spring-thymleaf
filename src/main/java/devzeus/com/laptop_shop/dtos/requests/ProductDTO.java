@@ -1,6 +1,5 @@
 package devzeus.com.laptop_shop.dtos.requests;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
