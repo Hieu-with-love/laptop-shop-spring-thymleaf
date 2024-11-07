@@ -1,5 +1,6 @@
 package devzeus.com.laptop_shop.models;
 
+import devzeus.com.laptop_shop.enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
@@ -9,27 +10,27 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "orders")
-public class Order extends TrackingDate {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String phoneNumber;
-    private String address;
-    private String note;
-    @Min(value = 1, message = "Product' price must be granter than 0")
-    private BigDecimal totalMoney;
     private LocalDate orderDate;
-
-    @Column(name = "active")
-    private boolean isActive;
+    @Column(name = "total_money")
+    private BigDecimal totalAmount;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<OrderDetail> orderDetails = new HashSet<>();
+    private Set<OrderItem> orderItems = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

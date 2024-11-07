@@ -68,6 +68,4 @@ public class Product extends TrackingDate {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductImage> productImages = new HashSet<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<OrderDetail> orderDetails = new HashSet<>();
 }
