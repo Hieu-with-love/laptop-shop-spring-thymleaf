@@ -22,16 +22,15 @@ import org.springframework.web.context.request.WebRequest;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LoginController {
-    UserDetailsService userDetailsService;
     UserService userService;
     EmailService emailService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String currentEmail = auth.getName();
-        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(currentEmail);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
         session.setAttribute("userSession", user);
+        session.setAttribute("cartId", user.getCart().getId());
         model.addAttribute("user", user);
         model.addAttribute("titleDashboard", "Dashboard");
         return "admin/index";

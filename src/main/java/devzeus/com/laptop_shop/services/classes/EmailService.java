@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmailService implements IEmailService {
-    @Value("${spring.mail.host}")
+    @Value("${spring.mail.verify.host}")
     String host;
     @Value("${spring.mail.username}")
     String fromEmail;

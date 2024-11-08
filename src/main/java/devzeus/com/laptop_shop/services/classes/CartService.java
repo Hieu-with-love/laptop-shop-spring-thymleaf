@@ -1,6 +1,8 @@
 package devzeus.com.laptop_shop.services.classes;
 
 import devzeus.com.laptop_shop.models.Cart;
+import devzeus.com.laptop_shop.models.CartItem;
+import devzeus.com.laptop_shop.models.User;
 import devzeus.com.laptop_shop.repositories.CartItemRepository;
 import devzeus.com.laptop_shop.repositories.CartRepository;
 import devzeus.com.laptop_shop.services.interfaces.ICartService;
@@ -19,14 +21,21 @@ public class CartService implements ICartService {
     public Cart getCart(Long id) {
         Cart cart = cartRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cart not found with id = " + id));
-        // assign total amount for cart = 0
         cart.setTotalAmount(cart.getTotalAmount());
         return cart;
     }
 
     @Override
-    public boolean addToCart(Cart cart) {
-        return false;
+    public void createCart(User user) {
+        try {
+            Cart cart = Cart.builder()
+                    .totalAmount(BigDecimal.ZERO)
+                    .user(user)
+                    .build();
+            cartRepository.save(cart);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Can't create cart for user " + user.getEmail());
+        }
     }
 
     @Override

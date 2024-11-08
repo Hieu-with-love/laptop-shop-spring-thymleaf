@@ -12,7 +12,8 @@
                                 <h1 class="title">Roco Wireless Headphone</h1>
                                 <div class="slide-action">
                                     <div class="shop-btn">
-                                        <a th:href="@{/user/products/cart}" class="axil-btn btn-bg-white"><i
+                                        <a th:href="@{/user/cart(cartId=${session.cartId})}"
+                                           class="axil-btn btn-bg-white"><i
                                                 class="fal fa-shopping-cart"></i>Shop Now</a>
                                     </div>
                                     <div class="item-rating">

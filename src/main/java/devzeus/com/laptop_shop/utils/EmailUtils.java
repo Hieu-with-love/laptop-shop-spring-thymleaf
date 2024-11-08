@@ -7,9 +7,10 @@ public class EmailUtils {
     public static String verifyAccount(String name, String host, String token) {
         // we have port listening for verify
         return "Hello " + name
-                + ", \n\n Your account has been created. Please click on the this link to my system verify account for you"
+                + ", \n\n Your account has been created. Please click on the this link to my system verify account for you "
                 + getVerifiedUrl(host, token)
-                + "\n\n Support by [Devzeus]";
+                + "\n\n Best Regards" +
+                "\nSupport by [Devzeus]";
     }
 
     public static String getVerifiedUrl(String host, String token) {

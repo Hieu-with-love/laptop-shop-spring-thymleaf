@@ -30,6 +30,7 @@ public class UserService implements IUserService {
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
+    CartService cartService;
 
     private void validation(UserDTO userRequest, BindingResult result) {
         if (this.existingEmail(userRequest.getEmail())) {
@@ -57,7 +58,7 @@ public class UserService implements IUserService {
         if (!result.hasErrors()) {
             Role role = null;
             if (userDTO.getRoleId() == null) {
-                role = roleRepository.findById(1L)
+                role = roleRepository.findById(2L)
                         .orElseThrow(() -> new NotFoundException("Role not found"));
             } else {
                 role = roleRepository.findById(userDTO.getRoleId())
@@ -87,9 +88,11 @@ public class UserService implements IUserService {
             try {
                 emailService.sendEmailToVerifyAccount(user.getFullName(), user.getEmail(), confirmation.getToken());
             } catch (Exception e) {
+                result.addError(new FieldError("userRegister", "failSend", "Gui email xac thuc that bai"));
                 throw new RuntimeException("Send email failure " + e.getMessage());
             }
-            // active account when verify successfully
+            // active account when verify successfully -> we create cart with this user
+            cartService.createCart(user);
             return true;
         }
         return false;

@@ -42,14 +42,14 @@
                                                                  data-bs-target="#quick-view-modal"><i
                                                 class="far fa-eye"></i></a></li>
                                         <li class="select-option">
-                                            <form th:action="@{/user/product/add-to-cart}"
+                                            <form th:action="@{/user/cart/add-to-cart}"
                                                   method="post"
                                             >
                                                 <input type="hidden" th:name="productId" th:value="${product.id}">
                                                 <input type="hidden" th:name="productName" th:value="${product.id}">
                                                 <input type="hidden" th:name="productId" th:value="${product.id}">
                                             </form>
-                                            <a th:href="@{/user/product/add-to-card}">
+                                            <a th:href="@{/user/cart/add-to-card}">
                                                 Add to Cart
                                             </a>
                                         </li>

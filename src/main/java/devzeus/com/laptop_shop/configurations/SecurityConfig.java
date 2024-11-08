@@ -1,6 +1,7 @@
 package devzeus.com.laptop_shop.configurations;
 
 import devzeus.com.laptop_shop.services.classes.CustomUserDetailsService;
+import devzeus.com.laptop_shop.services.classes.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
