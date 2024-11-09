@@ -75,14 +75,12 @@ public class ProductControllerAdmin {
         }
 
         // return to products page
-        return "redirect:/admin/product/page-list-product";
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/update")
     public String showUpdateProductForm(Model model, @RequestParam Long id) {
         Product existingProduct = productService.getProductById(id);
-        model.addAttribute("product", existingProduct);
-
         ProductDTO productDTO = ProductDTO.builder()
                 .name(existingProduct.getName())
                 .price(existingProduct.getPrice())
@@ -98,12 +96,11 @@ public class ProductControllerAdmin {
         List<Brand> brands = brandService.getAllBrands();
         // Get list categories
         List<Category> categories = categoryService.getAllCategories();
-
-        model.addAttribute("pageTitle", "Update Product");
         model.addAttribute("productDTO", productDTO);
+        model.addAttribute("product", existingProduct);
         model.addAttribute("brandsList", brands);
         model.addAttribute("categoriesList", categories);
-        return "admin/products/UpdateProduct";
+        return "admin/product/page-update-product";
     }
 
     @PostMapping("/update/{id}")
@@ -119,7 +116,7 @@ public class ProductControllerAdmin {
             bindingResult.addError(new FieldError("productDTO", "product", "The product is required"));
         }
         if (bindingResult.hasErrors()) {
-            return "admin/products/UpdateProduct";
+            return "admin/product/page-update-product";
         }
         Product product = productService.updateProduct(id, productDTO);
         if (product == null) {

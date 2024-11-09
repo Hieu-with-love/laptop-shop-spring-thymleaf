@@ -30,21 +30,29 @@
                       </div>
                   </div>
                   <div class="card-body">
-                      <form th:action="@{/admin/products/create}" method="post" data-toggle="validator"
+                      <form th:action="@{/admin/products/update(id=${product.id})}" method="post" data-toggle="validator"
                             th:object="${productDTO}"
                             enctype="multipart/form-data"
                       >
                           <div class="row">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label>Product Type *</label>
+                                      <select name="type" class="selectpicker form-control" data-style="py-0">
+                                          <option>Standard</option>
+                                          <option>Combo</option>
+                                          <option>Digital</option>
+                                          <option>Service</option>
+                                      </select>
+                                  </div> 
+                              </div>  
                               <div class="col-md-6">                      
                                   <div class="form-group">
                                       <label>Name *</label>
                                       <input type="text" class="form-control" placeholder="Enter Name"
                                             th:field="*{name}"
                                       >
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger"
-                                                th:errors="*{name}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>    
                               <div class="col-md-6">
@@ -53,94 +61,75 @@
                                       <input type="text" class="form-control" placeholder="Enter Code"
                                              th:field="*{discount}"
                                       >
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('discount')}" th:errorclass="text-danger"
-                                                th:errors="*{discount}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div> 
                               <div class="col-md-6"> 
                                   <div class="form-group">
                                       <label>Brand *</label>
-                                      <select name="brandId" class="selectpicker form-control" data-style="py-0">
-                                          <option selected disabled>-- Choose brand --</option>
-                                          <option
-                                            th:each="brand : ${brandsList}"
-                                            th:value="${brand.id}"
-                                            th:text="${brand.name}"
-                                          ></option>
+                                      <select th:field="*{brandId}" name="type" class="selectpicker form-control" data-style="py-0">
+                                          <option value="" disabled>Select a brand</option>
+                                          <!-- Hiển thị danh sách brand, chọn brand hiện tại của sản phẩm -->
+                                          <option th:each="brand : ${brandsList}"
+                                                  th:value="${brand.id}"
+                                                  th:selected="${brand.id == product.brand.id}"
+                                                  th:text="${brand.name}"></option>
                                       </select>
                                   </div>
                               </div> 
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Category *</label>
-                                      <select name="categoryId" class="selectpicker form-control" data-style="py-0">
-                                          <option selected disabled>-- Choose category --</option>
-                                          <option
-                                            th:each="category : ${categoriesList}"
-                                            th:value="${category.id}"
-                                            th:text="${category.name}"
-                                          ></option>
+                                      <select th:field="*{categoryId}" name="type" class="selectpicker form-control" data-style="py-0">
+                                          <option value="" disabled>Select a brand</option>
+                                          <!-- Hiển thị danh sách brand, chọn brand hiện tại của sản phẩm -->
+                                          <option th:each="category : ${categoriesList}"
+                                                  th:value="${category.id}"
+                                                  th:selected="${category.id == product.brand.id}"
+                                                  th:text="${category.name}"></option>
                                       </select>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Cost *</label>
-                                      <input type="text" class="form-control" placeholder="Enter Cost">
-                                      <div class="help-block with-errors">
-                                      </div>
+                                      <input type="text" class="form-control" placeholder="Enter Cost" th:field="*{discount}">
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Price *</label>
                                       <input type="text" class="form-control" placeholder="Enter Price" th:field="*{price}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger"
-                                                th:errors="*{price}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Ram</label>
-                                      <input type="text" class="form-control" placeholder="Enter Ram" th:field="*{ram}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('ram')}" th:errorclass="text-danger"
-                                                th:errors="*{ram}"></span>
-                                      </div>
+                                      <input type="text" class="form-control" placeholder="Enter Ram" th:field="*{price}">
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Monitor</label>
                                       <input type="text" class="form-control" placeholder="Enter Monitor" th:field="*{monitor}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('monitor')}" th:errorclass="text-danger"
-                                                th:errors="*{monitor}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Graphic Card</label>
                                       <input type="text" class="form-control" placeholder="Enter Graphic Card" th:field="*{graphicCard}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('graphicCard')}" th:errorclass="text-danger"
-                                                th:errors="*{graphicCard}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Hard Drive</label>
                                       <input type="text" class="form-control" placeholder="Enter Monitor" th:field="*{hardDrive}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('hardDrive')}" th:errorclass="text-danger"
-                                                th:errors="*{hardDrive}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
@@ -148,30 +137,21 @@
                                       <label>Screen Technology</label>
                                       <input type="text" class="form-control" placeholder="Enter Screen Technology"
                                              th:field="*{screenTechnology}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('screenTechnology')}" th:errorclass="text-danger"
-                                                th:errors="*{screenTechnology}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>Port</label>
                                       <input type="text" class="form-control" placeholder="Enter Port" th:field="*{ports}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('ports')}" th:errorclass="text-danger"
-                                                th:errors="*{ports}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label>CPU</label>
                                       <input type="text" class="form-control" placeholder="Enter CPU" th:field="*{cpu}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('cpu')}" th:errorclass="text-danger"
-                                                th:errors="*{cpu}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
 
@@ -179,15 +159,15 @@
                                   <div class="form-group">
                                       <label>Quantity *</label>
                                       <input type="number" class="form-control" placeholder="Enter Quantity" required th:field="*{quantity}">
-                                      <div class="help-block with-errors">
-                                          <span th:if="${#fields.hasErrors('quantity')}" th:errorclass="text-danger"
-                                                th:errors="*{quantity}"></span>
-                                      </div>
+                                      <div class="help-block with-errors"></div>
                                   </div>
                               </div>
                               <div class="col-md-12">
                                   <div class="form-group">
-                                      <label>Image</label>
+                                      <h3>Ảnh sản phẩm</h3>
+                                      <img th:src="@{'/uploads/' + ${product.thumbnail}}" alt="Ảnh sản phẩm"
+                                           width="200px;" height="200px;">
+
                                       <input type="file" class="form-control image-file" name="pic" accept="image/*"
                                              th:field="*{fileImage}"
                                       >

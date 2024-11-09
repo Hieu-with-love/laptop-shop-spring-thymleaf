@@ -43,13 +43,18 @@
                         </a>
                         <ul id="product" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             <li class="">
-                                <a href="page-list-product.html">
+                                <a th:href="@{/admin/products}">
                                     <i class="las la-minus"></i><span>List Product</span>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="page-add-product.html">
+                                <a th:href="@{/admin/products/create}">
                                     <i class="las la-minus"></i><span>Add Product</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/admin/products/update}">
+                                    <i class="las la-minus"></i><span>Update Product</span>
                                 </a>
                             </li>
                         </ul>
