@@ -23,7 +23,7 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
         HttpSession session = request.getSession();
         session.setAttribute("username", authentication.getName());
         if (roles.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/dashboard");
+            response.sendRedirect("/admin/dashboard");
         } else if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/user");
         } else {

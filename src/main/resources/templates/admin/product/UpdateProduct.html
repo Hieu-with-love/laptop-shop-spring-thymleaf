@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-md-8 mx-auto rounded border p-4 m-4">
             <h2>Update product</h2>
-            <form th:action="@{/admin/products/update/{id}(id=${product.id})}" method="post"
+            <form th:action="@{/templates/admin/product/update/{id}(id=${product.id})}" method="post"
                   enctype="multipart/form-data"
                   th:object="${productDTO}">
                 <div class="row">
@@ -97,7 +97,7 @@
                             <button class="col-md-6 btn btn-primary mx-3" style="width: 200px; text-align: center">
                                 Update product
                             </button>
-                            <a th:href="@{/admin/products}" class="col-md-6 btn btn-secondary mx-3"
+                            <a th:href="@{/templates/admin/product}" class="col-md-6 btn btn-secondary mx-3"
                                style="width: 200px; text-align: center;">Cancel</a>
                         </div>
                     </div>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+      <title>Laptop Shop | Add Product</title>
+      <div th:insert="~{common-admin/head::head}"></div>
+  </head>
+  <body class="  ">
+      <!-- loader Start -->
+      <div id="loading">
+        <div id="loading-center">
+        </div>
+  </div>
+  <!-- loader END -->
+  <!-- Wrapper Start -->
+  <div class="wrapper">
+
+      <div th:insert="~{common-admin/sidebar::sidebar}"></div>
+
+      <div th:insert="~{common-admin/header::header}"></div>
+
+    </div>
+      <div class="content-page">
+   <div class="container-fluid add-form-list">
+      <div class="row">
+          <div class="col-sm-12">
+              <div class="card">
+                  <div class="card-header d-flex justify-content-between">
+                      <div class="header-title">
+                          <h4 class="card-title">Add Product</h4>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <form th:action="@{/admin/products/create}" method="post" data-toggle="validator"
+                            th:object="${productDTO}"
+                      >
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label>Product Type *</label>
+                                      <select name="type" class="selectpicker form-control" data-style="py-0">
+                                          <option>Standard</option>
+                                          <option>Combo</option>
+                                          <option>Digital</option>
+                                          <option>Service</option>
+                                      </select>
+                                  </div> 
+                              </div>  
+                              <div class="col-md-6">                      
+                                  <div class="form-group">
+                                      <label>Name *</label>
+                                      <input type="text" class="form-control" placeholder="Enter Name"
+                                            th:field="*{name}"
+                                      >
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>    
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Code Discount *</label>
+                                      <input type="text" class="form-control" placeholder="Enter Code"
+                                             th:field="*{discount}"
+                                      >
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div> 
+                              <div class="col-md-6"> 
+                                  <div class="form-group">
+                                      <label>Brand *</label>
+                                      <select name="type" class="selectpicker form-control" data-style="py-0">
+                                          <option selected disabled>-- Choose brand --</option>
+                                          <option
+                                            th:each="brand : ${brandsList}"
+                                            th:value="${brand.id}"
+                                            th:text="${brand.name}"
+                                          ></option>
+                                      </select>
+                                  </div>
+                              </div> 
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Category *</label>
+                                      <select name="type" class="selectpicker form-control" data-style="py-0">
+                                          <option selected disabled>-- Choose category --</option>
+                                          <option
+                                            th:each="category : ${categoriesList}"
+                                            th:value="${category.id}"
+                                            th:text="${category.name}"
+                                          ></option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Cost *</label>
+                                      <input type="text" class="form-control" placeholder="Enter Cost" th:field="*{discount}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Price *</label>
+                                      <input type="text" class="form-control" placeholder="Enter Price" th:field="*{price}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Ram</label>
+                                      <input type="text" class="form-control" placeholder="Enter Ram" th:field="*{price}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Monitor</label>
+                                      <input type="text" class="form-control" placeholder="Enter Monitor" th:field="*{monitor}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Graphic Card</label>
+                                      <input type="text" class="form-control" placeholder="Enter Graphic Card" th:field="*{graphicCard}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Hard Drive</label>
+                                      <input type="text" class="form-control" placeholder="Enter Monitor" th:field="*{hardDrive}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Screen Technology</label>
+                                      <input type="text" class="form-control" placeholder="Enter Screen Technology"
+                                             th:field="*{screenTechnology}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Port</label>
+                                      <input type="text" class="form-control" placeholder="Enter Port" th:field="*{ports}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>CPU</label>
+                                      <input type="text" class="form-control" placeholder="Enter CPU" th:field="*{cpu}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+
+                              <div class="col-md-12">                                    
+                                  <div class="form-group">
+                                      <label>Quantity *</label>
+                                      <input type="number" class="form-control" placeholder="Enter Quantity" required th:field="*{quantity}">
+                                      <div class="help-block with-errors"></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label>Image</label>
+                                      <input type="file" class="form-control image-file" name="pic" accept="image/*"
+                                             th:field="*{fileImage}"
+                                      >
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label>Description / Product Details</label>
+                                      <textarea th:field="*{description}" class="form-control" rows="4"></textarea>
+                                  </div>
+                              </div>
+                          </div>                            
+                          <button type="submit" class="btn btn-primary mr-2">Add Product</button>
+                          <button type="reset" class="btn btn-danger">Reset</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Page end  -->
+  </div>
+    </div>
+  </div>
+  <!-- Wrapper End-->
+      <div th:insert="~{common-admin/footer::footer}"></div>
+    <div th:insert="~{common-admin/script::script}"></div>
+  </body>
+</html>

@@ -9,7 +9,6 @@ import devzeus.com.laptop_shop.services.classes.CategoryService;
 import devzeus.com.laptop_shop.services.classes.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,16 +32,15 @@ public class ProductControllerAdmin {
     public String showProducts(Model model,
                                @Param("keyword") String keyword,
                                @RequestParam(name = "pageNo", defaultValue = "1") int pageNo) {
-        Page<Product> products = productService.getAllProducts(pageNo);
+        List<Product> products = productService.getAllProducts();
 //        if (keyword != null) {
 //            model.addAttribute("keyword", keyword);
 //            products = productService.searchProductsByKeyword(keyword);
 //        }
-        model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("products", products);
         model.addAttribute("pageTitle", "Product Management");
-        return "admin/products/index";
+        return "admin/product/page-list-product";
     }
 
     @GetMapping("/create")
@@ -53,11 +51,10 @@ public class ProductControllerAdmin {
         // Get list categories
         List<Category> categories = categoryService.getAllCategories();
 
-        model.addAttribute("pageTitle", "Create Product");
         model.addAttribute("productDTO", productDTO);
         model.addAttribute("brandsList", brands);
         model.addAttribute("categoriesList", categories);
-        return "admin/products/CreateProduct";
+        return "admin/product/page-add-product";
     }
 
     @PostMapping("/create")
@@ -68,17 +65,17 @@ public class ProductControllerAdmin {
             Model model
     ) throws IOException {
         if (bindingResult.hasErrors()) {
-            return "admin/products/CreateProduct";
+            return "admin/product/page-add-product";
         }
 
         Product product = productService.createProduct(productDTO, file);
         if (product == null) {
             model.addAttribute("error", "Sản phẩm bị null, có lẽ bạn nhập sai. Vui lòng thử lại !");
-            return "admin/products/CreateProduct";
+            return "admin/product/page-add-product";
         }
 
         // return to products page
-        return "redirect:/admin/products";
+        return "redirect:/admin/product/page-list-product";
     }
 
     @GetMapping("/update")

@@ -29,7 +29,6 @@ public class SecurityConfig {
                         .requestMatchers("/etrade/assets/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers("/dashboard").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

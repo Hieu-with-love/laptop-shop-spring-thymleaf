@@ -25,7 +25,7 @@ public class LoginController {
     UserService userService;
     EmailService emailService;
 
-    @GetMapping("/dashboard")
+    @GetMapping("/admin/dashboard")
     public String dashboard(Model model, HttpSession session) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
