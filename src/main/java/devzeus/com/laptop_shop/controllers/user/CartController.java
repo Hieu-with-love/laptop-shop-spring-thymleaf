@@ -1,5 +1,6 @@
 package devzeus.com.laptop_shop.controllers.user;
 
+import devzeus.com.laptop_shop.dtos.responses.CartItemResponse;
 import devzeus.com.laptop_shop.models.Cart;
 import devzeus.com.laptop_shop.models.CartItem;
 import devzeus.com.laptop_shop.models.User;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user/cart")
@@ -38,8 +43,8 @@ public class CartController {
 
     @GetMapping
     public String showItemsInCart(Model model, @RequestParam("cartId") Long cartId) {
-        List<CartItem> items = cartItemService.getAllItemsInCart(cartId);
-        model.addAttribute("items", items);
+        List<CartItemResponse> items = cartItemService.getAllItemsInCart(cartId);
+        model.addAttribute("listItems", items);
         return "user/cart/cart";
     }
 }

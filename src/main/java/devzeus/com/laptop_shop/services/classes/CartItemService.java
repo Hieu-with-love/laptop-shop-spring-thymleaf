@@ -1,5 +1,6 @@
 package devzeus.com.laptop_shop.services.classes;
 
+import devzeus.com.laptop_shop.dtos.responses.CartItemResponse;
 import devzeus.com.laptop_shop.models.Cart;
 import devzeus.com.laptop_shop.models.CartItem;
 import devzeus.com.laptop_shop.models.Product;
@@ -10,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +25,34 @@ public class CartItemService implements ICartItemService {
     private final ProductService productService;
 
     @Override
-    public List<CartItem> getAllItemsInCart(Long cartId) {
+    public List<CartItemResponse> getAllItemsInCart(Long cartId) {
         Cart cart = cartService.getCart(cartId);
-        return cart.getItems().stream().toList();
+        Locale vietnam = Locale.of("vi", "VN");
+
+        // Định dạng số thành tiền tệ Việt Nam Đồng
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(vietnam);
+
+        // Sử dụng stream để chuyển đổi các CartItem thành CartItemResponse
+        return cart.getItems().stream()
+                .map(item -> {
+                    CartItemResponse response = new CartItemResponse();
+                    response.setQuantity(item.getQuantity());
+                    response.setProductName(item.getProduct().getName());
+                    response.setImages(item.getProduct().getThumbnail());  // Giả sử có phương thức getImage() để lấy ảnh sản phẩm
+                    // Kiểm tra xem unitPrice và totalPrice có phải là null không
+                    String formattedUnitPrice = item.getUnitPrice() != null
+                            ? formatter.format(item.getUnitPrice())
+                            : "0";  // Hoặc một giá trị mặc định
+                    response.setUnitPrice(formattedUnitPrice);
+
+                    String formattedTotalPrice = item.getTotalPrice() != null
+                            ? formatter.format(item.getTotalPrice())
+                            : "0";  // Hoặc một giá trị mặc định
+                    response.setTotalPrice(formattedTotalPrice);
+                    
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -31,7 +60,7 @@ public class CartItemService implements ICartItemService {
         Cart cart = cartService.getCart(cartId);
         return cart.getItems().stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
-                .findFirst().orElseThrow(() -> new RuntimeException("Item not found"));
+                .findFirst().orElse(new CartItem());
     }
 
 
@@ -46,22 +75,22 @@ public class CartItemService implements ICartItemService {
             Cart cart = cartService.getCart(cartId);
             Product product = productService.getProductById(productId);
 
-            CartItem cartItem = this.getCartItem(cartId, productId);
+            CartItem cartItemExisting = this.getCartItem(cartId, productId);
 
-            if (cartItem.getId() == null) {
-                cartItem.setQuantity(quantity);
-                cartItem.setUnitPrice(product.getPrice());
+            if (cartItemExisting.getId() == null) {
+                cartItemExisting.setCart(cart);
+                cartItemExisting.setProduct(product);
+                cartItemExisting.setQuantity(quantity);
+                cartItemExisting.setUnitPrice(product.getPrice());
             } else {
-                cartItem.setQuantity(cartItem.getQuantity() + quantity);
+                cartItemExisting.setQuantity(cartItemExisting.getQuantity() + quantity);
             }
-            cartItem.setTotalPrice();
-            cart.addItem(cartItem);
-            cartItemRepository.save(cartItem);
-            cartRepository.save(cart);
+            cartItemExisting.setTotalPrice();
+            cart.addItemAndUpdateAmount(cartItemExisting);
+            cartItemRepository.save(cartItemExisting);
         } catch (Exception e) {
-            throw new RuntimeException("Can't add item into cart " + e.getMessage());
+            throw new RuntimeException("Can't add Item into Cart.\nBecause " + e.getMessage());
         }
-
     }
 
     @Override

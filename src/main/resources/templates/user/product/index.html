@@ -42,16 +42,19 @@
                                                                  data-bs-target="#quick-view-modal"><i
                                                 class="far fa-eye"></i></a></li>
                                         <li class="select-option">
-                                            <form th:action="@{/user/cart/add-to-cart}"
-                                                  method="post"
-                                            >
-                                                <input type="hidden" th:name="productId" th:value="${product.id}">
-                                                <input type="hidden" th:name="productName" th:value="${product.id}">
-                                                <input type="hidden" th:name="productId" th:value="${product.id}">
+                                            <form th:action="@{/user/cart/add-to-cart}" method="post"
+                                                  class="cart-action">
+                                                <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                                <input type="hidden" name="productId" th:value="${product.id}"/>
+                                                <input type="hidden" name="quantity" value="1"/>
+                                                <li class="select-option">
+                                                    <button type="submit" class="add-to-cart-btn">Thêm vào giỏ hàng
+                                                    </button>
+                                                </li>
                                             </form>
-                                            <a th:href="@{/user/cart/add-to-card}">
-                                                Add to Cart
-                                            </a>
+                                            <!--                                            <a th:href="@{/user/cart/add-to-card}">-->
+                                            <!--                                                Add to Cart-->
+                                            <!--                                            </a>-->
                                         </li>
                                         <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
                                         </li>
@@ -73,7 +76,7 @@
                                         <div>
                                             <h5 class="title">
                                                 <span th:text="${product.name}"></span>
-                                                
+
                                             </h5>
                                             <div class="product-price-variant">
                                                 <span class="price current-price"
