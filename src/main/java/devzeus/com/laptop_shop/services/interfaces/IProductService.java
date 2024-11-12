@@ -20,6 +20,8 @@ public interface IProductService {
 
     Product getProductById(Long productId);
 
+    Product getProductByName(String name);
+
     void createProductImage(Long productId, ProductImageDTO productDTO);
 
     List<Product> searchProductsByKeyword(String keyword);

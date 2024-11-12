@@ -189,6 +189,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Product getProductByName(String name) {
+        return productRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException("Cannot found product with name = " + name));
+    }
+
+    @Override
     public void deleteProduct(Long productId) {
         Product product = getProductById(productId);
         if (product == null)

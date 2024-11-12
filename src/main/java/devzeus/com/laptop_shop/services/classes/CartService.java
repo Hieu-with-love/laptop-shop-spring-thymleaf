@@ -1,11 +1,14 @@
 package devzeus.com.laptop_shop.services.classes;
 
+import devzeus.com.laptop_shop.dtos.responses.CartResponse;
 import devzeus.com.laptop_shop.models.Cart;
 import devzeus.com.laptop_shop.models.CartItem;
 import devzeus.com.laptop_shop.models.User;
 import devzeus.com.laptop_shop.repositories.CartItemRepository;
 import devzeus.com.laptop_shop.repositories.CartRepository;
 import devzeus.com.laptop_shop.services.interfaces.ICartService;
+import devzeus.com.laptop_shop.utils.Constant;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +21,20 @@ public class CartService implements ICartService {
     private final CartItemRepository cartItemRepository;
 
     @Override
-    public Cart getCart(Long id) {
+    public Cart getCartEntity(Long id) {
         Cart cart = cartRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cart not found with id = " + id));
         cart.setTotalAmount(cart.getTotalAmount());
         return cart;
+    }
+
+    @Override
+    public CartResponse getCart(Long id) {
+        Cart cart = getCartEntity(id);
+
+        return CartResponse.builder()
+                .totalAmount(Constant.formatter.format(cart.getTotalAmount()))
+                .build();
     }
 
     @Override
@@ -39,8 +51,9 @@ public class CartService implements ICartService {
     }
 
     @Override
+    @Transactional
     public void clearCart(Long id) {
-        Cart cart = this.getCart(id);
+        Cart cart = this.getCartEntity(id);
         // We clear cart by clear items in that cart. and set total amount = 0
         cart.getItems().clear();
         cart.setTotalAmount(cart.getTotalAmount());
@@ -54,6 +67,6 @@ public class CartService implements ICartService {
 
     @Override
     public BigDecimal getTotalPrice(Long id) {
-        return this.getCart(id).getTotalAmount();
+        return this.getCartEntity(id).getTotalAmount();
     }
 }

@@ -23,15 +23,16 @@
             <div class="axil-product-cart-wrap">
                 <div class="product-table-heading">
                     <h4 class="title">Your Cart</h4>
-                    <a href="#" class="cart-clear">Clear Shoping Cart</a>
+                    <a th:href="@{/user/cart/clearCart(cartId=${session.cartId})}" class="cart-clear">Clear Shoping
+                        Cart</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table axil-product-table axil-cart-table mb--40">
                         <thead>
                         <tr>
                             <th scope="col" class="product-remove"></th>
-                            <th scope="col" class="product-thumbnail">Product</th>
-                            <th scope="col" class="product-title"></th>
+                            <th scope="col" class="product-thumbnail">Thumbnail</th>
+                            <th scope="col" class="product-title">Product Name</th>
                             <th scope="col" class="product-price">Price</th>
                             <th scope="col" class="product-quantity">Quantity</th>
                             <th scope="col" class="product-subtotal">Subtotal</th>
@@ -39,19 +40,42 @@
                         </thead>
                         <tbody>
                         <tr th:each="item : ${listItems}">
-                            <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a>
+                            <td class="product-remove">
+                                <!--                                <a th:href="@{/user/cart/delete-item}" class="remove-wishlist"><i-->
+                                <!--                                        class="fal fa-times"></i>-->
+                                <!--                                </a>-->
+                                <form th:action="@{/user/cart/delete-item}" method="post"
+                                      class="cart-action">
+                                    <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                    <input type="hidden" name="productName" th:value="${item.productName}"/>
+                                    <button type="submit" class="remove-wishlist"><i class="fal fa-times"></i>
+                                    </button>
+                                </form>
                             </td>
-                            <td class="product-thumbnail"><a href="single-product.html"><img
+                            <td class="product-thumbnail"><a th:href="@{/user/product/detail}"><img
                                     th:src="@{'/uploads/' + ${item.images}}" alt="Digital Product"></a>
                             </td>
-                            <td class="product-title" th:text="${item.productName}"><a href="single-product.html"></a>
+                            <td class="product-title" th:text="${item.productName}"><a
+                                    th:href="@{/user/product/detail}"></a>
                             </td>
                             <td class="product-price" data-title="Price" th:text="${item.unitPrice}"><span
-                                    class="currency-symbol">$</span>
+                                    class="currency-symbol">VNĐ</span>
                             </td>
                             <td class="product-quantity" data-title="Qty">
                                 <div class="pro-qty">
+                                    <form th:action="@{/user/cart/dec-qty}" method="post"
+                                          class="cart-action">
+                                        <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                        <input type="hidden" name="productName" th:value="${item.productName}"/>
+                                        <button type="submit" class="dec qtybtn">-</button>
+                                    </form>
                                     <input type="number" class="quantity-input" th:value="${item.quantity}">
+                                    <form th:action="@{/user/cart/inc-qty}" method="post"
+                                          class="cart-action">
+                                        <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                        <input type="hidden" name="productName" th:value="${item.productName}"/>
+                                        <button type="submit" class="inc qtybtn">+</button>
+                                    </form>
                                 </div>
                             </td>
                             <td class="product-subtotal" data-title="Subtotal" th:text="${item.totalPrice}"><span
@@ -69,7 +93,7 @@
                         </div>
                     </div>
                     <div class="update-btn">
-                        <a href="#" class="axil-btn btn-outline">Update Cart</a>
+                        <a th:href="@{/user}" class="axil-btn btn-outline">Update Cart</a>
                     </div>
                 </div>
                 <div class="row">
@@ -81,7 +105,9 @@
                                     <tbody>
                                     <tr class="order-subtotal">
                                         <td>Subtotal</td>
-                                        <td>$117.00</td>
+                                        <td th:each="item : ${listItems}">
+                                            <p th:text="${item.totalPrice}"></p>
+                                        </td>
                                     </tr>
                                     <tr class="order-shipping">
                                         <td>Shipping</td>
@@ -106,12 +132,13 @@
                                     </tr>
                                     <tr class="order-total">
                                         <td>Total</td>
-                                        <td class="order-total-amount">$125.00</td>
+                                        <td class="order-total-amount" th:text="${cart.totalAmount}"></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="checkout.html" class="axil-btn btn-bg-primary checkout-btn">Process to Checkout</a>
+                            <a th:href="@{/user/cart/checkout}" class="axil-btn btn-bg-primary checkout-btn">Process to
+                                Checkout</a>
                         </div>
                     </div>
                 </div>

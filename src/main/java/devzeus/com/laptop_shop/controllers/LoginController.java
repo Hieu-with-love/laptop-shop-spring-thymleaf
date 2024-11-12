@@ -30,7 +30,6 @@ public class LoginController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
         session.setAttribute("userSession", user);
-        session.setAttribute("cartId", user.getCart().getId());
         model.addAttribute("user", user);
         model.addAttribute("titleDashboard", "Dashboard");
         return "admin/index";

@@ -15,4 +15,10 @@ public interface ICartItemService {
     void updateItemQuantity(Long cartId, Long productId, int quantity);
 
     void removeItemFromCart(Long cartId, Long productId);
+
+    void updateTotalAmount(Long cartId, Long productId);
+
+    void decQty(Long cartId, Long productId);
+
+    void incQty(Long cartId, Long productId);
 }

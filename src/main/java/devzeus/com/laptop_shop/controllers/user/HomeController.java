@@ -29,7 +29,7 @@ public class HomeController {
         session.setAttribute("cartId", user.getCart().getId());
         model.addAttribute("products", products);
         model.addAttribute("pageTitle", "Home");
-        return "user/product/index";
+        return "user/home";
     }
 
     @PostMapping("/forgot-password")
