@@ -12,10 +12,12 @@ import devzeus.com.laptop_shop.services.interfaces.IUserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +31,7 @@ public class UserService implements IUserService {
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
+    @Lazy
     EmailService emailService;
     CartService cartService;
 
@@ -123,9 +126,20 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void changePassword(String phoneNumber, String newPassword) {
-
+    public boolean verifyAccount(String token) {
+        return emailService.verifyToken(token);
     }
+
+    @Override
+    public void sendEmailToVerifyAccount(String name, String to, String token) {
+        emailService.sendEmailToVerifyAccount(name, to, token);
+    }
+
+    @Override
+    public void changePassword(String email) {
+        emailService.sendEmailToRenewPassword(email);
+    }
+
 
     @Override
     public void toggleUserActivation(String phoneNumber, boolean isActive) {

@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +27,7 @@ public class EmailService implements IEmailService {
     private final UserRepository userRepository;
     private final JavaMailSender mailSender;
     private final ConfirmationRepository confirmationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void sendEmailToVerifyAccount(String name, String to, String token) {
@@ -58,6 +60,26 @@ public class EmailService implements IEmailService {
 
     @Override
     public void sendEmailToRenewPassword(String email) {
+        try {
+            // Get user exists to confirm have user
+            User userExisting = userRepository.findByEmailIgnoreCase(email)
+                    .orElseThrow(() -> new RuntimeException("Email to get new password not found"));
+            String newPassword = EmailUtils.generateRandomPassword();
 
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setSubject("Change Password");
+            message.setFrom(fromEmail);
+            message.setTo(email);
+            String content = "New your password is: " + newPassword
+                    + "\n\nSupport by [devzeus]";
+            message.setText(content);
+            mailSender.send(message);
+            // Set password when send success
+            userExisting.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(userExisting);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Has error while sending email to renew password\n" + e.getMessage());
+        }
     }
 }

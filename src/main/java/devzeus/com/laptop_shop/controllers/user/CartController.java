@@ -82,4 +82,18 @@ public class CartController {
         return "redirect:/user/cart?cartId=" + cartId;
     }
 
+    @GetMapping("/checkout")
+    public String showCheckout(Model model,
+                               @RequestParam("cartId") Long cartId) {
+        Cart cart = cartService.getCartEntity(cartId);
+        model.addAttribute("cart", cart);
+        return "user/checkout";
+    }
+
+    @PostMapping("/checkout")
+    public String checkout(Model model,
+                           @RequestParam("orderId") Long orderId) {
+        return "redirect:user/cart?cartId=" + orderId;
+    }
+
 }

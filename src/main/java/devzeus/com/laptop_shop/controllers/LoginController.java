@@ -1,16 +1,11 @@
 package devzeus.com.laptop_shop.controllers;
 
 import devzeus.com.laptop_shop.dtos.requests.UserDTO;
-import devzeus.com.laptop_shop.services.classes.EmailService;
 import devzeus.com.laptop_shop.services.classes.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,10 +15,8 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LoginController {
-    UserService userService;
-    EmailService emailService;
+    private final UserService userService;
 
     @GetMapping("/admin/dashboard")
     public String dashboard(Model model, HttpSession session) {
@@ -75,9 +68,17 @@ public class LoginController {
         return "login/forgot-password";
     }
 
+    @PostMapping("/forgot-password")
+    public String getNewPassword(Model model,
+                                 @RequestParam("email") String email) {
+        userService.changePassword(email);
+        model.addAttribute("msg", "Reset password success");
+        return "redirect:/forgot-password?success=true";
+    }
+
     @GetMapping("/verify-account")
     public String verifyAccount(Model model, @RequestParam("token") String token) {
-        boolean isSuccess = emailService.verifyToken(token);
+        boolean isSuccess = userService.verifyAccount(token);
         if (!isSuccess) {
             model.addAttribute("error", "Invalid token");
             return "login/register";

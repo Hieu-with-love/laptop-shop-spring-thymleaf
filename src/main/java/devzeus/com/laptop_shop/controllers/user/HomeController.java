@@ -44,6 +44,21 @@ public class HomeController {
         return "user/about-us";
     }
 
+    @GetMapping("/my-account")
+    public String showPageMyAccount(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
+        model.addAttribute("user", user);
+        return "user/my-account";
+    }
+
+    public String showAccountDetails(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
+        model.addAttribute("user", user);
+        return "user/my-account";
+    }
+
     @GetMapping("/my-account/email")
     public String myAccount(@RequestParam("email") String email, Model model) {
         User userAccount = userService.getUserByEmail(email);

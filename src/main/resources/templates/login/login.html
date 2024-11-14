@@ -6,7 +6,21 @@
 </head>
 <body>
 <div class="axil-signin-area">
-    <div th:insert="~{common-user/login :: background-signin}"></div>
+    <!-- Start Header -->
+    <div th:fragment="background-signin" class="signin-header">
+        <div class="row align-items-center">
+            <div class="col-sm-4">
+                <a th:href="@{/user}" class="site-logo"><img th:src="@{etrade/assets/images/logo/logo.png}" alt="logo"></a>
+            </div>
+            <div class="col-sm-8">
+                <div class="singin-header-btn">
+                    <p>Not a member?</p>
+                    <a th:href="@{/register}" class="axil-btn btn-bg-secondary sign-up-btn">Sign Up Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header -->
 
     <div class="row">
         <div class="col-xl-4 col-lg-6">

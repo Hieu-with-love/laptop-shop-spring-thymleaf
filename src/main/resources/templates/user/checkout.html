@@ -122,7 +122,10 @@
                                 <div class="toggle-bar">
                                     <a href="javascript:void(0)" class="toggle-btn">
                                         <input type="checkbox" id="checkbox2" name="diffrent-ship">
-                                        <label for="checkbox2">Ship to a different address?</label>
+                                        <label for="checkbox2">
+                                            Với đơn hàng trên 20 triệu đồng, vui lòng thanh toán bằng phương thức chuyển
+                                            khoản từ tài khoản công ty hoặc bằng thẻ công ty. Xem chính sách
+                                        </label>
                                     </a>
                                 </div>
                                 <div class="toggle-open">
@@ -257,8 +260,6 @@
 
 <div th:insert="~{common-user/content::service-area}"></div>
 
-<div th:insert="~{common-admin/footer::footer}"></div>
-
 <!-- Product Quick View Modal Start -->
 <div class="modal fade quick-view-product" id="quick-view-modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -386,7 +387,6 @@
                                             </ul>
                                         </div>
                                         <!-- End Product Variation  -->
-
                                     </div>
 
                                     <!-- Start Product Action Wrapper  -->
@@ -417,7 +417,7 @@
     </div>
 </div>
 <!-- Product Quick View Modal End -->
-
+<div th:insert="common-user/footer::footer"></div>
 <!-- JS-->
 <div th:insert="~{common-admin/script::script}"></div>
 

@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
-    private static final String[] PUBLIC_ENDPOINTS = {"/register", "/user/products"};
+    private static final String[] PUBLIC_ENDPOINTS = {"/register", "forgot-password", "/user/products"};
 
     @Bean
     public SecurityFilterChain configSecurityFilterChain(HttpSecurity http) throws Exception {

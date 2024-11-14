@@ -13,7 +13,11 @@ public interface IUserService {
 
     User updateUser(UserDTO user);
 
-    void changePassword(String email, String newPassword);
+    boolean verifyAccount(String token);
+
+    void sendEmailToVerifyAccount(String name, String to, String token);
+
+    void changePassword(String email);
 
     // soft delete
     void toggleUserActivation(String phoneNumber, boolean isActive);
