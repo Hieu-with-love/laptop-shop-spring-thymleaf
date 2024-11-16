@@ -178,6 +178,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Page<Product> getProductsByPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }

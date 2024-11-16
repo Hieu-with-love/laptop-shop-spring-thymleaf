@@ -10,6 +10,9 @@
 <div th:insert="~{common-user/content :: category-area}"></div>
 <!--Start Sale Product Area-->
 <div class="axil-product-area bg-color-white axil-section-gap">
+    <div id="loadingSpinner" style="display:none; text-align: center;">
+        <p>Loading...</p>
+    </div>
     <div class="container">
         <div class="section-title-wrapper">
             <span class="title-highlighter highlighter-primary">
@@ -20,9 +23,9 @@
         <div class="explore-product-activation slick-layout-wrapper
                     slick-layout-wrapper--15
                     axil-slick-layout arrow-top-slide">
-            <div class="slick-single-layout">
+            <div id="productListContainer" class="slick-single-layout">
                 <div class="row row--15">
-                    <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb-30"
+                    <div id="product-list" class="col-xl-3 col-lg-4 col-sm-6 col-12 mb-30"
                          th:each="product : ${products}">
                         <div class="axil-product product-style-one">
                             <div class="thumbnail">
@@ -37,7 +40,7 @@
                                     <div class="product-badget">20% off</div>
                                 </div>
                                 <div class="product-hover-action">
-                                    <ul class="cart-action">
+                                    <ul id="productList" th:fragment="productList" class="cart-action">
                                         <li class="quickview"><a href="#" data-bs-toggle="modal"
                                                                  data-bs-target="#quick-view-modal"><i
                                                 class="far fa-eye"></i></a></li>
@@ -91,6 +94,22 @@
                         </div>
 
                     </div>
+
+                </div>
+                <div class="row row--15 fa-box-full clearfix">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li>
+                            <a th:href="@{/user/fragment/products(pageNumber=${currentPage - 1}, pageSize=${totalPages})}">
+                                Previous </a></li>
+
+                        <li th:each="i:${#numbers.sequence(1, totalPages)}"
+                            th:classappend="${currentPage == i ? 'active' : ''}"
+                            th:href="@{/user/products(pageNumber=${currentPage + 1}, pageSize=${totalPages})}"></li>
+
+                        <li><a class="btn btn-primary" th:if="${currentPage < totalPages}"
+                               th:href="@{/user/fragment/products(pageNumber=${currentPage + 1}, pageSize=${totalPages})}">Next</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -100,5 +119,66 @@
 
 <div th:insert="~{common-user/footer :: footer}"></div>
 <div th:insert="~{common-user/script :: script}"></div>
+
+<script>
+    let currentPage = 0; // Bắt đầu từ trang 0
+    const pageSize = 10; // Số sản phẩm mỗi trang
+    const productListContainer = document.getElementById("productListContainer");
+
+    const loadProducts = () => {
+        const url = `/user/fragment/products?pageNumber=${currentPage}&pageSize=${pageSize}`;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to load products");
+                return response.text();
+            })
+            .then(html => {
+                if (html.trim() === "") {
+                    window.removeEventListener("scroll", scrollHandler); // Hết sản phẩm
+                    return;
+                }
+                productListContainer.insertAdjacentHTML("beforeend", html); // Thêm sản phẩm
+            })
+            .catch(error => console.error(error));
+    };
+
+    const scrollHandler = () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            currentPage++;
+            loadProducts();
+        }
+    };
+
+    // Gắn sự kiện cuộn
+    window.addEventListener("scroll", scrollHandler);
+
+
+    const loadingSpinner = document.getElementById("loadingSpinner");
+
+    const loadProducts = () => {
+        loadingSpinner.style.display = "block"; // Hiển thị spinner
+        const url = `/user/products?pageNumber=${currentPage}&pageSize=${pageSize}`;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to load products");
+                return response.text();
+            })
+            .then(html => {
+                loadingSpinner.style.display = "none"; // Ẩn spinner
+                if (html.trim() === "") {
+                    window.removeEventListener("scroll", scrollHandler); // Hết sản phẩm
+                    return;
+                }
+                productListContainer.insertAdjacentHTML("beforeend", html);
+            })
+            .catch(error => {
+                console.error(error);
+                loadingSpinner.style.display = "none"; // Ẩn spinner khi lỗi
+            });
+    };
+
+</script>
+
+
 </body>
 </html>

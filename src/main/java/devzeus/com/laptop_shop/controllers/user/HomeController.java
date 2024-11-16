@@ -6,6 +6,7 @@ import devzeus.com.laptop_shop.services.classes.ProductService;
 import devzeus.com.laptop_shop.services.classes.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,15 +22,31 @@ public class HomeController {
     private final UserService userService;
 
     @GetMapping
-    public String products(Model model, HttpSession session) {
+    public String products(@RequestParam(defaultValue = "0") int pageNumber,
+                           @RequestParam(defaultValue = "10") int pageSize,
+                           Model model, HttpSession session) {
+        Page<Product> productPage = productService.getProductsByPage(pageNumber, pageSize);
+        List<Product> productsPage = productPage.getContent();
         List<Product> products = productService.getAllProducts();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
         session.setAttribute("userSession", user);
         session.setAttribute("cartId", user.getCart().getId());
         model.addAttribute("products", products);
-        model.addAttribute("pageTitle", "Home");
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalPages", productPage.getTotalPages());
         return "user/home";
+    }
+
+    @GetMapping("/fragment/products")
+    public String getProductsByPage(@RequestParam(defaultValue = "0") int pageNumber,
+                                    @RequestParam(defaultValue = "10") int pageSize,
+                                    Model model) {
+        Page<Product> productPage = productService.getProductsByPage(pageNumber, pageSize);
+        List<Product> products = productPage.getContent();
+
+        model.addAttribute("products", products);
+        return "user/product_list :: productList"; // Trả về fragment Thymeleaf
     }
 
     @PostMapping("/forgot-password")

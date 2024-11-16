@@ -27,4 +27,6 @@ public interface IProductService {
     List<Product> searchProductsByKeyword(String keyword);
 
     Page<Product> getAllProducts(int pageNo);
+
+    Page<Product> getProductsByPage(int page, int size);
 }

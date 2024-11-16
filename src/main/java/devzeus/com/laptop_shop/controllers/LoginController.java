@@ -18,16 +18,6 @@ import org.springframework.web.context.request.WebRequest;
 public class LoginController {
     private final UserService userService;
 
-    @GetMapping("/admin/dashboard")
-    public String dashboard(Model model, HttpSession session) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
-        session.setAttribute("userSession", user);
-        model.addAttribute("user", user);
-        model.addAttribute("titleDashboard", "Dashboard");
-        return "admin/index";
-    }
-
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("myUser", new UserDTO());

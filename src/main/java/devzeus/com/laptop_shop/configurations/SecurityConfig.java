@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
-    private static final String[] PUBLIC_ENDPOINTS = {"/register", "forgot-password", "/user/products"};
+    private static final String[] PUBLIC_ENDPOINTS = {"/register", "forgot-password", "/user/home", "/user/products"};
 
     @Bean
     public SecurityFilterChain configSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/login?logout=true")
                         .permitAll()
                 )
                 .sessionManagement(session -> session
