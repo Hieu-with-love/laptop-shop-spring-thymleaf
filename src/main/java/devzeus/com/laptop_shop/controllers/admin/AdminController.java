@@ -19,9 +19,10 @@ public class AdminController {
     public String dashboard(Model model, HttpSession session) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
+
         session.setAttribute("userSession", user);
         model.addAttribute("user", user);
-        model.addAttribute("cartId", user.getCart().getId());
+        model.addAttribute("cartId", 1);
         model.addAttribute("titleDashboard", "Dashboard");
         return "admin/index";
     }

@@ -120,65 +120,7 @@
 <div th:insert="~{common-user/footer :: footer}"></div>
 <div th:insert="~{common-user/script :: script}"></div>
 
-<script>
-    let currentPage = 0; // Bắt đầu từ trang 0
-    const pageSize = 10; // Số sản phẩm mỗi trang
-    const productListContainer = document.getElementById("productListContainer");
-
-    const loadProducts = () => {
-        const url = `/user/fragment/products?pageNumber=${currentPage}&pageSize=${pageSize}`;
-        fetch(url)
-            .then(response => {
-                if (!response.ok) throw new Error("Failed to load products");
-                return response.text();
-            })
-            .then(html => {
-                if (html.trim() === "") {
-                    window.removeEventListener("scroll", scrollHandler); // Hết sản phẩm
-                    return;
-                }
-                productListContainer.insertAdjacentHTML("beforeend", html); // Thêm sản phẩm
-            })
-            .catch(error => console.error(error));
-    };
-
-    const scrollHandler = () => {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            currentPage++;
-            loadProducts();
-        }
-    };
-
-    // Gắn sự kiện cuộn
-    window.addEventListener("scroll", scrollHandler);
-
-
-    const loadingSpinner = document.getElementById("loadingSpinner");
-
-    const loadProducts = () => {
-        loadingSpinner.style.display = "block"; // Hiển thị spinner
-        const url = `/user/products?pageNumber=${currentPage}&pageSize=${pageSize}`;
-        fetch(url)
-            .then(response => {
-                if (!response.ok) throw new Error("Failed to load products");
-                return response.text();
-            })
-            .then(html => {
-                loadingSpinner.style.display = "none"; // Ẩn spinner
-                if (html.trim() === "") {
-                    window.removeEventListener("scroll", scrollHandler); // Hết sản phẩm
-                    return;
-                }
-                productListContainer.insertAdjacentHTML("beforeend", html);
-            })
-            .catch(error => {
-                console.error(error);
-                loadingSpinner.style.display = "none"; // Ẩn spinner khi lỗi
-            });
-    };
-
-</script>
-
+<script></script>
 
 </body>
 </html>

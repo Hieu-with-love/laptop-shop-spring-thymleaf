@@ -1,7 +1,9 @@
 package devzeus.com.laptop_shop.controllers.user;
 
+import devzeus.com.laptop_shop.models.Category;
 import devzeus.com.laptop_shop.models.Product;
 import devzeus.com.laptop_shop.models.User;
+import devzeus.com.laptop_shop.services.classes.CategoryService;
 import devzeus.com.laptop_shop.services.classes.ProductService;
 import devzeus.com.laptop_shop.services.classes.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class HomeController {
     private final ProductService productService;
+    private final CategoryService categoryService;
     private final UserService userService;
 
     @GetMapping
@@ -81,5 +84,19 @@ public class HomeController {
         User userAccount = userService.getUserByEmail(email);
         model.addAttribute("userAccount", userAccount);
         return "user/my-account";
+    }
+
+    @GetMapping("/laptops")
+    public String showLaptops(Model model, @RequestParam("categoryId") Long categoryId) {
+        List<Category> categories = categoryService.getAllCategories();
+        Category category = categoryService.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        List<Product> productsByCategory = productService.getProductByCategory(categoryId);
+
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("category", category);
+        model.addAttribute("productsByCategory", productsByCategory);
+        return "user/shop";
     }
 }

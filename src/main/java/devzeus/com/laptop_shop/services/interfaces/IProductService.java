@@ -18,9 +18,12 @@ public interface IProductService {
 
     List<Product> getAllProducts();
 
+    List<Product> getProductByCategory(Long categoryId);
+
     Product getProductById(Long productId);
 
     Product getProductByName(String name);
+
 
     void createProductImage(Long productId, ProductImageDTO productDTO);
 
