@@ -2,6 +2,7 @@ package devzeus.com.laptop_shop.services.classes;
 
 import devzeus.com.laptop_shop.dtos.requests.ProductDTO;
 import devzeus.com.laptop_shop.dtos.requests.ProductImageDTO;
+import devzeus.com.laptop_shop.dtos.responses.ProductResponse;
 import devzeus.com.laptop_shop.exceptions.NotFoundException;
 import devzeus.com.laptop_shop.models.Brand;
 import devzeus.com.laptop_shop.models.Category;
@@ -12,6 +13,7 @@ import devzeus.com.laptop_shop.repositories.CategoryRepository;
 import devzeus.com.laptop_shop.repositories.ProductImageRepository;
 import devzeus.com.laptop_shop.repositories.ProductRepository;
 import devzeus.com.laptop_shop.services.interfaces.IProductService;
+import devzeus.com.laptop_shop.utils.Constant;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -203,6 +206,20 @@ public class ProductService implements IProductService {
     public Product getProductByName(String name) {
         return productRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException("Cannot found product with name = " + name));
+    }
+
+    @Override
+    public ProductResponse getProductResponse(Long id) {
+        Product product = this.getProductById(id);
+        return ProductResponse.builder()
+                .name(product.getName())
+                .price(Constant.formatter.format(product.getPrice()))
+                .oldPrice(Constant.formatter.format(product.getPrice()))
+                .quantity(product.getQuantity())
+                .codeDiscount(String.valueOf(product.getDiscount()))
+                .description(product.getDescription())
+                .thumbnail(product.getThumbnail())
+                .build();
     }
 
     @Override

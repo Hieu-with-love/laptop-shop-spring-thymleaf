@@ -2,6 +2,7 @@ package devzeus.com.laptop_shop.services.interfaces;
 
 import devzeus.com.laptop_shop.dtos.requests.ProductDTO;
 import devzeus.com.laptop_shop.dtos.requests.ProductImageDTO;
+import devzeus.com.laptop_shop.dtos.responses.ProductResponse;
 import devzeus.com.laptop_shop.models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,8 @@ public interface IProductService {
     Product getProductById(Long productId);
 
     Product getProductByName(String name);
+
+    ProductResponse getProductResponse(Long id);
 
 
     void createProductImage(Long productId, ProductImageDTO productDTO);

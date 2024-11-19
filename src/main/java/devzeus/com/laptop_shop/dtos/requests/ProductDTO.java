@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class ProductDTO {
+    private Long id;
+
     @NotBlank(message = "Title is required")
     @Size(min = 3, max = 200, message = "Title must be between 3 and 200 characters")
     private String name;

@@ -1,5 +1,6 @@
 package devzeus.com.laptop_shop.controllers.user;
 
+import devzeus.com.laptop_shop.dtos.responses.ProductResponse;
 import devzeus.com.laptop_shop.models.Product;
 import devzeus.com.laptop_shop.services.classes.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,10 @@ public class ProductController {
     @GetMapping("/detail-product/id")
     public String detailProduct(Model model,
                                 @RequestParam Long id) {
-        Product product = productService.getProductById(id);
+        ProductResponse product = productService.getProductResponse(id);
+        Product productEntity = productService.getProductById(id);
         model.addAttribute("product", product);
+        model.addAttribute("productE", productEntity);
         return "/user/product/detail";
     }
 
