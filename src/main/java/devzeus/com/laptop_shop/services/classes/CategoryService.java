@@ -1,10 +1,10 @@
 package devzeus.com.laptop_shop.services.classes;
 
+import devzeus.com.laptop_shop.dtos.requests.CategoryDTO;
 import devzeus.com.laptop_shop.models.Category;
 import devzeus.com.laptop_shop.repositories.CategoryRepository;
 import devzeus.com.laptop_shop.services.interfaces.ICategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +13,47 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CategoryService implements ICategoryService {
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    @Override
+    public boolean add(CategoryDTO categoryDTO) {
+        try {
+            if (categoryRepository.findByName(categoryDTO.getName()) != null) {
+                return false;
+            }
+            Category category = new Category();
+            category.setName(categoryDTO.getName());
+            categoryRepository.save(category);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean update(CategoryDTO categoryDTO, Long id) {
+        try {
+            Category category = categoryRepository.findById(id).get();
+            category.setName(categoryDTO.getName());
+            categoryRepository.save(category);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     @Override
     public List<Category> findByName(String name) {
