@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IBrandService {
-    List<Brand> findByName(String name);
+    Brand findByName(String name);
 
     List<Brand> findAll();
 

@@ -18,7 +18,7 @@ public class BrandService implements IBrandService {
     private BrandRepository brandRepository;
 
     @Override
-    public List<Brand> findByName(String name) {
+    public Brand findByName(String name) {
         return brandRepository.findByName(name);
     }
 

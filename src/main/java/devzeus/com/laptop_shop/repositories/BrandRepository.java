@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
-    List<Brand> findByName(String name);
+    Brand findByName(String name);
 }
