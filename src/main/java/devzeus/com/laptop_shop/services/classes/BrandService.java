@@ -53,18 +53,28 @@ public class BrandService implements IBrandService {
     }
 
     @Override
-    public Brand createBrand(BrandDTO brandDTO) {
-        return null;
+    public boolean create(BrandDTO brandDTO) {
+        Brand brand = new Brand();
+        brand.setName(brandDTO.getName());
+        brand.setOs(brandDTO.getOs());
+        brand.setWarranty(brandDTO.getWarranty());
+        brandRepository.save(brand);
+        return true;
     }
 
     @Override
-    public Brand updateBrand(BrandDTO brandDTO, Long brandId) {
-        return null;
+    public boolean update(BrandDTO brandDTO, Long brandId) {
+        Brand brand = brandRepository.findById(brandId).orElse(null);
+        brand.setName(brandDTO.getName());
+        brand.setOs(brandDTO.getOs());
+        brand.setWarranty(brandDTO.getWarranty());
+        brandRepository.save(brand);
+        return true;
     }
 
     @Override
     public void deleteBrand(Long brandId) {
-
+        brandRepository.deleteById(brandId);
     }
 
     @Override

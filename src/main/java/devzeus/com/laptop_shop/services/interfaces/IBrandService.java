@@ -21,9 +21,13 @@ public interface IBrandService {
 
     void deleteById(Long aLong);
 
-    Brand createBrand(BrandDTO brandDTO);
-    Brand updateBrand(BrandDTO brandDTO, Long brandId);
+    boolean create(BrandDTO brandDTO);
+
+    boolean update(BrandDTO brandDTO, Long brandId);
+
     void deleteBrand(Long brandId);
+
     List<Brand> getAllBrands();
+
     Brand getBrandById(Long brandId);
 }
