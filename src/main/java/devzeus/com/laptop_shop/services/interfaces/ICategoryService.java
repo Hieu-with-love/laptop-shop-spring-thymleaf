@@ -13,7 +13,7 @@ public interface ICategoryService {
 
     boolean delete(Long id);
 
-    List<Category> findByName(String name);
+    Category findByName(String name);
 
     List<Category> findAll();
 

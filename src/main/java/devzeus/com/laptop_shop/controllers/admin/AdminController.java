@@ -33,9 +33,9 @@ public class AdminController {
         return "admin/index";
     }
 
-    @GetMapping("/categories")
-    public String categories(Model model) {
-        model.addAttribute("pageTitle", "Categories");
-        return "admin/categories/categories";
-    }
+//    @GetMapping("/categories")
+//    public String categories(Model model) {
+//        model.addAttribute("pageTitle", "Categories");
+//        return "admin/categories/categories";
+//    }
 }
