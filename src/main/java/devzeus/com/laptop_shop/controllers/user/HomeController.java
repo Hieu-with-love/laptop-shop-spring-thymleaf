@@ -32,9 +32,11 @@ public class HomeController {
         List<Product> productsPage = productPage.getContent();
         List<Product> products = productService.getAllProducts();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
-        session.setAttribute("userSession", user);
-        session.setAttribute("cartId", user.getCart().getId());
+        if (!username.equals("anonymousUser")) {
+            devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
+            session.setAttribute("userSession", user);
+            session.setAttribute("cartId", user.getCart().getId());
+        }
         model.addAttribute("products", products);
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", productPage.getTotalPages());
