@@ -20,13 +20,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
-    private static final String[] PUBLIC_ENDPOINTS = {"/register", "forgot-password", "/user/home", "/user/products"};
+    private static final String[] PUBLIC_ENDPOINTS = {"/register", "forgot-password", "/user", "/user/products"};
 
     @Bean
     public SecurityFilterChain configSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)  // Đây là cú pháp mới
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/etrade/assets/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")

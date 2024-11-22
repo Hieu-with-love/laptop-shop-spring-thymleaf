@@ -149,11 +149,11 @@ public class CartItemService implements ICartItemService {
     @Override
     @Transactional
     public void incQty(Long cartId, Long productId) {
-        CartItem itemToDec = this.getCartItem(cartId, productId);
-        itemToDec.setQuantity(itemToDec.getQuantity() + 1);
-        itemToDec.setTotalPrice();
+        CartItem itemToInc = this.getCartItem(cartId, productId);
+        itemToInc.setQuantity(itemToInc.getQuantity() + 1);
+        itemToInc.setTotalPrice();
         this.updateTotalAmount(cartId, productId);
-        cartItemRepository.save(itemToDec);
+        cartItemRepository.save(itemToInc);
     }
 
 
