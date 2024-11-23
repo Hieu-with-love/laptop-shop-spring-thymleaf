@@ -7,13 +7,11 @@ import devzeus.com.laptop_shop.services.classes.RoleService;
 import devzeus.com.laptop_shop.services.classes.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -59,12 +57,42 @@ public class UserManagerController {
         return "redirect:/admin/user";
     }
 
-//
-//    public String updateAccount(Model model) {
-//
-//    }
-//
-//    public String deleteAccount(Model model) {
-//
-//    }
+    @GetMapping("/update")
+    public String showUpdateAccount(Model model,
+                                    @RequestParam("id") Long accountId) {
+        List<Role> roles = roleService.getAllRoles();
+        boolean isUser = roles.stream().anyMatch(role -> role.getName().equalsIgnoreCase("user"));
+        Long id = roles.stream().filter(u -> u.getName().equalsIgnoreCase("user"))
+                .findFirst().get().getId();
+        UserDTO userDTO = userService.getUserById(accountId);
+        model.addAttribute("isUser", isUser);
+        model.addAttribute("id", id);
+        model.addAttribute("roles", roles);
+        model.addAttribute("userDto", userDTO);
+        return "admin/user/user-update";
+    }
+
+    @PostMapping("/update")
+    public String updateAccount(Model model,
+                                @Valid @ModelAttribute UserDTO userDTO,
+                                BindingResult result) {
+
+        return "redirect:/admin/user";
+    }
+
+    @GetMapping("/disable")
+    public String disableAccount(@RequestParam("id") Long accountId) {
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (user.getId().equals(accountId)) {
+            return "redirect:/admin/user?error=true";
+        }
+        userService.disableUser(accountId);
+        return "redirect:/admin/user";
+    }
+
+    @GetMapping("/delete")
+    public String deleteAccount(@RequestParam("id") Long accountId) {
+        userService.deleteUser(accountId);
+        return "redirect:/admin/user";
+    }
 }

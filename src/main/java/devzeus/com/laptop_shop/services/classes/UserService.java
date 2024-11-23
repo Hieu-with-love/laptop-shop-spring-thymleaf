@@ -36,6 +36,26 @@ public class UserService implements IUserService {
     EmailService emailService;
     CartService cartService;
 
+    @Override
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id).orElse(new User());
+        if (user.getId() == null) {
+            return null;
+        }
+        return UserDTO.builder()
+                .fullName(user.getFullName())
+                .phoneNumber(user.getPhoneNumber())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .gender(user.getGender())
+                .address(user.getAddress())
+                .dayOfBirth(user.getDayOfBirth())
+                .isActive(user.isActive())
+                .roleId(user.getRole().getId())
+                .avatar(user.getAvatar())
+                .build();
+    }
+
     private void validation(UserDTO userRequest, BindingResult result) {
         if (this.existingEmail(userRequest.getEmail())) {
             result.addError(new FieldError("userRegister", "email",
@@ -211,21 +231,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean disableUser(Long id, BindingResult result) {
+    public void disableUser(Long id) {
         User user = userRepository.findById(id)
                 .orElse(new User());
-        if (user.getId() == null) {
-            result.addError(new FieldError("user-manage", "disableUser", "Id is null"));
-            return false;
-        }
+
         user.setActive(false);
         userRepository.save(user);
-        return true;
     }
 
     @Override
-    public void deleteUser(String phoneNumber) {
-
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 
 }

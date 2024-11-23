@@ -7,6 +7,8 @@ import org.springframework.validation.BindingResult;
 import java.util.List;
 
 public interface IUserService {
+    UserDTO getUserById(Long id);
+
     // register user
     boolean registerUser(UserDTO userDTO, BindingResult result);
 
@@ -24,8 +26,6 @@ public interface IUserService {
     // soft delete
     void toggleUserActivation(String phoneNumber, boolean isActive);
 
-    // hard delete
-    void deleteUser(String email);
 
     boolean existingEmail(String email);
 
@@ -33,6 +33,10 @@ public interface IUserService {
 
     boolean updateUser(UserDTO user, BindingResult result);
 
-    boolean disableUser(Long id, BindingResult result);
+    void disableUser(Long id);
+
+    // hard delete
+    void deleteUser(Long id);
+
 
 }
