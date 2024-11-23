@@ -41,6 +41,8 @@ public class User extends TrackingDate {
     @Column(name = "active", nullable = false, columnDefinition = "TINYINT(1) default 1")
     private boolean isActive;
 
+    private String avatar;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

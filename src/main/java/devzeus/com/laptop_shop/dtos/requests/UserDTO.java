@@ -29,6 +29,8 @@ public class UserDTO {
     @NotNull(message = "Enter your day of birth")
     private LocalDate dayOfBirth;
     private String gender;
+    private String avatar;
+
 
     private LocalDate createdAt;
     private LocalDate updatedAt;

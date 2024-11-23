@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -101,28 +102,16 @@ public class UserService implements IUserService {
         return false;
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email"));
-    }
-
-    @Override
-    public User updateUser(UserDTO userDTO) {
-        Role role = roleRepository.findById(userDTO.getRoleId())
-                .orElseThrow(() -> new NotFoundException("Role not found"));
-        User existingUser = this.getUserByEmail(userDTO.getEmail());
-        existingUser.setPhoneNumber(userDTO.getPhoneNumber());
-        existingUser.setEmail(userDTO.getEmail());
-        existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        existingUser.setFullName(userDTO.getFullName());
-        existingUser.setAddress(userDTO.getAddress());
-        existingUser.setDayOfBirth(userDTO.getDayOfBirth());
-        existingUser.setGender(userDTO.getGender());
-        existingUser.setActive(userDTO.isActive());
-        existingUser.setRole(role);
-        return null;
     }
 
     @Override
@@ -147,13 +136,96 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void deleteUser(String phoneNumber) {
+    public boolean existingEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 
+    private boolean catchException(UserDTO userDTO, BindingResult result) {
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElse(new Role());
+
+        if (role.getId() == null) {
+            result.addError(new FieldError("user-manage", "role", "Khong ton tai role"));
+        }
+
+        if (this.existingEmail(userDTO.getEmail())) {
+            result.addError(new FieldError("user-manage", "email",
+                    "Email da ton tai. Vui long nhap Email khac"));
+        }
+
+        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+            result.addError(new FieldError("user-manage", "password", "Mat khau khong khop"));
+        }
+
+        if (!userDTO.getDayOfBirth().isBefore(LocalDate.now().minusYears(15))) {
+            result.addError(new FieldError("user-manage", "dateOfBirth",
+                    "Bạn chưa đủ 15 tuổi"));
+        }
+
+        return result.hasErrors();
     }
 
     @Override
-    public boolean existingEmail(String email) {
-        return userRepository.findByEmail(email).isPresent();
+    public boolean createUser(UserDTO userDTO, BindingResult result) {
+        if (catchException(userDTO, result))
+            return false;
+
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElse(new Role());
+        User user = User.builder()
+                .email(userDTO.getEmail())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
+                .phoneNumber(userDTO.getPhoneNumber())
+                .fullName(userDTO.getFullName())
+                .gender(userDTO.getGender())
+                .address(userDTO.getAddress())
+                .dayOfBirth(userDTO.getDayOfBirth())
+                .isActive(true)
+                .role(role)
+                .avatar(userDTO.getAvatar())
+                .build();
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean updateUser(UserDTO userDTO, BindingResult result) {
+        if (catchException(userDTO, result))
+            return false;
+
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElseThrow(() -> new NotFoundException("Role not found"));
+        User existingUser = this.getUserByEmail(userDTO.getEmail());
+        existingUser.setPhoneNumber(userDTO.getPhoneNumber());
+        existingUser.setEmail(userDTO.getEmail());
+        existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        existingUser.setFullName(userDTO.getFullName());
+        existingUser.setAddress(userDTO.getAddress());
+        existingUser.setDayOfBirth(userDTO.getDayOfBirth());
+        existingUser.setGender(userDTO.getGender());
+        existingUser.setActive(userDTO.isActive());
+        existingUser.setRole(role);
+        userRepository.save(existingUser);
+
+        return true;
+    }
+
+    @Override
+    public boolean disableUser(Long id, BindingResult result) {
+        User user = userRepository.findById(id)
+                .orElse(new User());
+        if (user.getId() == null) {
+            result.addError(new FieldError("user-manage", "disableUser", "Id is null"));
+            return false;
+        }
+        user.setActive(false);
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public void deleteUser(String phoneNumber) {
+
     }
 
 }

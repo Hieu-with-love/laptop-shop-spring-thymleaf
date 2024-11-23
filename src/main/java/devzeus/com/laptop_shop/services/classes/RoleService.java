@@ -7,6 +7,8 @@ import devzeus.com.laptop_shop.services.interfaces.IRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoleService implements IRoleService {
@@ -23,5 +25,10 @@ public class RoleService implements IRoleService {
     @Override
     public Role getRoleByName(String name) {
         return roleRepository.findByName(name);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 }
