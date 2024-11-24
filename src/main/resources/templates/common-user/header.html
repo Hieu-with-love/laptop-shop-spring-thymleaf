@@ -33,7 +33,13 @@
                         <ul class="quick-link">
                             <li><a href="#">Help</a></li>
                             <li><a href="sign-up.html">Join Us</a></li>
-                            <li><a href="sign-in.html">Sign In</a></li>
+                            <li th:if="${#authentication.principal == 'anonymousUser'}">
+                                <a th:href="@{/login}">Sign In</a>
+                            </li>
+                            <li th:if="${#authentication.principal != 'anonymousUser'}">
+                                <a th:href="@{/user/my-account}"
+                                   th:text="${session.userSession.fullName}"></a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -117,8 +123,10 @@
                             </a>
                         </li>
                         <li class="shopping-cart">
-                            <a href="#" class="cart-dropdown-btn">
-                                <span class="cart-count">3</span>
+                            <a th:href="@{/user/cart(cartId=${session.cartId})}" class="cart-dropdown-btn">
+                                <span class="cart-count"
+                                      th:if="${session.quantityItems > 0}"
+                                      th:text="${session.quantityItems}"></span>
                                 <i class="flaticon-shopping-cart"></i>
                             </a>
                         </li>
@@ -128,7 +136,7 @@
                             </a>
                             <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
-                                <ul>
+                                <ul th:if="${#authentication.principal != null && #authentication.principal != 'anonymousUser'}">
                                     <li>
                                         <a th:href="@{/user/my-account}">My Account</a>
                                     </li>
@@ -142,9 +150,12 @@
                                         <a href="#">Language</a>
                                     </li>
                                 </ul>
-                                <a th:href="@{/login}" class="axil-btn btn-bg-primary"
-                                   onclick="logout()"
-                                >Login</a>
+                                <div class="login-btn">
+                                    <a th:if="${#authentication.principal != 'anonymousUser'}" th:href="@{/logout}"
+                                       class="axil-btn btn-bg-primary">Logout</a>
+                                    <a th:if="${#authentication.principal == 'anonymousUser'}" th:href="@{/login}"
+                                       class="axil-btn btn-bg-primary">Login</a>
+                                </div>
                                 <div class="reg-footer text-center">No account yet? <a th:href="@{/register}"
                                                                                        class="btn-link">REGISTER
                                     HERE.</a></div>

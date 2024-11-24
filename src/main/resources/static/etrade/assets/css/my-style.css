@@ -40,3 +40,54 @@
 .axil-product .cart-action li.select-option .add-to-cart-btn:hover:before {
     transform: scale(1.1);
 }
+
+/* Đam bảo danh sách các trang nằm trên cùng một hàng*/
+.custom-pagination ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-pagination ul li {
+    margin: 0 5px;
+}
+
+.custom-pagination ul li a {
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    color: #333;
+    background: #f9f9f9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-pagination ul li a:first-child,
+.custom-pagination ul li a:last-child {
+    border-radius: 5px;
+}
+
+.custom-pagination ul li a.active {
+    background-color: #add8e6;
+    color: white;
+    font-weight: bold;
+}
+
+.custom-pagination ul li a:hover {
+    background-color: #ddd;
+    color: #000;
+}
+
+.custom-pagination .previous,
+.custom-pagination .next {
+    width: 70px;
+    height: 40px;
+    text-align: center;
+}

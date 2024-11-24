@@ -14,12 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping
-    public String products(Model model) {
-        model.addAttribute("pageTitle", "Products");
-        return "/user/product";
-    }
-
     @GetMapping("/detail-product/id")
     public String detailProduct(Model model,
                                 @RequestParam Long id) {

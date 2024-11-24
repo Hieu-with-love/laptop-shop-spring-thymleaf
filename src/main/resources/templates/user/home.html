@@ -3,11 +3,13 @@
 <head>
     <div th:insert="~{common-user/head :: head}"></div>
     <title>Laptop Shop || Home</title>
+    <link rel="stylesheet"
+          th:href="@{/etrade/assets/css/my-style.css}"
+    />
 </head>
 <body>
 <div th:insert="~{common-user/header :: header}"></div>
 <div th:insert="~{common-user/content :: background}"></div>
-<div th:insert="~{common-user/content :: category-area}"></div>
 <!--Start Sale Product Area-->
 <div class="axil-product-area bg-color-white axil-section-gap">
     <div id="loadingSpinner" style="display:none; text-align: center;">
@@ -92,22 +94,22 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-                <div class="row row--15 fa-box-full clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        <li>
-                            <a th:href="@{/user/fragment/products(pageNumber=${currentPage - 1}, pageSize=${totalPages})}">
-                                Previous </a></li>
-
-                        <li th:each="i:${#numbers.sequence(1, totalPages)}"
-                            th:classappend="${currentPage == i ? 'active' : ''}"
-                            th:href="@{/user/products(pageNumber=${currentPage + 1}, pageSize=${totalPages})}"></li>
-
-                        <li><a class="btn btn-primary" th:if="${currentPage < totalPages}"
-                               th:href="@{/user/fragment/products(pageNumber=${currentPage + 1}, pageSize=${totalPages})}">Next</a>
+                <div class="custom-pagination">
+                    <ul>
+                        <li th:if="${currentPage > 0}">
+                            <a th:href="@{/user(pageNo=${currentPage - 1}, pageNumber=${pageSize})}"
+                               class="previous">Previous</a>
+                        </li>
+                        <li th:each="i:${#numbers.sequence(0, totalPages - 1)}">
+                            <a th:href="@{/user(pageNo=${i},pageSize=${pageSize})}"
+                               th:text="${i+1}"
+                               th:classappend="${i == currentPage} ? 'active' : '' "></a>
+                        </li>
+                        <li th:if="${currentPage < totalPages - 1}">
+                            <a th:href="@{/user(pageNo=${currentPage + 1}, pageSize=${pageSize})}"
+                               class="next">Next</a>
                         </li>
                     </ul>
                 </div>
@@ -117,6 +119,7 @@
 </div>
 <!--End Sale Product Area-->
 
+<div th:insert="~{common-user/content :: category-area}"></div>
 <div th:insert="~{common-user/footer :: footer}"></div>
 <div th:insert="~{common-user/script :: script}"></div>
 

@@ -1,5 +1,6 @@
 package devzeus.com.laptop_shop.controllers.admin;
 
+import devzeus.com.laptop_shop.services.classes.CartService;
 import devzeus.com.laptop_shop.services.classes.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
+    private final CartService cartService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
 
+        if (user.getCart() == null) {
+            cartService.createCart(user);
+        }
+
         session.setAttribute("userSession", user);
         model.addAttribute("user", user);
-        model.addAttribute("cartId", 1);
         model.addAttribute("titleDashboard", "Dashboard");
         return "admin/index";
     }

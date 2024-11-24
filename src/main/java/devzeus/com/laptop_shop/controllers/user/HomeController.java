@@ -25,20 +25,21 @@ public class HomeController {
     private final UserService userService;
 
     @GetMapping
-    public String products(@RequestParam(defaultValue = "0") int pageNumber,
-                           @RequestParam(defaultValue = "10") int pageSize,
-                           Model model, HttpSession session) {
-        Page<Product> productPage = productService.getProductsByPage(pageNumber, pageSize);
-        List<Product> productsPage = productPage.getContent();
-        List<Product> products = productService.getAllProducts();
+    public String home(@RequestParam(defaultValue = "0") int pageNo,
+                       @RequestParam(defaultValue = "12") int pageSize,
+                       Model model, HttpSession session) {
+        Page<Product> productPage = productService.getProductsByPage(pageNo, pageSize);
+        List<Product> products = productPage.getContent();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!username.equals("anonymousUser")) {
             devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
             session.setAttribute("userSession", user);
             session.setAttribute("cartId", user.getCart().getId());
+            session.setAttribute("quantityItems", user.getCart().getItems().size());
         }
         model.addAttribute("products", products);
-        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", productPage.getTotalPages());
         return "user/home";
     }

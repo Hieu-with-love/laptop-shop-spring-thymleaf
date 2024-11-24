@@ -229,7 +229,7 @@ public class ProductService implements IProductService {
             throw new NotFoundException("Product with id = " + productId + " not found");
         java.nio.file.Path oldImagePath = Paths.get("uploads/", product.getThumbnail());
         try {
-            if (!oldImagePath.getFileName().toString().equals("default-product.jpg")) {
+            if (!oldImagePath.getFileName().toString().equals("default-product.jpg") && Files.exists(oldImagePath)) {
                 Files.delete(oldImagePath);
             }
         } catch (Exception e) {

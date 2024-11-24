@@ -82,7 +82,10 @@ public class UserService implements IUserService {
         if (!result.hasErrors()) {
             Role role = null;
             if (userDTO.getRoleId() == null) {
-                role = roleRepository.findById(2L)
+                List<Role> roles = roleRepository.findAll();
+                Long roleIdUser = roles.stream().filter(r -> r.getName().equalsIgnoreCase("user"))
+                        .findFirst().get().getId();
+                role = roleRepository.findById(roleIdUser)
                         .orElseThrow(() -> new NotFoundException("Role not found"));
             } else {
                 role = roleRepository.findById(userDTO.getRoleId())
