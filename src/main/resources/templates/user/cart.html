@@ -6,6 +6,9 @@
 <head>
     <title>Laptop Shop || Cart</title>
     <div th:insert="~{common-user/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/etrade/assets/css/my-style.css}"
+    />
 </head>
 
 
@@ -23,10 +26,16 @@
             <div class="axil-product-cart-wrap">
                 <div class="product-table-heading">
                     <h4 class="title">Your Cart</h4>
-                    <a th:href="@{/user/cart/clearCart(cartId=${session.cartId})}" class="cart-clear">Clear Shoping
-                        Cart</a>
+                    <form id="form-clear-cart">
+                        <input type="hidden" id="cartId" th:value="${session.cartId}">
+                        <button type="submit" class="cart-clear">
+                            Clear Shopping Cart
+                        </button>
+                    </form>
                 </div>
-                <div class="table-responsive">
+                <div id="items-container" class="table-responsive">
+                    <input type="hidden" id="isCartEmpty" th:value="${cartEmpty}">
+
                     <table class="table axil-product-table axil-cart-table mb--40">
                         <thead>
                         <tr>
@@ -41,14 +50,11 @@
                         <tbody>
                         <tr th:each="item : ${listItems}">
                             <td class="product-remove">
-                                <!--                                <a th:href="@{/user/cart/delete-item}" class="remove-wishlist"><i-->
-                                <!--                                        class="fal fa-times"></i>-->
-                                <!--                                </a>-->
-                                <form th:action="@{/user/cart/delete-item}" method="post"
-                                      class="cart-action">
+                                <form th:action="@{/user/cart/remove}" class="remove-item">
                                     <input type="hidden" name="cartId" th:value="${session.cartId}"/>
-                                    <input type="hidden" name="productName" th:value="${item.productName}"/>
-                                    <button type="submit" class="remove-wishlist"><i class="fal fa-times"></i>
+                                    <input type="hidden" name="productId" th:value="${item.productId}"/>
+                                    <button type="submit" class="remove-wishlist">
+                                        <i class="fal fa-times"></i>
                                     </button>
                                 </form>
                             </td>
@@ -64,16 +70,16 @@
                             <td class="product-quantity" data-title="Qty">
                                 <div class="pro-qty">
                                     <form th:action="@{/user/cart/dec-qty}" method="post"
-                                          class="cart-action">
+                                          class="cart-action" id="form-cart-dec">
                                         <input type="hidden" name="cartId" th:value="${session.cartId}"/>
-                                        <input type="hidden" name="productName" th:value="${item.productName}"/>
+                                        <input type="hidden" name="productId" th:value="${item.productId}"/>
                                         <button type="submit" class="dec qtybtn">-</button>
                                     </form>
                                     <input type="number" class="quantity-input" th:value="${item.quantity}">
                                     <form th:action="@{/user/cart/inc-qty}" method="post"
-                                          class="cart-action">
+                                          class="cart-action" id="form-cart-inc">
                                         <input type="hidden" name="cartId" th:value="${session.cartId}"/>
-                                        <input type="hidden" name="productName" th:value="${item.productName}"/>
+                                        <input type="hidden" name="productId" th:value="${item.productId}"/>
                                         <button type="submit" class="inc qtybtn">+</button>
                                     </form>
                                 </div>
@@ -85,6 +91,14 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="cart-empty-message" style="display: none;">
+                    <div class="empty-notification">
+                        <img th:src="@{/etrade/assets/images/my-img/empty-cart-yellow.png}" alt="Empty Wishlist">
+                        <p>Browse our catalog to add your favorite products to your wishlist!</p>
+                        <a href="/user" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                </div>
+
                 <div class="cart-update-btn-area">
                     <div class="input-group product-cupon">
                         <input placeholder="Enter coupon code" type="text">
@@ -486,6 +500,95 @@
 </div>
 
 <div th:insert="~{common-user/script::script}"></div>
+
+<script>
+    $(document).ready(function () {
+        const isCartEmpty = $('#isCartEmpty').val() === 'true'
+        if (isCartEmpty) {
+            $('#items-container').hide();
+            $('#cart-empty-message').fadeIn();
+        } else {
+            $('#items-container').show();
+        }
+    });
+
+    $(document).on('submit', '#form-clear-cart', function (event) {
+        event.preventDefault(); // Ngăn hành vi submit mặc định
+
+        const $form = $(this);
+        const cartId = $form.find('#cartId').val(); // Lấy giá trị cartId từ input
+
+        if (!cartId) {
+            alert("Cart ID không hợp lệ!");
+            return;
+        }
+
+        $.ajax({
+            url: '/user/cart/clearCart', // Endpoint API
+            method: 'POST', // Phương thức HTTP
+            data: {cartId: cartId}, // Dữ liệu gửi lên server
+            success: function (response) {
+                alert(response); // Hiển thị thông báo thành công
+                $('#items-container').hide(); // Ẩn giỏ hàng
+                $('#cart-empty-message').fadeIn(); // Hiển thị thông báo giỏ hàng trống
+            },
+            error: function (xhr) {
+                alert(xhr.responseText || 'Có lỗi xảy ra. Vui lòng thử lại!');
+            }
+        });
+    });
+
+    $(document).on('submit', '.remove-item', function (event) {
+        event.preventDefault(); // Ngăn form submit mặc định
+        const $form = $(this); // Form hiện tại
+        const cartId = $form.find('input[name="cartId"]').val();
+        const productId = $form.find('input[name="productId"]').val();
+
+        // Gửi yêu cầu AJAX DELETE
+        $.ajax({
+            url: '/user/cart/remove',
+            type: 'DELETE',
+            data: {cartId: cartId, productId: productId},
+            success: function (response) {
+                alert(response); // Hiển thị thông báo thành công
+                $form.closest('tr').remove();
+
+                // Kiểm tra nếu giỏ hàng trống
+                if ($('#items-container table tbody tr').length === 0) {
+                    $('#items-container table').hide();
+                    $('#cart-empty-message').fadeIn();
+                }
+            },
+            error: function (xhr) {
+                alert(xhr.responseText || 'Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        });
+    });
+
+    $(document).on('submit', '#form-cart-inc', function (e) {
+        e.preventDefault();
+
+        const $form = $(this);
+        const cartId = $form.find('input[name="cartId"]').val();
+        const productId = $form.find('input[name="productId"]').val();
+        const quantity = $form.find('input[name="quantity"]').val();
+
+        $.ajax({
+            url: "/user/cart/inc-qty",
+            type: 'POST',
+            data: {cartId: cartId, productId: productId},
+            success: function (res) {
+                alert(res);
+            },
+            error(e) {
+                console.log(e.message());
+                alert(e.message())
+            }
+        })
+    });
+
+
+</script>
 
 </body>
 </html>

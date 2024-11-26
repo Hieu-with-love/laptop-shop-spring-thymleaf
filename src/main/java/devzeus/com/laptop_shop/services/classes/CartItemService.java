@@ -48,6 +48,7 @@ public class CartItemService implements ICartItemService {
                             ? formatter.format(item.getTotalPrice())
                             : "0";  // Hoặc một giá trị mặc định
                     response.setTotalPrice(formattedTotalPrice);
+                    response.setProductId(item.getProduct().getId());
 
                     return response;
                 })

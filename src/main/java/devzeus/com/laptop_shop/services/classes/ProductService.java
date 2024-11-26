@@ -223,6 +223,24 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<ProductResponse> getAllProductResponses() {
+        List<Product> products = this.getAllProducts();
+
+        return products.stream().map(p -> ProductResponse.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .price(Constant.formatter.format(p.getPrice()))
+                .quantity(p.getQuantity())
+                .codeDiscount(String.valueOf(p.getDiscount()))
+                .description(p.getDescription())
+                .thumbnail(p.getThumbnail())
+                .categoryName(p.getCategory().getName())
+                .brandName(p.getBrand().getName())
+                .build()).toList();
+    }
+
+
+    @Override
     public void deleteProduct(Long productId) {
         Product product = getProductById(productId);
         if (product == null)

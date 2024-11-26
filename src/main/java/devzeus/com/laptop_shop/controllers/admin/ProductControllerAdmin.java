@@ -1,6 +1,7 @@
 package devzeus.com.laptop_shop.controllers.admin;
 
 import devzeus.com.laptop_shop.dtos.requests.ProductDTO;
+import devzeus.com.laptop_shop.dtos.responses.ProductResponse;
 import devzeus.com.laptop_shop.models.Brand;
 import devzeus.com.laptop_shop.models.Category;
 import devzeus.com.laptop_shop.models.Product;
@@ -32,7 +33,7 @@ public class ProductControllerAdmin {
     public String showProducts(Model model,
                                @Param("keyword") String keyword,
                                @RequestParam(name = "pageNo", defaultValue = "1") int pageNo) {
-        List<Product> products = productService.getAllProducts();
+        List<ProductResponse> products = productService.getAllProductResponses();
 //        if (keyword != null) {
 //            model.addAttribute("keyword", keyword);
 //            products = productService.searchProductsByKeyword(keyword);

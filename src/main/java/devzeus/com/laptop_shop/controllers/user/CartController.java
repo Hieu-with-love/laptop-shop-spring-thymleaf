@@ -33,53 +33,8 @@ public class CartController {
         List<CartItemResponse> items = cartItemService.getAllItemsInCart(cartId);
         model.addAttribute("listItems", items);
         model.addAttribute("cart", cartResponse);
+        model.addAttribute("cartEmpty", items.isEmpty());
         return "user/cart";
-    }
-
-    @PostMapping("/add-to-cart")
-    public String addToCart(Model model,
-                            @RequestParam("cartId") Long cartId,
-                            @RequestParam("productId") Long productId,
-                            @RequestParam("quantity") int quantity
-    ) {
-        cartItemService.addItemsToCart(cartId, productId, quantity);
-        cartItemService.updateTotalAmount(cartId, productId);
-        return "redirect:/user/cart?cartId=" + cartId;
-    }
-
-    @PostMapping("/delete-item")
-    public String deleteItemFromCart(Model model,
-                                     @RequestParam("cartId") Long cartId,
-                                     @RequestParam("productName") String productName) {
-        Product product = productService.getProductByName(productName);
-        cartItemService.removeItemFromCart(cartId, product.getId());
-        model.addAttribute("msg", "Removing item from cart successfully");
-        return "redirect:/user/cart?cartId=" + cartId;
-    }
-
-    @GetMapping("/clearCart")
-    public String clearCart(Model model, @RequestParam("cartId") Long cartId) {
-        cartService.clearCart(cartId);
-        model.addAttribute("msg", "Clearing cart successfully");
-        return "redirect:/user/cart?cartId=" + cartId;
-    }
-
-    @PostMapping("/dec-qty")
-    public String decQty(@RequestParam("cartId") Long cartId,
-                         @RequestParam("productName") String productName
-    ) {
-        Product product = productService.getProductByName(productName);
-        cartItemService.decQty(cartId, product.getId());
-        return "redirect:/user/cart?cartId=" + cartId;
-    }
-
-    @PostMapping("/inc-qty")
-    public String incQty(@RequestParam("cartId") Long cartId,
-                         @RequestParam("productName") String productName
-    ) {
-        Product product = productService.getProductByName(productName);
-        cartItemService.incQty(cartId, product.getId());
-        return "redirect:/user/cart?cartId=" + cartId;
     }
 
     @GetMapping("/checkout")

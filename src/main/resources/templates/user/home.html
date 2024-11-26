@@ -47,7 +47,8 @@
                                                                  data-bs-target="#quick-view-modal"><i
                                                 class="far fa-eye"></i></a></li>
                                         <li class="select-option">
-                                            <form th:action="@{/user/cart/add-to-cart}" method="post"
+                                            <form id="form-add-to-cart" th:action="@{/user/cart/add-to-cart}"
+                                                  method="post"
                                                   class="cart-action">
                                                 <input type="hidden" name="cartId" th:value="${session.cartId}"/>
                                                 <input type="hidden" name="productId" th:value="${product.id}"/>
@@ -123,7 +124,29 @@
 <div th:insert="~{common-user/footer :: footer}"></div>
 <div th:insert="~{common-user/script :: script}"></div>
 
-<script></script>
+<script>
+    
+    document.querySelectorAll('#form-add-to-cart').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const actionUrl = this.getAttribute('action')
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                })
+                .catch(error => {
+                    console.error('Lỗi: ' + error);
+                    alert('Có lỗi xảy ra.');
+                })
+        });
+    });
+</script>
 
 </body>
 </html>

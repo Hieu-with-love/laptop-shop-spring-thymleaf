@@ -66,10 +66,10 @@
                                         <p class="mb-0" th:text="*{name}"><small>This is test Product</small></p>
                                     </div>
                                 </td>
-                                <td th:text="${product.category.name}"></td>
+                                <td th:text="${product.categoryName}"></td>
                                 <td th:text="${product.price}"></td>
-                                <td th:text="${product.brand.name}"></td>
-                                <td th:text="${product.discount}"></td>
+                                <td th:text="${product.categoryName}"></td>
+                                <td th:text="${product.getCodeDiscount()}"></td>
                                 <td th:text="${product.quantity}"></td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">

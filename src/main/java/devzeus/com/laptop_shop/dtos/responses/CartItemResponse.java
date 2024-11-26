@@ -13,4 +13,5 @@ public class CartItemResponse {
     private String unitPrice;
     private String totalPrice;
     private String images;
+    private Long productId;
 }
