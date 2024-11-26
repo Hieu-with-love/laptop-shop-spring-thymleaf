@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,4 +23,7 @@ public class Payment {
     private String type;
 
     private LocalDate expire;
+
+    @OneToMany(mappedBy = "payment")
+    private List<Order> orders;
 }

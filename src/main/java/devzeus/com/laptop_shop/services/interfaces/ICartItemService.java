@@ -4,8 +4,11 @@ import devzeus.com.laptop_shop.dtos.responses.CartItemResponse;
 import devzeus.com.laptop_shop.models.CartItem;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ICartItemService {
+    Set<CartItem> getAllItems(Long cartId);
+
     List<CartItemResponse> getAllItemsInCart(Long cartId);
 
     CartItem getCartItem(Long cartId, Long productId);

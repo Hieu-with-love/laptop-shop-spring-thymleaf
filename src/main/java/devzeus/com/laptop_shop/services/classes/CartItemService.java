@@ -12,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static devzeus.com.laptop_shop.utils.Constant.formatter;
@@ -26,6 +25,12 @@ public class CartItemService implements ICartItemService {
     private final CartRepository cartRepository;
     private final CartService cartService;
     private final ProductService productService;
+
+    @Override
+    public Set<CartItem> getAllItems(Long cartId) {
+        Cart cart = cartService.getCartEntity(cartId);
+        return cart.getItems();
+    }
 
     @Override
     public List<CartItemResponse> getAllItemsInCart(Long cartId) {

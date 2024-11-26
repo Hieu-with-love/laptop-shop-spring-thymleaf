@@ -1,22 +1,23 @@
 package devzeus.com.laptop_shop.services.interfaces;
 
+import devzeus.com.laptop_shop.models.CartItem;
 import devzeus.com.laptop_shop.models.Order;
+import devzeus.com.laptop_shop.models.Payment;
+import devzeus.com.laptop_shop.models.User;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface IOrderService {
-    List<Order> findByPhoneNumber(String phoneNumber);
+    void createOrder(User user, Payment payment,
+                     Long cartId,
+                     Set<CartItem> cartDetailList);
 
-    List<Order> findByAddressContaining(String address);
-
-    List<Order> findByTotalMoneyBetween(BigDecimal min, BigDecimal max);
-
-    List<Order> findByOrderDate(LocalDate orderDate);
-
-    List<Order> findAllByActive(boolean isActive);
+    void deleteAll();
 
     List<Order> findAll();
 
@@ -29,4 +30,6 @@ public interface IOrderService {
     long count();
 
     void deleteById(Long aLong);
+
+    List<Order> findAll(Sort sort);
 }
