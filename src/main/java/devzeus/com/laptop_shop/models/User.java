@@ -57,4 +57,7 @@ public class User extends TrackingDate {
 
     @OneToMany(mappedBy = "user")
     private Set<Address> addresses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
 }

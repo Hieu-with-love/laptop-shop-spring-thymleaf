@@ -24,29 +24,8 @@
                                         <img th:src="@{'/uploads/' + ${product.thumbnail} }"
                                              alt="Product Images">
                                     </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-2.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-3.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-4.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-5.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-6.png}"
-                                             alt="Product Images">
-                                    </div>
-                                    <div class="thumbnail">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-7.png}"
-                                             alt="Product Images">
+                                    <div class="thumbnail" th:each="productImage : ${productImages}">
+                                        <img th:src="@{'/uploads/'+${productImage.getImageUrl()}}" alt="Product Images">
                                     </div>
                                 </div>
                             </div>
@@ -56,29 +35,8 @@
                                         <img th:src="@{'/uploads/' + ${product.thumbnail} }"
                                              alt="samll-thumb">
                                     </div>
-                                    <div class="small-thumb-img">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-2.png}"
-                                             alt="samll-thumb">
-                                    </div>
-                                    <div class="small-thumb-img active">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-3.png}"
-                                             alt="samll-thumb">
-                                    </div>
-                                    <div class="small-thumb-img">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-4.png}"
-                                             alt="samll-thumb">
-                                    </div>
-                                    <div class="small-thumb-img">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-5.png}"
-                                             alt="samll-thumb">
-                                    </div>
-                                    <div class="small-thumb-img">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-6.png}"
-                                             alt="samll-thumb">
-                                    </div>
-                                    <div class="small-thumb-img">
-                                        <img th:src="@{/etrade/assets/images/product/furniture/product-7.png}"
-                                             alt="samll-thumb">
+                                    <div class="small-thumb-img" th:each="productImage : ${productImages}">
+                                        <img th:src="@{'/uploads/'+${productImage.getImageUrl()}}" alt="samll-thumb">
                                     </div>
                                 </div>
                             </div>
@@ -95,14 +53,25 @@
                                 </div>
                                 <div class="product-rating">
                                     <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
+                                        <!-- Define ratingCount to ensure it's a number -->
+                                        <th:block th:with="ratingCount=${ratingCount}">
+                                            <!-- Loop for filled stars -->
+                                            <th:block th:if="${ratingCount > 0}">
+                                                <th:block th:each="i : ${#numbers.sequence(1, ratingCount)}">
+                                                    <i class="fas fa-star"></i>
+                                                </th:block>
+                                            </th:block>
+
+                                            <!-- Loop for empty stars -->
+                                            <th:block th:if="${ratingCount < 5}">
+                                                <th:block th:each="i : ${#numbers.sequence(1, (5 - ratingCount))}">
+                                                    <i class="far fa-star"></i>
+                                                </th:block>
+                                            </th:block>
+                                        </th:block>
                                     </div>
                                     <div class="review-link">
-                                        <a href="#">(<span>2</span> customer reviews)</a>
+                                        <a href="#">(<span th:text="${ratingUser}"></span> customer reviews)</a>
                                     </div>
                                 </div>
                                 <ul class="product-meta">
@@ -273,103 +242,46 @@
                     <div class="row">
                         <div class="col-lg-6 mb--40">
                             <div class="axil-comment-area pro-desc-commnet-area">
-                                <h5 class="title">01 Review for this product</h5>
+                                <h5 class="title" th:text="${ratingUser} + ' Review for this product'"></h5>
                                 <ul class="comment-list">
                                     <!-- Start Single Comment  -->
-                                    <li class="comment">
+                                    <li class="comment" th:each="rating : ${ratings}">
                                         <div class="comment-body">
                                             <div class="single-comment">
                                                 <div class="comment-img">
-                                                    <img th:src="@{/etrade/assets/images/blog/author-image-4.png}"
-                                                         alt="Author Images">
+<!--                                                    <img th:src="@{'/uploads/'+${rating.getUser().getAvatar()()}}"-->
+<!--                                                         alt="Author Images">-->
                                                 </div>
                                                 <div class="comment-inner">
                                                     <h6 class="commenter">
                                                         <a class="hover-flip-item-wrapper" href="#">
-                                                                <span class="hover-flip-item">
-                                                                    <span data-text="Cameron Williamson">Eleanor Pena</span>
-                                                                </span>
+                                                                        <span class="hover-flip-item">
+                                                                            <span data-text="Cameron Williamson"
+                                                                                  th:text="${rating.getUser().getFullName()}"></span>
+                                                                        </span>
                                                         </a>
                                                         <span class="commenter-rating ratiing-four-star">
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star empty-rating"></i></a>
-                                                            </span>
-                                                    </h6>
-                                                    <div class="comment-text">
-                                                        <p>“We’ve created a full-stack structure for our working
-                                                            workflow processes, were from the funny the century initial
-                                                            all the made, have spare to negatives. ” </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Single Comment  -->
-
-                                    <!-- Start Single Comment  -->
-                                    <li class="comment">
-                                        <div class="comment-body">
-                                            <div class="single-comment">
-                                                <div class="comment-img">
-                                                    <img th:src="@{/etrade/assets/images/blog/author-image-4.png}"
-                                                         alt="Author Images">
-                                                </div>
-                                                <div class="comment-inner">
-                                                    <h6 class="commenter">
-                                                        <a class="hover-flip-item-wrapper" href="#">
-                                                                <span class="hover-flip-item">
-                                                                    <span data-text="Rahabi Khan">Courtney Henry</span>
+                                                                    <!-- Define ratingCount to ensure it's a number -->
+                                                                    <th:block th:with="star=${rating.getStar()}">
+                                                                        <!-- Loop for filled stars -->
+                                                                        <th:block th:if="${star > 0}">
+                                                                            <th:block
+                                                                                    th:each="i : ${#numbers.sequence(1, star)}">
+                                                                                <i class="fas fa-star"></i>
+                                                                            </th:block>
+                                                                        </th:block>
+                                                                        <!-- Loop for empty stars -->
+                                                                        <th:block th:if="${star < 5}">
+                                                                            <th:block
+                                                                                    th:each="i : ${#numbers.sequence(1, (5 - star))}">
+                                                                                <i class="far fa-star"></i>
+                                                                            </th:block>
+                                                                        </th:block>
+                                                                    </th:block>
                                                                 </span>
-                                                        </a>
-                                                        <span class="commenter-rating ratiing-four-star">
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                            </span>
                                                     </h6>
                                                     <div class="comment-text">
-                                                        <p>“We’ve created a full-stack structure for our working
-                                                            workflow processes, were from the funny the century initial
-                                                            all the made, have spare to negatives. ”</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Single Comment  -->
-
-                                    <!-- Start Single Comment  -->
-                                    <li class="comment">
-                                        <div class="comment-body">
-                                            <div class="single-comment">
-                                                <div class="comment-img">
-                                                    <img th:src="@{/etrade/assets/images/blog/author-image-5.png}"
-                                                         alt="Author Images">
-                                                </div>
-                                                <div class="comment-inner">
-                                                    <h6 class="commenter">
-                                                        <a class="hover-flip-item-wrapper" href="#">
-                                                                <span class="hover-flip-item">
-                                                                    <span data-text="Rahabi Khan">Devon Lane</span>
-                                                                </span>
-                                                        </a>
-                                                        <span class="commenter-rating ratiing-four-star">
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                            </span>
-                                                    </h6>
-                                                    <div class="comment-text">
-                                                        <p>“We’ve created a full-stack structure for our working
-                                                            workflow processes, were from the funny the century initial
-                                                            all the made, have spare to negatives. ” </p>
+                                                        <p th:text="${rating.getContent()}"></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -397,30 +309,19 @@
                                     </div>
                                 </div>
 
-                                <form action="#">
+                                <form th:action="@{/user/products/reviews(productId=${productE.id})}" method="post" th:object="${rating}">
+                                    <input type="hidden" name="ratingValue" id="ratingValue" th:field="*{star}"/>
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label>Other Notes (optional)</label>
-                                                <textarea name="message" placeholder="Your Comment"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label>Name <span class="require">*</span></label>
-                                                <input id="name" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label>Email <span class="require">*</span> </label>
-                                                <input id="email" type="email">
+                                                <textarea placeholder="Your Comment" th:field="*{content}"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-submit">
                                                 <button type="submit" id="submit"
-                                                        class="axil-btn btn-bg-primary w-auto">Send Message
+                                                        class="axil-btn btn-bg-primary w-auto">Submit Comment
                                                 </button>
                                             </div>
                                         </div>
