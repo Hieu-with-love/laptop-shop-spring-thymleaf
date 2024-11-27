@@ -21,7 +21,7 @@ public class OrderService implements IOrderService {
     private final ICartService cartService;
 
     @Override
-    public void createOrder(User user, Payment payment,
+    public void createOrder(User user, Payment payment, Address address,
                             Long cartId,
                             Set<CartItem> cartDetailList) {
         Cart cart = cartService.getCartEntity(cartId);
@@ -30,6 +30,7 @@ public class OrderService implements IOrderService {
         order.setStatus(OrderStatus.PENDING);
         order.setUser(user);
         order.setPayment(payment);
+        order.setAddress(address);
         Set<OrderItem> orderDetails = new HashSet<>();
         for (CartItem cartDetail : cartDetailList) {
             OrderItem orderDetail = new OrderItem();

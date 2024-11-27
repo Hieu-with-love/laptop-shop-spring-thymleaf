@@ -1,9 +1,6 @@
 package devzeus.com.laptop_shop.services.interfaces;
 
-import devzeus.com.laptop_shop.models.CartItem;
-import devzeus.com.laptop_shop.models.Order;
-import devzeus.com.laptop_shop.models.Payment;
-import devzeus.com.laptop_shop.models.User;
+import devzeus.com.laptop_shop.models.*;
 import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
@@ -13,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface IOrderService {
-    void createOrder(User user, Payment payment,
+    void createOrder(User user, Payment payment, Address address,
                      Long cartId,
                      Set<CartItem> cartDetailList);
 

@@ -37,4 +37,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 }

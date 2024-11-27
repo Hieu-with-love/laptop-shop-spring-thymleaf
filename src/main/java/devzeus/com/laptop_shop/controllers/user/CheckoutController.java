@@ -65,7 +65,7 @@ public class CheckoutController {
         Set<CartItem> cartDetailList = cartDetailService.getAllItems(cartId);
         // Update the cart's total price
 
-        orderService.createOrder(user, payment, cart.getId(), cartDetailList);
+        orderService.createOrder(user, payment, address, cart.getId(), cartDetailList);
 
         String redirectUrl;
         if (payment.equals("paypal")) {
