@@ -1,6 +1,5 @@
 package devzeus.com.laptop_shop.controllers.user;
 
-import devzeus.com.laptop_shop.dtos.requests.CartItemDTO;
 import devzeus.com.laptop_shop.dtos.responses.CartItemResponse;
 import devzeus.com.laptop_shop.dtos.responses.CartResponse;
 import devzeus.com.laptop_shop.models.*;
@@ -13,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,11 +32,13 @@ public class CheckoutController {
         List<Address> addresses = addressService.findByUser_Username(username);
         Long cartId = (Long) session.getAttribute("cartId");
         CartResponse cart = cartService.getCart(cartId);
+        Cart cartEntity = cartService.getCartEntity(cartId);
         List<CartItemResponse> cartDetailList = cartDetailService.getAllItemsInCart(cartId);
 
         model.addAttribute("user", user);
         model.addAttribute("addresses", addresses);
         model.addAttribute("cart", cart);
+        model.addAttribute("cartEntity", cartEntity);
         model.addAttribute("cartDetailList", cartDetailList);
 
         return "user/checkout";
@@ -49,9 +47,12 @@ public class CheckoutController {
     @PostMapping("/process")
     @ResponseBody
     public String process(Model model, HttpSession session,
-                          @RequestParam("paymentMethod") String paymentMethod,
-                          @RequestParam("addressId") Long addressId) {
+                          @RequestParam Map<String, String> params) {
         // Get the current user
+        // Get value from json data
+        Long addressId = Long.parseLong(params.get("addressId"));
+        String paymentMethod = params.get("paymentMethod");
+
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByEmail(username);
 
@@ -68,10 +69,10 @@ public class CheckoutController {
         orderService.createOrder(user, payment, address, cart.getId(), cartDetailList);
 
         String redirectUrl;
-        if (payment.equals("paypal")) {
-            redirectUrl = "/user/checkout/paypal";
-        } else if (payment.equals("vnpay")) {
-            redirectUrl = "/user/checkout/vnpay";
+        if (payment.getType().equals("paypal")) {
+            redirectUrl = "/user/payment/paypal";
+        } else if (payment.getType().equals("vnpay")) {
+            redirectUrl = "/user/payment/vnpay";
         } else {
             // Handle other payment methods or default case
             redirectUrl = "/user";
