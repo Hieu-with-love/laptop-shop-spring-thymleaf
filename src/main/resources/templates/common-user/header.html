@@ -52,10 +52,10 @@
         <div class="container">
             <div class="header-navbar">
                 <div class="header-brand">
-                    <a th:href="@{/user}" class="logo logo-dark">
+                    <a th:href="@{/user/home}" class="logo logo-dark">
                         <img th:src="@{/etrade/assets/images/logo/logo.png}" alt="Site Logo">
                     </a>
-                    <a th:href="@{/user}" class="logo logo-light">
+                    <a th:href="@{/user/home}" class="logo logo-light">
                         <img th:src="@{/etrade/assets/images/logo/logo-light.png}" alt="Site Logo">
                     </a>
                 </div>
@@ -65,7 +65,7 @@
                         <ul class="mainmenu">
                             <!--              Start home-->
                             <li>
-                                <a th:href="@{/user}">Home</a>
+                                <a th:href="@{/user/home}">Home</a>
                             </li>
                             <!--              End home-->
 
@@ -118,7 +118,10 @@
                             </a>
                         </li>
                         <li class="wishlist">
-                            <a href="wishlist.html">
+                            <a th:href="@{/user/wishlist(wishlistId=${session.wishlistId})}">
+                                <p class="cart-count"
+                                   th:if="${session.countWishlist > 0}"
+                                   th:text="${session.countWishlist}"></p>
                                 <i class="flaticon-heart"></i>
                             </a>
                         </li>
@@ -140,8 +143,8 @@
                                     <li>
                                         <a th:href="@{/user/my-account}">My Account</a>
                                     </li>
-                                    <li>
-                                        <a href="#">Initiate return</a>
+                                    <li th:if="${#strings.equalsIgnoreCase(session.userSession.role.name,'admin')}">
+                                        <a th:href="@{/admin/dashboard}">Dashboard Admin</a>
                                     </li>
                                     <li>
                                         <a href="#">Support</a>

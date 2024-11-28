@@ -133,3 +133,45 @@
 .empty-notification .btn:hover {
     background: #0056b3;
 }
+
+
+.wishlist-form {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* Nền trắng */
+    border-radius: 8px; /* Bo góc nếu cần */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+.wishlist-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    padding: 8px; /* Khoảng cách bên trong nút */
+    font-size: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wishlist-btn i {
+    font-size: 1.5rem;
+    color: #ff0000; /* Màu đỏ cho biểu tượng trái tim */
+}
+
+.wishlist-btn:hover i {
+    color: #ff5555; /* Màu đỏ sáng hơn khi hover */
+}
+
+.product-image {
+    width: 100%; /* Đảm bảo ảnh chiếm hết chiều ngang của khung */
+    max-width: 300px; /* Giới hạn chiều rộng tối đa, điều chỉnh phù hợp với giao diện của bạn */
+    height: auto; /* Giữ tỷ lệ gốc của ảnh */
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung mà không bị méo */
+    border-radius: 5px; /* (Tùy chọn) Bo tròn góc để tạo cảm giác mềm mại */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* (Tùy chọn) Đổ bóng để tăng tính thẩm mỹ */
+}

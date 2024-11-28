@@ -9,6 +9,8 @@ import java.util.List;
 public interface IUserService {
     UserDTO getUserById(Long id);
 
+    UserDTO getUserDTO(String username);
+
     // register user
     boolean registerUser(UserDTO userDTO, BindingResult result);
 
@@ -23,6 +25,8 @@ public interface IUserService {
 
     void changePassword(String email);
 
+    boolean changePassword(UserDTO userDTO, BindingResult result);
+
     // soft delete
     void toggleUserActivation(String phoneNumber, boolean isActive);
 
@@ -32,6 +36,8 @@ public interface IUserService {
     boolean createUser(UserDTO userDTO, BindingResult result);
 
     boolean updateUser(UserDTO user, BindingResult result);
+
+    boolean updateProfile(UserDTO userDTO, BindingResult result);
 
     void disableUser(Long id);
 

@@ -21,19 +21,19 @@ public class ProductController {
         Product productEntity = productService.getProductById(id);
         model.addAttribute("product", product);
         model.addAttribute("productE", productEntity);
-        return "/user/product/detail";
+        return "/user/detail";
     }
 
     @GetMapping("/cart")
     public String showCart(Model model) {
 
-        return "/user/product/cart";
+        return "/user/cart";
     }
 
     @PostMapping("/add-to-card/id")
     public String addToCart(Model model) {
 
-        return "/user/product/cart";
+        return "/user/cart";
     }
 
 

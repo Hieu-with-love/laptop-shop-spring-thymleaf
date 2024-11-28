@@ -14,7 +14,7 @@
 
 <body class="sticky-header">
 <!-- Start Header -->
-<div th:insert="~{common-user/header::header}"></div>
+<div th:insert="~{common-user/header-style-5::header}"></div>
 
 <!-- End Header -->
 
@@ -75,7 +75,8 @@
                                         <input type="hidden" name="productId" th:value="${item.productId}"/>
                                         <button type="submit" class="dec qtybtn">-</button>
                                     </form>
-                                    <input type="number" class="quantity-input" th:value="${item.quantity}">
+                                    <input type="number" id="quantity-inc" class="quantity-input"
+                                           th:value="${item.quantity}">
                                     <form th:action="@{/user/cart/inc-qty}" method="post"
                                           class="cart-action" id="form-cart-inc">
                                         <input type="hidden" name="cartId" th:value="${session.cartId}"/>
@@ -93,8 +94,8 @@
                 </div>
                 <div id="cart-empty-message" style="display: none;">
                     <div class="empty-notification">
-                        <img th:src="@{/etrade/assets/images/my-img/empty-cart-yellow.png}" alt="Empty Wishlist">
-                        <p>Browse our catalog to add your favorite products to your wishlist!</p>
+                        <img th:src="@{/etrade/assets/images/my-img/empty-cart-yellow.png}" alt="Empty Cart">
+                        <p>Browse our catalog to add your favorite products to your cart!</p>
                         <a href="/user" class="btn btn-primary">Continue Shopping</a>
                     </div>
                 </div>
@@ -163,7 +164,6 @@
     <!-- End Cart Area  -->
 
 </main>
-
 
 <div th:insert="~{common-user/content::service-area}"></div>
 
@@ -403,101 +403,7 @@
 </div>
 <!-- Header Search Modal End -->
 
-
-<div class="cart-dropdown" id="cart-dropdown">
-    <div class="cart-content-wrap">
-        <div class="cart-header">
-            <h2 class="header-title">Cart review</h2>
-            <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-body">
-            <ul class="cart-item-list">
-                <li class="cart-item">
-                    <div class="item-img">
-                        <a href="single-product.html"><img src="assets/images/product/electric/product-01.png"
-                                                           alt="Commodo Blown Lamp"></a>
-                        <button class="close-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="item-content">
-                        <div class="product-rating">
-                                <span class="icon">
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-							</span>
-                            <span class="rating-number">(64)</span>
-                        </div>
-                        <h3 class="item-title"><a href="single-product-3.html">Wireless PS Handler</a></h3>
-                        <div class="item-price"><span class="currency-symbol">$</span>155.00</div>
-                        <div class="pro-qty item-quantity">
-                            <input type="number" class="quantity-input" value="15">
-                        </div>
-                    </div>
-                </li>
-                <li class="cart-item">
-                    <div class="item-img">
-                        <a href="single-product-2.html"><img src="assets/images/product/electric/product-02.png"
-                                                             alt="Commodo Blown Lamp"></a>
-                        <button class="close-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="item-content">
-                        <div class="product-rating">
-                                <span class="icon">
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-							</span>
-                            <span class="rating-number">(4)</span>
-                        </div>
-                        <h3 class="item-title"><a href="single-product-2.html">Gradient Light Keyboard</a></h3>
-                        <div class="item-price"><span class="currency-symbol">$</span>255.00</div>
-                        <div class="pro-qty item-quantity">
-                            <input type="number" class="quantity-input" value="5">
-                        </div>
-                    </div>
-                </li>
-                <li class="cart-item">
-                    <div class="item-img">
-                        <a href="single-product-3.html"><img src="assets/images/product/electric/product-03.png"
-                                                             alt="Commodo Blown Lamp"></a>
-                        <button class="close-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="item-content">
-                        <div class="product-rating">
-                                <span class="icon">
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-							</span>
-                            <span class="rating-number">(6)</span>
-                        </div>
-                        <h3 class="item-title"><a href="single-product.html">HD CC Camera</a></h3>
-                        <div class="item-price"><span class="currency-symbol">$</span>200.00</div>
-                        <div class="pro-qty item-quantity">
-                            <input type="number" class="quantity-input" value="100">
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="cart-footer">
-            <h3 class="cart-subtotal">
-                <span class="subtotal-title">Subtotal:</span>
-                <span class="subtotal-amount">$610.00</span>
-            </h3>
-            <div class="group-btn">
-                <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                <a href="checkout.html" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
-            </div>
-        </div>
-    </div>
-</div>
+<div th:insert="~{/common-user/cart-dropdown::cart-dropdown}"></div>
 
 <div th:insert="~{common-user/script::script}"></div>
 
@@ -571,14 +477,42 @@
         const $form = $(this);
         const cartId = $form.find('input[name="cartId"]').val();
         const productId = $form.find('input[name="productId"]').val();
-        const quantity = $form.find('input[name="quantity"]').val();
 
         $.ajax({
             url: "/user/cart/inc-qty",
             type: 'POST',
             data: {cartId: cartId, productId: productId},
             success: function (res) {
+                const $quantityInput = $form.closest('.pro-qty').find('.quantity-input');
+                $quantityInput.val(res.quantity); // Gán số lượng mới
                 alert(res);
+            },
+            error(e) {
+                console.log(e.message());
+                alert(e.message())
+            }
+        })
+    });
+
+    $(document).on('submit', '#form-cart-dec', function (e) {
+        e.preventDefault();
+
+        const $form = $(this);
+        const cartId = $form.find('input[name="cartId"]').val();
+        const productId = $form.find('input[name="productId"]').val();
+
+        $.ajax({
+            url: "/user/cart/dec-qty",
+            type: 'POST',
+            data: {cartId: cartId, productId: productId},
+            success: function (res) {
+                if (res.quantity > 1) {
+                    const $quantityInput = $form.closest('.pro-qty').find('.quantity-input');
+                    $quantityInput.val(res.quantity); // Gán giá trị mới
+                    alert(res.message + " : " + res.quantity);
+                } else {
+                    alert("Khong the tru duoc nua!");
+                }
             },
             error(e) {
                 console.log(e.message());
