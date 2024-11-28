@@ -1,0 +1,201 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Laptop Shop || Checkout</title>
+    <div th:insert="~{/common-user/head::head}"></div>
+</head>
+<body class="sticky-header">
+<!--[if lte IE 9]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade
+    your browser</a> to improve your experience and security.</p>
+<![endif]-->
+<a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
+
+<div th:insert="~{/common-user/header::header}"></div>
+
+<main class="main-wrapper">
+
+    <!-- Start Checkout Area  -->
+    <div class="axil-checkout-area axil-section-gap">
+        <div class="container">
+            <form action="#">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="axil-checkout-notice">
+                            <div class="axil-toggle-box">
+                                <div class="toggle-bar"><i class="fas fa-pencil"></i> Have a coupon? <a
+                                        href="javascript:void(0)" class="toggle-btn">Click here to enter your code <i
+                                        class="fas fa-angle-down"></i></a>
+                                </div>
+
+                                <div class="axil-checkout-coupon toggle-open">
+                                    <p>If you have a coupon code, please apply it below.</p>
+                                    <div class="input-group">
+                                        <input placeholder="Enter coupon code" type="text" name="voucher"
+                                               id="voucher-code">
+                                        <div class="apply-btn">
+                                            <button type="button" class="axil-btn btn-bg-primary">Apply
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="axil-checkout-billing">
+                            <h4 class="title mb--40">Billing details</h4>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>First Name <span>*</span></label>
+                                        <input type="text" id="first-name" th:value="${user.getFullName()}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone <span>*</span></label>
+                                <input type="tel" id="phone" th:value="${user.getPhoneNumber()}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address <span>*</span></label>
+                                <input type="email" id="email" th:value="${user.getEmail()}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Address <span>*</span></label>
+                                <select id="Region">
+                                    <option th:each="address : ${addresses}"
+                                            th:value="${address.getId()}"
+                                            th:text="|${address.getDetailLocation()}, ${address.getStreet()}, ${address.getDistrict()}, ${address.getCity()}|">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="axil-order-summery order-checkout-summery">
+                            <h5 class="title mb--20">Your Order</h5>
+                            <div class="summery-table-wrap">
+                                <table class="table summery-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="order-product" th:each="cartDetail : ${cartDetailList}">
+                                        <td th:text="|${cartDetail.getProductName()} x${cartDetail.getQuantity()}|"></td>
+                                        <td th:text="${cartDetail.getTotalPrice()}"></td>
+                                    </tr>
+                                    <tr class="order-shipping">
+                                        <td colspan="2">
+                                            <div class="shipping-amount">
+                                                <span class="title">Shipping Method</span>
+                                                <span class="amount">$35.00</span>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="radio" id="radio1" name="shipping" checked>
+                                                <label for="radio1">Free Shippping</label>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="radio" id="radio2" name="shipping">
+                                                <label for="radio2">Local</label>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="radio" id="radio3" name="shipping">
+                                                <label for="radio3">Flat rate</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="order-total">
+                                        <td>Total</td>
+                                        <td class="order-total-amount" th:text="${cart.getTotalAmount()}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="order-payment-method">
+                                <div class="single-payment">
+                                    <div class="input-group">
+                                        <input type="radio" id="radio5" name="payment" value="cod">
+                                        <label for="radio5">Cash on delivery</label>
+                                    </div>
+                                    <p>Pay with cash upon delivery.</p>
+                                </div>
+                                <div class="single-payment">
+                                    <div class="input-group">
+                                        <input type="radio" id="radio4" name="payment" value="vnpay">
+                                        <label for="radio4">VNPay</label>
+                                    </div>
+                                    <p>Make your payment directly into our bank account. Please use your Order ID as the
+                                        payment reference. Your order will not be shipped until the funds have cleared
+                                        in our account.</p>
+                                </div>
+                                <div class="single-payment">
+                                    <div class="input-group justify-content-between align-items-center">
+                                        <input type="radio" id="radio6" name="payment" value="paypal" checked>
+                                        <label for="radio6">Paypal</label>
+                                        <img th:src="@{/user/assets/images/others/payment.png}" alt="Paypal payment">
+                                    </div>
+                                    <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
+                                        account.</p>
+                                </div>
+                            </div>
+                            <a href="#" class="axil-btn btn-bg-primary checkout-btn"
+                               onclick="processCheckout()">Process to Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- End Checkout Area  -->
+
+</main>
+
+<div th:insert="~{common-user/content::service-area}"></div>
+
+<!-- Product Quick View Modal Start -->
+<!-- Product Quick View Modal End -->
+<div th:insert="common-user/footer::footer"></div>
+<!-- JS-->
+<div th:insert="~{common-user/script::script}"></div>
+
+<script>
+    function processCheckout() {
+        // Get the selected payment method
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+        // Get the selected address ID from the dropdown
+        const addressId = document.getElementById('Region').value;
+        // Get the voucher code
+        const voucher = document.getElementById('voucher-code').value;
+        // Get the new price
+        const newPrice = document.querySelector('.order-total-amount').textContent;
+
+        // Create a FormData object to hold the data
+        const formData = new FormData();
+        formData.append('paymentMethod', paymentMethod);
+        formData.append('addressId', addressId);
+        formData.append('voucher', voucher);
+        formData.append('newPrice', newPrice);
+
+        // Send the data using a POST request
+        fetch('/user/checkout/process', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    console.error('Error:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</body>
+</html>

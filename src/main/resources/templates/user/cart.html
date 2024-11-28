@@ -1,0 +1,303 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Mirrored from new.axilthemes.com/demo/template/etrade/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:29 GMT -->
+<head>
+    <title>Laptop Shop || Cart</title>
+    <div th:insert="~{common-user/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/etrade/assets/css/my-style.css}"
+    />
+</head>
+
+
+<body class="sticky-header">
+<!-- Start Header -->
+<div th:insert="~{common-user/header-style-5::header}"></div>
+
+<!-- End Header -->
+
+<main class="main-wrapper">
+
+    <!-- Start Cart Area  -->
+    <div class="axil-product-cart-area axil-section-gap">
+        <div class="container">
+            <div class="axil-product-cart-wrap">
+                <div class="product-table-heading">
+                    <h4 class="title">Your Cart</h4>
+                    <form id="form-clear-cart">
+                        <input type="hidden" id="cartId" th:value="${session.cartId}">
+                        <button type="submit" class="cart-clear">
+                            Clear Shopping Cart
+                        </button>
+                    </form>
+                </div>
+                <div id="items-container" class="table-responsive">
+                    <input type="hidden" id="isCartEmpty" th:value="${cartEmpty}">
+
+                    <table class="table axil-product-table axil-cart-table mb--40">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="product-remove"></th>
+                            <th scope="col" class="product-thumbnail">Thumbnail</th>
+                            <th scope="col" class="product-title">Product Name</th>
+                            <th scope="col" class="product-price">Price</th>
+                            <th scope="col" class="product-quantity">Quantity</th>
+                            <th scope="col" class="product-subtotal">Subtotal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${listItems}">
+                            <td class="product-remove">
+                                <form th:action="@{/user/cart/remove}" class="remove-item">
+                                    <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                    <input type="hidden" name="productId" th:value="${item.productId}"/>
+                                    <button type="submit" class="remove-wishlist">
+                                        <i class="fal fa-times"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="product-thumbnail"><a th:href="@{/user/product/detail}"><img
+                                    th:src="@{'/uploads/' + ${item.images}}" alt="Digital Product"></a>
+                            </td>
+                            <td class="product-title" th:text="${item.productName}"><a
+                                    th:href="@{/user/product/detail}"></a>
+                            </td>
+                            <td class="product-price" data-title="Price" th:text="${item.unitPrice}"><span
+                                    class="currency-symbol">VNĐ</span>
+                            </td>
+                            <td class="product-quantity" data-title="Qty">
+                                <div class="pro-qty">
+                                    <form th:action="@{/user/cart/dec-qty}" method="post"
+                                          class="cart-action" id="form-cart-dec">
+                                        <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                        <input type="hidden" name="productId" th:value="${item.productId}"/>
+                                        <button type="submit" class="dec qtybtn">-</button>
+                                    </form>
+                                    <input type="number" id="quantity-inc" class="quantity-input"
+                                           th:value="${item.quantity}">
+                                    <form th:action="@{/user/cart/inc-qty}" method="post"
+                                          class="cart-action" id="form-cart-inc">
+                                        <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                        <input type="hidden" name="productId" th:value="${item.productId}"/>
+                                        <button type="submit" class="inc qtybtn">+</button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="product-subtotal" data-title="Subtotal" th:text="${item.totalPrice}"><span
+                                    class="currency-symbol">VNĐ</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="cart-empty-message" style="display: none;">
+                    <div class="empty-notification">
+                        <img th:src="@{/etrade/assets/images/my-img/empty-cart-yellow.png}" alt="Empty Cart">
+                        <p>Browse our catalog to add your favorite products to your cart!</p>
+                        <a href="/user/home" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                </div>
+
+                <div class="cart-update-btn-area">
+                    <div class="input-group product-cupon">
+                        <input placeholder="Enter coupon code" type="text">
+                        <div class="product-cupon-btn">
+                            <button type="submit" class="axil-btn btn-outline">Apply</button>
+                        </div>
+                    </div>
+                    <div class="update-btn">
+                        <a th:href="@{/user}" class="axil-btn btn-outline">Update Cart</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-5 col-lg-7 offset-xl-7 offset-lg-5">
+                        <div class="axil-order-summery mt--80">
+                            <h5 class="title mb--20">Order Summary</h5>
+                            <div class="summery-table-wrap">
+                                <table class="table summery-table mb--30">
+                                    <tbody>
+                                    <tr class="order-subtotal">
+                                        <td>Subtotal</td>
+                                        <td th:each="item : ${listItems}">
+                                            <p th:text="${item.totalPrice}"></p>
+                                        </td>
+                                    </tr>
+                                    <tr class="order-shipping">
+                                        <td>Shipping</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="radio" id="radio1" name="shipping" checked>
+                                                <label for="radio1">Free Shippping</label>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="radio" id="radio2" name="shipping">
+                                                <label for="radio2">Local: $35.00</label>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="radio" id="radio3" name="shipping">
+                                                <label for="radio3">Flat rate: $12.00</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="order-tax">
+                                        <td>State Tax</td>
+                                        <td>$8.00</td>
+                                    </tr>
+                                    <tr class="order-total">
+                                        <td>Total</td>
+                                        <td class="order-total-amount" th:text="${cart.totalAmount}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a th:href="@{/user/checkout}"
+                               class="axil-btn btn-bg-primary checkout-btn">Process to
+                                Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Cart Area  -->
+
+</main>
+
+<div th:insert="~{common-user/content::service-area}"></div>
+
+<div th:insert="~{common-user/footer::footer}"></div>
+
+
+<!-- Product Quick View Modal Start -->
+<div th:insert="~{/common-user/content::viewed-product-area}"></div>
+<!-- Product Quick View Modal End -->
+
+<!-- Header Search Modal End -->
+
+<!-- Header Search Modal End -->
+
+<div th:insert="~{/common-user/cart-dropdown::cart-dropdown}"></div>
+
+<div th:insert="~{common-user/script::script}"></div>
+
+<script>
+    $(document).ready(function () {
+        const isCartEmpty = $('#isCartEmpty').val() === 'true'
+        if (isCartEmpty) {
+            $('#items-container').hide();
+            $('#cart-empty-message').fadeIn();
+        } else {
+            $('#items-container').show();
+        }
+    });
+
+    $(document).on('submit', '#form-clear-cart', function (event) {
+        event.preventDefault(); // Ngăn hành vi submit mặc định
+
+        const $form = $(this);
+        const cartId = $form.find('#cartId').val(); // Lấy giá trị cartId từ input
+
+        if (!cartId) {
+            alert("Cart ID không hợp lệ!");
+            return;
+        }
+
+        $.ajax({
+            url: '/user/cart/clearCart', // Endpoint API
+            method: 'POST', // Phương thức HTTP
+            data: {cartId: cartId}, // Dữ liệu gửi lên server
+            success: function (response) {
+                alert(response); // Hiển thị thông báo thành công
+                $('#items-container').hide(); // Ẩn giỏ hàng
+                $('#cart-empty-message').fadeIn(); // Hiển thị thông báo giỏ hàng trống
+            },
+            error: function (xhr) {
+                alert(xhr.responseText || 'Có lỗi xảy ra. Vui lòng thử lại!');
+            }
+        });
+    });
+
+    $(document).on('submit', '.remove-item', function (event) {
+        event.preventDefault(); // Ngăn form submit mặc định
+        const $form = $(this); // Form hiện tại
+        const cartId = $form.find('input[name="cartId"]').val();
+        const productId = $form.find('input[name="productId"]').val();
+
+        // Gửi yêu cầu AJAX DELETE
+        $.ajax({
+            url: '/user/cart/remove',
+            type: 'DELETE',
+            data: {cartId: cartId, productId: productId},
+            success: function (response) {
+                alert(response); // Hiển thị thông báo thành công
+                $form.closest('tr').remove();
+
+                // Kiểm tra nếu giỏ hàng trống
+                if ($('#items-container table tbody tr').length === 0) {
+                    $('#items-container table').hide();
+                    $('#cart-empty-message').fadeIn();
+                }
+            },
+            error: function (xhr) {
+                alert(xhr.responseText || 'Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        });
+    });
+
+    $(document).on('submit', '#form-cart-inc', function (e) {
+        e.preventDefault();
+
+        const $form = $(this);
+        const cartId = $form.find('input[name="cartId"]').val();
+        const productId = $form.find('input[name="productId"]').val();
+
+        $.ajax({
+            url: "/user/cart/inc-qty",
+            type: 'POST',
+            data: {cartId: cartId, productId: productId},
+            success: function (res) {
+                const $quantityInput = $form.closest('.pro-qty').find('.quantity-input');
+                $quantityInput.val(res.quantity); // Gán số lượng mới
+                alert(res);
+            },
+            error(e) {
+                console.log(e.message());
+                alert(e.message())
+            }
+        })
+    });
+
+    $(document).on('submit', '#form-cart-dec', function (e) {
+        e.preventDefault();
+
+        const $form = $(this);
+        const cartId = $form.find('input[name="cartId"]').val();
+        const productId = $form.find('input[name="productId"]').val();
+
+        $.ajax({
+            url: "/user/cart/dec-qty",
+            type: 'POST',
+            data: {cartId: cartId, productId: productId},
+            success: function (res) {
+                if (res.quantity > 1) {
+                    const $quantityInput = $form.closest('.pro-qty').find('.quantity-input');
+                    $quantityInput.val(res.quantity); // Gán giá trị mới
+                    alert(res.message + " : " + res.quantity);
+                } else {
+                    alert("Khong the tru duoc nua!");
+                }
+            },
+            error(e) {
+                console.log(e.message());
+                alert(e.message())
+            }
+        })
+    });
+
+
+</script>
+
+</body>
+</html>
