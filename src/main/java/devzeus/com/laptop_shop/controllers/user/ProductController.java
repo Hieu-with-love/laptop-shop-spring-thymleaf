@@ -34,19 +34,7 @@ public class ProductController {
         model.addAttribute("ratingCount", ratingService.countRatingStar(id));
         model.addAttribute("ratingUser", ratingService.countUser(id));
         model.addAttribute("rating", new RatingRequest());
-        return "/user/product/detail";
-    }
-
-    @GetMapping("/cart")
-    public String showCart(Model model) {
-
-        return "/user/product/cart";
-    }
-
-    @PostMapping("/add-to-card/id")
-    public String addToCart(Model model) {
-
-        return "/user/product/cart";
+        return "/user/detail";
     }
 
     @PostMapping("/reviews")
@@ -68,5 +56,6 @@ public class ProductController {
                 redirectAttributes.addFlashAttribute("msg", msg);
             }
         }
-        return "redirect:/user/products/detail-product/id?id=" + productId;    }
+        return "redirect:/user/products/detail-product/id?id=" + productId;
+    }
 }

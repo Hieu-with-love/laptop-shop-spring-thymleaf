@@ -123,8 +123,7 @@
                                     <a href="javascript:void(0)" class="toggle-btn">
                                         <input type="checkbox" id="checkbox2" name="diffrent-ship">
                                         <label for="checkbox2">
-                                            Với đơn hàng trên 20 triệu đồng, vui lòng thanh toán bằng phương thức chuyển
-                                            khoản từ tài khoản công ty hoặc bằng thẻ công ty. Xem chính sách
+                                            Buy with delivery
                                         </label>
                                     </a>
                                 </div>
@@ -222,25 +221,27 @@
                             <div class="order-payment-method">
                                 <div class="single-payment">
                                     <div class="input-group">
-                                        <input type="radio" id="radio4" name="payment">
-                                        <label for="radio4">Direct bank transfer</label>
-                                    </div>
-                                    <p>Make your payment directly into our bank account. Please use your Order ID as the
-                                        payment reference. Your order will not be shipped until the funds have cleared
-                                        in our account.</p>
-                                </div>
-                                <div class="single-payment">
-                                    <div class="input-group">
                                         <input type="radio" id="radio5" name="payment">
                                         <label for="radio5">Cash on delivery</label>
                                     </div>
                                     <p>Pay with cash upon delivery.</p>
                                 </div>
+
+                                <div class="single-payment">
+                                    <div class="input-group">
+                                        <input type="radio" id="radio4" name="payment">
+                                        <label for="radio4">VN Pay</label>
+                                    </div>
+                                    <p>Make your payment directly into our bank account. Please use your Order ID as the
+                                        payment reference. Your order will not be shipped until the funds have cleared
+                                        in our account.</p>
+                                </div>
+
                                 <div class="single-payment">
                                     <div class="input-group justify-content-between align-items-center">
                                         <input type="radio" id="radio6" name="payment" checked>
                                         <label for="radio6">Paypal</label>
-                                        <img src="../../static/etrade/assets/images/others/payment.png"
+                                        <img th:src="@{/etrade/assets/images/others/payment.png}"
                                              alt="Paypal payment">
                                     </div>
                                     <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
@@ -419,7 +420,7 @@
 <!-- Product Quick View Modal End -->
 <div th:insert="common-user/footer::footer"></div>
 <!-- JS-->
-<div th:insert="~{common-admin/script::script}"></div>
+<div th:insert="~{common-user/script::script}"></div>
 
 </body>
 </html>
