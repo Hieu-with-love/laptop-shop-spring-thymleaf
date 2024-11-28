@@ -12,12 +12,10 @@ import devzeus.com.laptop_shop.services.interfaces.IUserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,13 +30,32 @@ public class UserService implements IUserService {
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
-    @Lazy
     EmailService emailService;
     CartService cartService;
 
     @Override
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id).orElse(new User());
+        if (user.getId() == null) {
+            return null;
+        }
+        return UserDTO.builder()
+                .fullName(user.getFullName())
+                .phoneNumber(user.getPhoneNumber())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .gender(user.getGender())
+                .address(user.getAddress())
+                .dayOfBirth(user.getDayOfBirth())
+                .isActive(user.isActive())
+                .roleId(user.getRole().getId())
+                .avatar(user.getAvatar())
+                .build();
+    }
+
+    @Override
+    public UserDTO getUserDTO(String email) {
+        User user = userRepository.findByEmail(email).orElse(new User());
         if (user.getId() == null) {
             return null;
         }
@@ -70,7 +87,7 @@ public class UserService implements IUserService {
         // Lấy day/month/year hiện tại, 11/2/2024 -> tru 15 năm -> 11/2/2009
         // giả sử một người có sinh nhật 1/2/2009 -> 1/2/2009 đã đu tuổi so voi day/month/year hiện tại
         // nên dùng isBefore (truoc rồi phủ định) chứ không dùng isAfter
-        if (!userRequest.getDayOfBirth().isBefore(LocalDate.now().minusYears(15))) {
+        if (userRequest.getDayOfBirth() != null && !userRequest.getDayOfBirth().isBefore(LocalDate.now().minusYears(15))) {
             result.addError(new FieldError("userRegister", "dateOfBirth",
                     "Bạn chưa đủ 15 tuổi"));
         }
@@ -149,6 +166,20 @@ public class UserService implements IUserService {
     @Override
     public void changePassword(String email) {
         emailService.sendEmailToRenewPassword(email);
+    }
+
+    @Override
+    public boolean changePassword(UserDTO userDTO, BindingResult result) {
+        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+            result.addError(new FieldError("userDto", "password", "Mật khẩu không khớp!"));
+        }
+        if (!result.hasErrors()) {
+            User user = this.getUserByEmail(userDTO.getEmail());
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
 
@@ -230,6 +261,29 @@ public class UserService implements IUserService {
         userRepository.save(existingUser);
 
         return true;
+    }
+
+    @Override
+    public boolean updateProfile(UserDTO userRequest, BindingResult result) {
+        // logic update user
+        validation(userRequest, result);
+        try {
+            User existingUser = userRepository.findByEmailIgnoreCase(userRequest.getEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            existingUser.setFullName(userRequest.getFullName());
+            existingUser.setGender(userRequest.getGender());
+            existingUser.setEmail(userRequest.getEmail());
+            existingUser.setPhoneNumber(userRequest.getPhoneNumber());
+            existingUser.setGender(userRequest.getGender());
+            existingUser.setDayOfBirth(userRequest.getDayOfBirth());
+            existingUser.setAvatar(existingUser.getAvatar());
+
+            userRepository.save(existingUser);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

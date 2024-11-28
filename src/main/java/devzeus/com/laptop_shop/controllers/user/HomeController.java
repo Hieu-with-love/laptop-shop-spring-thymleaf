@@ -1,17 +1,23 @@
 package devzeus.com.laptop_shop.controllers.user;
 
+import devzeus.com.laptop_shop.dtos.requests.UserDTO;
 import devzeus.com.laptop_shop.models.Category;
 import devzeus.com.laptop_shop.models.Product;
 import devzeus.com.laptop_shop.models.User;
+import devzeus.com.laptop_shop.models.WishlistItem;
 import devzeus.com.laptop_shop.services.classes.CategoryService;
 import devzeus.com.laptop_shop.services.classes.ProductService;
 import devzeus.com.laptop_shop.services.classes.UserService;
+import devzeus.com.laptop_shop.services.interfaces.WishlistItemService;
+import devzeus.com.laptop_shop.services.interfaces.WishlistService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +29,10 @@ public class HomeController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final UserService userService;
+    private final WishlistService wishlistService;
+    private final WishlistItemService wishlistItemService;
 
-    @GetMapping
+    @GetMapping("/home")
     public String home(@RequestParam(defaultValue = "0") int pageNo,
                        @RequestParam(defaultValue = "12") int pageSize,
                        Model model, HttpSession session) {
@@ -33,8 +41,15 @@ public class HomeController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!username.equals("anonymousUser")) {
             devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
+            // create wishlist if user hasn't yet
+            wishlistService.createWishlist(user);
+            int countWishlist = wishlistItemService.getItemsCount(user.getId());
+            Long wishlistId = user.getWishlist().getId() == null ?
+                    wishlistService.getWishlistByUserId(user.getId()).getId() : user.getWishlist().getId();
             session.setAttribute("userSession", user);
             session.setAttribute("cartId", user.getCart().getId());
+            session.setAttribute("wishlistId", wishlistId);
+            session.setAttribute("countWishlist", countWishlist);
             session.setAttribute("quantityItems", user.getCart().getItems().size());
         }
         model.addAttribute("products", products);
@@ -70,15 +85,49 @@ public class HomeController {
     @GetMapping("/my-account")
     public String showPageMyAccount(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
-        model.addAttribute("user", user);
+        UserDTO userDTO = userService.getUserDTO(username);
+        model.addAttribute("userDto", userDTO);
         return "user/my-account";
     }
 
-    public String showAccountDetails(Model model) {
+    @PostMapping("/my-account/profile")
+    public String updateProfile(Model model,
+                                @Valid @ModelAttribute UserDTO userDto,
+                                BindingResult result) {
+        if (result.hasErrors()) {
+            model.addAttribute("msg", "Sửa profile thất bại!");
+            return "user/my-account";
+        }
+        boolean isUpdated = userService.updateProfile(userDto, result);
+        if (isUpdated) {
+            model.addAttribute("msg", "Sửa profile thành công!");
+        } else {
+            model.addAttribute("msg", "Sửa profile thất bại!");
+        }
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
-        model.addAttribute("user", user);
+        UserDTO userDTO = userService.getUserDTO(username);
+        model.addAttribute("userDto", userDTO);
+        return "user/my-account";
+    }
+
+    @PostMapping("/my-account/password")
+    public String updatePassword(Model model,
+                                 @ModelAttribute UserDTO userDto,
+                                 BindingResult result) {
+        if (result.hasErrors()) {
+            model.addAttribute("msg", "Đổi mật khẩu thất bại thất bại!");
+            return "user/my-account";
+        }
+
+        boolean isUpdated = userService.changePassword(userDto, result);
+        if (isUpdated) {
+            model.addAttribute("msg", "Đổi mật khẩu thành công!");
+        } else {
+            model.addAttribute("msg", "Đổi mật khẩu thất bại!");
+        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDTO userDTO = userService.getUserDTO(username);
+        model.addAttribute("userDto", userDTO);
         return "user/my-account";
     }
 

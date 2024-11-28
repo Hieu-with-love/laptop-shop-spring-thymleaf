@@ -9,4 +9,6 @@ import lombok.*;
 @Builder
 public class CartResponse {
     private String totalAmount;
+    private int quantity;
+    private String message;
 }
