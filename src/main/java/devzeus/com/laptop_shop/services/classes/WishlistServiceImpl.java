@@ -1,5 +1,6 @@
 package devzeus.com.laptop_shop.services.classes;
 
+import devzeus.com.laptop_shop.dtos.responses.ImgUrlRes;
 import devzeus.com.laptop_shop.models.User;
 import devzeus.com.laptop_shop.models.Wishlist;
 import devzeus.com.laptop_shop.repositories.WishlistItemRepository;
@@ -31,6 +32,15 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public boolean existsWishlist(Long userId) {
         return wishlistRepository.existsByUserId(userId);
+    }
+
+    @Override
+    public ImgUrlRes getImgWishlist(String url) {
+        boolean isUrlImg = url.contains("https");
+        return ImgUrlRes.builder()
+                .image(url)
+                .isUrlImage(isUrlImg)
+                .build();
     }
 
     @Override

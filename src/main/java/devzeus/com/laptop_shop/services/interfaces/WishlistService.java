@@ -1,6 +1,7 @@
 package devzeus.com.laptop_shop.services.interfaces;
 
 
+import devzeus.com.laptop_shop.dtos.responses.ImgUrlRes;
 import devzeus.com.laptop_shop.models.User;
 import devzeus.com.laptop_shop.models.Wishlist;
 
@@ -14,4 +15,6 @@ public interface WishlistService {
     void clearWishlist(Long id);
 
     boolean existsWishlist(Long userId);
+
+    ImgUrlRes getImgWishlist(String url);
 }

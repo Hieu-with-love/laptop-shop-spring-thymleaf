@@ -1,6 +1,7 @@
 package devzeus.com.laptop_shop.services.classes;
 
 import devzeus.com.laptop_shop.dtos.responses.CartResponse;
+import devzeus.com.laptop_shop.dtos.responses.ImgUrlRes;
 import devzeus.com.laptop_shop.models.Cart;
 import devzeus.com.laptop_shop.models.CartItem;
 import devzeus.com.laptop_shop.models.User;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.math.BigDecimal;
 
 @Service
@@ -29,6 +31,20 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
+    }
+
+    @Override
+    public ImgUrlRes getImageCart(String url) {
+        boolean isUrlImg = url.contains("https");
+        return ImgUrlRes.builder()
+                .image(url)
+                .isUrlImage(isUrlImg)
+                .build();
+    }
+
+    @Override
     public CartResponse getCart(Long id) {
         Cart cart = getCartEntity(id);
 
@@ -38,13 +54,20 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public boolean existsCart(Long userId) {
+        return cartRepository.existsCartByUserId(userId);
+    }
+
+    @Override
     public void createCart(User user) {
         try {
-            Cart cart = Cart.builder()
-                    .totalAmount(BigDecimal.ZERO)
-                    .user(user)
-                    .build();
-            cartRepository.save(cart);
+            if (!existsCart(user.getId())) {
+                Cart cart = Cart.builder()
+                        .totalAmount(BigDecimal.ZERO)
+                        .user(user)
+                        .build();
+                cartRepository.save(cart);
+            }
         } catch (RuntimeException e) {
             throw new RuntimeException("Can't create cart for user " + user.getEmail());
         }

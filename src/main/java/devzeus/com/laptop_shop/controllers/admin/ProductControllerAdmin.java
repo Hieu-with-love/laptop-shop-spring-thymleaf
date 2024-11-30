@@ -44,17 +44,22 @@ public class ProductControllerAdmin {
         return "admin/product/page-list-product";
     }
 
-    @GetMapping("/create")
-    public String showCreateProductForm(Model model) {
-        ProductDTO productDTO = new ProductDTO();
+    private void updateDataForForm(Model model) {
         // Get list brands
         List<Brand> brands = brandService.getAllBrands();
         // Get list categories
         List<Category> categories = categoryService.getAllCategories();
-
-        model.addAttribute("productDTO", productDTO);
         model.addAttribute("brandsList", brands);
         model.addAttribute("categoriesList", categories);
+    }
+
+    @GetMapping("/create")
+    public String showCreateProductForm(Model model) {
+        ProductDTO productDTO = new ProductDTO();
+        model.addAttribute("productDTO", productDTO);
+
+        updateDataForForm(model);
+
         return "admin/product/page-add-product";
     }
 
@@ -66,11 +71,13 @@ public class ProductControllerAdmin {
             Model model
     ) throws IOException {
         if (bindingResult.hasErrors()) {
+            updateDataForForm(model);
             return "admin/product/page-add-product";
         }
 
         Product product = productService.createProduct(productDTO, file);
         if (product == null) {
+            updateDataForForm(model);
             model.addAttribute("error", "Sản phẩm bị null, có lẽ bạn nhập sai. Vui lòng thử lại !");
             return "admin/product/page-add-product";
         }

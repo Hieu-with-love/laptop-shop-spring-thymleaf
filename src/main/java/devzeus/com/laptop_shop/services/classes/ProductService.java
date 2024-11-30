@@ -226,6 +226,11 @@ public class ProductService implements IProductService {
     public List<ProductResponse> getAllProductResponses() {
         List<Product> products = this.getAllProducts();
 
+        return getAllProductResponses(products);
+    }
+
+    @Override
+    public List<ProductResponse> getAllProductResponses(List<Product> products) {
         return products.stream().map(p -> ProductResponse.builder()
                 .id(p.getId())
                 .name(p.getName())
@@ -236,6 +241,7 @@ public class ProductService implements IProductService {
                 .thumbnail(p.getThumbnail())
                 .categoryName(p.getCategory().getName())
                 .brandName(p.getBrand().getName())
+                .isUrlImage(p.getThumbnail() != null && p.getThumbnail().startsWith("https"))
                 .build()).toList();
     }
 

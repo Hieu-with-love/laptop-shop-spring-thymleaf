@@ -1,10 +1,12 @@
 package devzeus.com.laptop_shop.controllers.user;
 
 import devzeus.com.laptop_shop.dtos.requests.UserDTO;
+import devzeus.com.laptop_shop.dtos.responses.ProductResponse;
+import devzeus.com.laptop_shop.models.Cart;
 import devzeus.com.laptop_shop.models.Category;
 import devzeus.com.laptop_shop.models.Product;
 import devzeus.com.laptop_shop.models.User;
-import devzeus.com.laptop_shop.models.WishlistItem;
+import devzeus.com.laptop_shop.services.classes.CartService;
 import devzeus.com.laptop_shop.services.classes.CategoryService;
 import devzeus.com.laptop_shop.services.classes.ProductService;
 import devzeus.com.laptop_shop.services.classes.UserService;
@@ -31,26 +33,28 @@ public class HomeController {
     private final UserService userService;
     private final WishlistService wishlistService;
     private final WishlistItemService wishlistItemService;
+    private final CartService cartService;
 
     @GetMapping("/home")
     public String home(@RequestParam(defaultValue = "0") int pageNo,
                        @RequestParam(defaultValue = "12") int pageSize,
                        Model model, HttpSession session) {
         Page<Product> productPage = productService.getProductsByPage(pageNo, pageSize);
-        List<Product> products = productPage.getContent();
+        List<ProductResponse> products = productService.getAllProductResponses(productPage.getContent());
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!username.equals("anonymousUser")) {
             devzeus.com.laptop_shop.models.User user = userService.getUserByEmail(username);
             // create wishlist if user hasn't yet
             wishlistService.createWishlist(user);
+            cartService.createCart(user);
             int countWishlist = wishlistItemService.getItemsCount(user.getId());
-            Long wishlistId = user.getWishlist().getId() == null ?
-                    wishlistService.getWishlistByUserId(user.getId()).getId() : user.getWishlist().getId();
+            Long wishlistId = wishlistService.getWishlistByUserId(user.getId()).getId();
+            Cart currentCart = cartService.getCartByUserId(user.getId());
             session.setAttribute("userSession", user);
-            session.setAttribute("cartId", user.getCart().getId());
+            session.setAttribute("cartId", currentCart.getId());
             session.setAttribute("wishlistId", wishlistId);
             session.setAttribute("countWishlist", countWishlist);
-            session.setAttribute("quantityItems", user.getCart().getItems().size());
+            session.setAttribute("quantityItems", currentCart.getItems().size());
         }
         model.addAttribute("products", products);
         model.addAttribute("currentPage", pageNo);

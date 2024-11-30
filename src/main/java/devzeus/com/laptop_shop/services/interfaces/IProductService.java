@@ -29,6 +29,8 @@ public interface IProductService {
 
     List<ProductResponse> getAllProductResponses();
 
+    List<ProductResponse> getAllProductResponses(List<Product> products);
+
 
     void createProductImage(Long productId, ProductImageDTO productDTO);
 

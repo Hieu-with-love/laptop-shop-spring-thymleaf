@@ -18,5 +18,6 @@ public class ProductResponse {
     private String thumbnail;
     private String categoryName;
     private String brandName;
+    private boolean isUrlImage;
 
 }

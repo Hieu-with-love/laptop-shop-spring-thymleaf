@@ -14,4 +14,5 @@ public class CartItemResponse {
     private String totalPrice;
     private String images;
     private Long productId;
+    private boolean isUrlImg;
 }

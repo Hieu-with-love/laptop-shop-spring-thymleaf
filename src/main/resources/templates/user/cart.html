@@ -58,8 +58,15 @@
                                     </button>
                                 </form>
                             </td>
-                            <td class="product-thumbnail"><a th:href="@{/user/product/detail}"><img
-                                    th:src="@{'/uploads/' + ${item.images}}" alt="Digital Product"></a>
+                            <td class="product-thumbnail">
+                                <a th:href="@{/user/product/detail}">
+                                    <img th:if="${item.isUrlImg()}"
+                                         th:src="${item.images}"
+                                         alt="Ảnh sản phẩm mặc định">
+                                    <img th:unless="${item.isUrlImg()}"
+                                         th:src="@{'/uploads/' + ${item.images}}"
+                                         alt="Ảnh sản phẩm">
+                                </a>
                             </td>
                             <td class="product-title" th:text="${item.productName}"><a
                                     th:href="@{/user/product/detail}"></a>

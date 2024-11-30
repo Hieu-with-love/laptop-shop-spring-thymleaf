@@ -175,3 +175,42 @@
     border-radius: 5px; /* (Tùy chọn) Bo tròn góc để tạo cảm giác mềm mại */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* (Tùy chọn) Đổ bóng để tăng tính thẩm mỹ */
 }
+
+
+.main-content {
+    display: grid;
+    gap: 20px;
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    background-color: #aaa;
+}
+
+.item-button {
+    display: flex;
+    gap: 15px;
+}
+
+.item-button a {
+    text-decoration: none;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.item-button {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Add spacing between buttons */
+}
+
+.item-button a,
+.item-button button {
+    margin: 0 5px;
+}

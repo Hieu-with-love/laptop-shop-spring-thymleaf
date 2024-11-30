@@ -2,6 +2,7 @@ package devzeus.com.laptop_shop.controllers.user;
 
 import devzeus.com.laptop_shop.dtos.responses.CartItemResponse;
 import devzeus.com.laptop_shop.dtos.responses.CartResponse;
+import devzeus.com.laptop_shop.dtos.responses.ImgUrlRes;
 import devzeus.com.laptop_shop.models.Cart;
 import devzeus.com.laptop_shop.models.Product;
 import devzeus.com.laptop_shop.services.classes.CartItemService;
@@ -29,6 +30,7 @@ public class CartController {
 
     @GetMapping
     public String showItemsInCart(Model model, @RequestParam("cartId") Long cartId) {
+        Cart cart = cartService.getCartEntity(cartId);
         CartResponse cartResponse = cartService.getCart(cartId);
         List<CartItemResponse> items = cartItemService.getAllItemsInCart(cartId);
         model.addAttribute("listItems", items);

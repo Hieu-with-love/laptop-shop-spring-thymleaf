@@ -15,6 +15,216 @@
     <div id="loadingSpinner" style="display:none; text-align: center;">
         <p>Loading...</p>
     </div>
+
+    <div class="main-content">
+        <div class="content">
+            <div class="item-text">
+                <strong>Chọn khoảng giá</strong>
+            </div>
+            <div class="item-button">
+                <button type="button" class="btn">Dưới 5 triệu</button>
+                <button type="button" class="btn">5 triệu- 10 triệu</button>
+                <button type="button" class="btn">5 triệu- 10 triệu</button>
+                <button type="button" class="btn">5 triệu- 10 triệu</button>
+                <button type="button" class="btn">5 triệu- 10 triệu</button>
+                <button type="button" class="btn">5 triệu- 10 triệu</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="item-text">
+                <strong>Chọn theo tiêu chí</strong>
+            </div>
+            <div class="item-button">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Dropdown button
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Dropdown button
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Dropdown button
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Dropdown button
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="item-text">
+                <strong>Chọn khoảng giá</strong>
+            </div>
+            <div class="item-button">
+                <a href="#">Mới nhất</a>
+                <a href="#">Mới nhất</a>
+                <a href="#">Mới nhất</a>
+                <a href="#">Mới nhất</a>
+                <a href="#">Mới nhất</a>
+                <a href="#">Mới nhất</a>
+            </div>
+        </div>
+        
+        <br/>
+        <br/>
+
+        <div class="container">
+            <div class="section-title-wrapper">
+            <span class="title-highlighter highlighter-primary">
+                <i class="far fa-shopping-basket"></i> Our Products
+            </span>
+                <h2 class="title">Explorer our store products</h2>
+            </div>
+            <div class="explore-product-activation slick-layout-wrapper
+                    slick-layout-wrapper--15
+                    axil-slick-layout arrow-top-slide">
+                <div id="productListContainer" class="slick-single-layout">
+                    <div class="row row--15">
+                        <div id="product-list" class="col-xl-3 col-lg-4 col-sm-6 col-12 mb-30"
+                             th:each="product : ${products}">
+                            <div class="axil-product product-style-one">
+                                <div class="thumbnail">
+                                    <a th:href="@{/user/products/detail-product/id(id=${product.id})}">
+                                        <img th:if="${product.isUrlImage()}"
+                                             th:src="${product.thumbnail}"
+                                             data-sal="zoom-out" data-sal-delay="200" data-sal-duration="800"
+                                             loading="lazy"
+                                             class="main-img"
+                                             alt="Ảnh sản phẩm mặc định">
+                                        <img th:unless="${product.isUrlImage()}"
+                                             th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                             data-sal="zoom-out" data-sal-delay="200" data-sal-duration="800"
+                                             loading="lazy"
+                                             class="main-img"
+                                             alt="Ảnh sản phẩm">
+                                        <!--                                    <img class="hover-img" src="assets/images/product/electric/product-08.png"-->
+                                        <!--                                         alt="Product Images">-->
+                                    </a>
+                                    <div class="label-block label-right">
+                                        <div class="product-badget">20% off</div>
+                                    </div>
+                                    <div class="product-hover-action">
+                                        <ul id="productList" th:fragment="productList" class="cart-action">
+                                            <li class="quickview"><a href="#" data-bs-toggle="modal"
+                                                                     data-bs-target="#quick-view-modal"><i
+                                                    class="far fa-eye"></i></a></li>
+                                            <li class="select-option">
+                                                <form id="form-add-to-cart" th:action="@{/user/cart/add-to-cart}"
+                                                      method="post"
+                                                      class="cart-action">
+                                                    <input type="hidden" name="cartId" th:value="${session.cartId}"/>
+                                                    <input type="hidden" name="productId" th:value="${product.id}"/>
+                                                    <input type="hidden" name="quantity" value="1"/>
+                                                    <li class="select-option">
+                                                        <button type="submit" class="add-to-cart-btn">Thêm vào giỏ hàng
+                                                        </button>
+                                                    </li>
+                                                </form>
+                                            </li>
+                                            <li class="wishlist">
+                                                <form th:action="@{/user/wishlist/insert}" method="post"
+                                                      class="wishlist-form">
+                                                    <input type="hidden" name="wishlistId"
+                                                           th:value="${session.wishlistId}">
+                                                    <input type="hidden" name="productId" th:value="${product.id}">
+                                                    <button type="submit" class="wishlist-btn">
+                                                        <i class="far fa-heart"></i>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--Feedback-->
+                                <div class="product-content">
+                                    <div class="inner">
+                                        <div class="product-rating">
+                                        <span class="icon">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </span>
+                                            <span class="rating-number">(64)</span>
+                                            <div>
+                                                <h5 class="title">
+                                                    <span th:text="${product.name}"></span>
+
+                                                </h5>
+                                                <div class="product-price-variant">
+                                                <span class="price current-price"
+                                                      th:text="${product.price}"></span>
+                                                    <span class="price old-price"
+                                                          th:text="${product.price+100000}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-pagination">
+                        <ul>
+                            <li th:if="${currentPage > 0}">
+                                <a th:href="@{/user/home(pageNo=${currentPage - 1}, pageNumber=${pageSize})}"
+                                   class="previous">Previous</a>
+                            </li>
+                            <li th:each="i:${#numbers.sequence(0, totalPages - 1)}">
+                                <a th:href="@{/user/home(pageNo=${i},pageSize=${pageSize})}"
+                                   th:text="${i+1}"
+                                   th:classappend="${i == currentPage} ? 'active' : '' "></a>
+                            </li>
+                            <li th:if="${currentPage < totalPages - 1}">
+                                <a th:href="@{/user/home(pageNo=${currentPage + 1}, pageSize=${pageSize})}"
+                                   class="next">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
     <div class="container">
         <div class="section-title-wrapper">
             <span class="title-highlighter highlighter-primary">
@@ -32,11 +242,18 @@
                         <div class="axil-product product-style-one">
                             <div class="thumbnail">
                                 <a th:href="@{/user/products/detail-product/id(id=${product.id})}">
-                                    <img data-sal="zoom-out" data-sal-delay="200" data-sal-duration="800" loading="lazy"
-                                         class="main-img" th:src="@{'/uploads/'+${product.thumbnail}}"
-                                         alt="Product Images">
-                                    <img class="hover-img" src="assets/images/product/electric/product-08.png"
-                                         alt="Product Images">
+                                    <img th:if="${product.isUrlImage()}"
+                                         th:src="${product.thumbnail}"
+                                         data-sal="zoom-out" data-sal-delay="200" data-sal-duration="800" loading="lazy"
+                                         class="main-img"
+                                         alt="Ảnh sản phẩm mặc định">
+                                    <img th:unless="${product.isUrlImage()}"
+                                         th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                         data-sal="zoom-out" data-sal-delay="200" data-sal-duration="800" loading="lazy"
+                                         class="main-img"
+                                         alt="Ảnh sản phẩm">
+                                    <!--                                    <img class="hover-img" src="assets/images/product/electric/product-08.png"-->
+                                    <!--                                         alt="Product Images">-->
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">20% off</div>
@@ -105,16 +322,16 @@
                 <div class="custom-pagination">
                     <ul>
                         <li th:if="${currentPage > 0}">
-                            <a th:href="@{/user(pageNo=${currentPage - 1}, pageNumber=${pageSize})}"
+                            <a th:href="@{/user/home(pageNo=${currentPage - 1}, pageNumber=${pageSize})}"
                                class="previous">Previous</a>
                         </li>
                         <li th:each="i:${#numbers.sequence(0, totalPages - 1)}">
-                            <a th:href="@{/user(pageNo=${i},pageSize=${pageSize})}"
+                            <a th:href="@{/user/home(pageNo=${i},pageSize=${pageSize})}"
                                th:text="${i+1}"
                                th:classappend="${i == currentPage} ? 'active' : '' "></a>
                         </li>
                         <li th:if="${currentPage < totalPages - 1}">
-                            <a th:href="@{/user(pageNo=${currentPage + 1}, pageSize=${pageSize})}"
+                            <a th:href="@{/user/home(pageNo=${currentPage + 1}, pageSize=${pageSize})}"
                                class="next">Next</a>
                         </li>
                     </ul>
@@ -172,6 +389,38 @@
                 });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add active class to selected price range
+        const priceButtons = document.querySelectorAll('.price-range button');
+        priceButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                priceButtons.forEach((btn) => btn.classList.remove('active'));
+                button.classList.add('active');
+                console.log('Selected price range:', button.getAttribute('data-range'));
+            });
+        });
+
+        // Sort options event
+        const sortButtons = document.querySelectorAll('.sort-options button');
+        sortButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                sortButtons.forEach((btn) => btn.classList.remove('active'));
+                button.classList.add('active');
+                console.log('Selected sort option:', button.textContent);
+            });
+        });
+
+        // Filter criteria
+        const criteriaSelects = document.querySelectorAll('.criteria select');
+        criteriaSelects.forEach((select) => {
+            select.addEventListener('change', () => {
+                console.log(`Selected ${select.options[select.selectedIndex].text}`);
+            });
+        });
+    });
+
+
 </script>
 
 </body>

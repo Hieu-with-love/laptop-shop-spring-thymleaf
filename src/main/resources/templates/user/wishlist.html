@@ -51,8 +51,14 @@
                             </form>
                         </td>
                         <td class="product-thumbnail"><a
-                                th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}"
-                        ><img th:src="@{'/uploads/' + ${wishlist.thumbnail}}" alt="Digital Product"></a></td>
+                                th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}">
+                            <img th:if="${wishlist.isUrlImg()}"
+                                 th:src="${wishlist.thumbnail}"
+                                 alt="Ảnh sản phẩm mặc định">
+                            <img th:unless="${wishlist.isUrlImg()}"
+                                 th:src="@{'/uploads/' + ${wishlist.thumbnail}}"
+                                 alt="Ảnh sản phẩm">
+                        </a></td>
                         <td class="product-title"><a
                                 th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}"
                                 th:text="*{wishlist.title}"></a></td>

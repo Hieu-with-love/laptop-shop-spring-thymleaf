@@ -60,7 +60,12 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                        <img th:if="${product.isUrlImage()}"
+                                             th:src="${product.thumbnail}"
+                                             class="img-fluid rounded avatar-50 mr-3"
+                                             alt="image">
+                                        <img th:unless="${product.isUrlImage()}"
+                                             th:src="@{'/uploads/' + ${product.thumbnail}}"
                                              class="img-fluid rounded avatar-50 mr-3"
                                              alt="image">
                                         <p class="mb-0" th:text="*{name}"><small>This is test Product</small></p>

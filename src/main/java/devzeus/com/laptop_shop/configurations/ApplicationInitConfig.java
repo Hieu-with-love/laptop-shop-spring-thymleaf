@@ -50,6 +50,21 @@ public class ApplicationInitConfig {
                 userRepository.save(user);
                 log.info("Default admin user created with password:admin, please change it");
             }
+
+            for (int i = 0; i < 10; i++) {
+                if (userRepository.findByEmail("user" + i + "@gmail.com").isEmpty()) {
+                    Role roleUser = roleService.getRoleByName("user");
+                    devzeus.com.laptop_shop.models.User user = User.builder()
+                            .email("user" + i + "@gmail.com")
+                            .password(passwordEncoder.encode("123"))
+                            .fullName("system")
+                            .isActive(true)
+                            .role(roleUser)
+                            .build();
+                    userRepository.save(user);
+                    log.info("Default user created with email={} and password={}, please change it", user.getEmail(), user.getPassword());
+                }
+            }
         };
     }
 
