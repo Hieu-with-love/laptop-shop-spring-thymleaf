@@ -10,6 +10,16 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface IOrderService {
+    List<Order> findByUserEmail(String username);
+
+    void orderPending(Long id);
+
+    void orderCancelled(Long id);
+
+    void orderDelivered(Long id);
+
+    void orderShipping(Long id);
+
     void createOrder(User user, Payment payment, Address address,
                      Long cartId,
                      Set<CartItem> cartDetailList);

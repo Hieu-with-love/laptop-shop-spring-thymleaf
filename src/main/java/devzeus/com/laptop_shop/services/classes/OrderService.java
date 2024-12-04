@@ -3,15 +3,12 @@ package devzeus.com.laptop_shop.services.classes;
 import devzeus.com.laptop_shop.enums.OrderStatus;
 import devzeus.com.laptop_shop.models.*;
 import devzeus.com.laptop_shop.repositories.OrderRepository;
-import devzeus.com.laptop_shop.services.interfaces.ICartItemService;
 import devzeus.com.laptop_shop.services.interfaces.ICartService;
 import devzeus.com.laptop_shop.services.interfaces.IOrderService;
-import devzeus.com.laptop_shop.services.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -19,6 +16,39 @@ import java.util.*;
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final ICartService cartService;
+
+    @Override
+    public List<Order> findByUserEmail(String username) {
+        return orderRepository.findByUserEmail(username);
+    }
+
+    @Override
+    public void orderPending(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.PENDING);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderCancelled(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderDelivered(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.DELIVERED);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderShipping(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.SHIPPING);
+        orderRepository.save(order);
+    }
 
     @Override
     public void createOrder(User user, Payment payment, Address address,
