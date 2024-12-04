@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Laptop Shop | Add Product</title>
+    <div th:insert="~{common-admin/head::head}"></div>
+</head>
+<body class="  ">
+<!-- loader Start -->
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<!-- loader END -->
+<!-- Wrapper Start -->
+<div class="wrapper">
+
+    <div th:insert="~{common-admin/sidebar::sidebar}"></div>
+
+    <div th:insert="~{common-admin/header::header}"></div>
+
+</div>
+<div class="content-page">
+    <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Order Detail</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>ID</label>
+                                    <input type="text" class="form-control" th:value="${order.getId()}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="text" class="form-control"
+                                           th:value="${order.getOrderDate().toString()}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Total Price</label>
+                                    <input type="text" class="form-control" th:value="${order.getTotalAmount()}"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <input type="text" class="form-control" th:value="${order.getStatus()}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Customer</label>
+                                    <input type="text" class="form-control" th:value="${order.getUser().getFullName()}"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Customer's Phone Number</label>
+                                    <input type="text" class="form-control"
+                                           th:value="${order.getUser().getPhoneNumber()}"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control"
+                                           th:value="${order.getAddress().getDetailLocation()} + ', ' + ${order.getAddress().getStreet()} + ', ' + ${order.getAddress().getDistrict()} + ', ' + ${order.getAddress().getCity()}"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Payment</label>
+                                    <input type="text" class="form-control" th:value="${order.getPayment().getType()}"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6" th:each="orderItem : ${order.getOrderItems()}">
+                                <div class="form-group">
+                                    <label>Product</label>
+                                    <input type="text" class="form-control"
+                                           th:value="${orderItem.getProduct().getName()}"
+                                           readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="text" class="form-control" th:value="${orderItem.getQuantity()}"
+                                           readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <form th:action="@{/admin/orders/shipping(id=${order.getId()})}" method="post">
+                                <input class="btn btn-primary mr-2" type="submit" th:value="Shipping">
+                            </form>
+                            <form th:action="@{/admin/orders/pending(id=${order.getId()})}" method="post">
+                                <input class="btn btn-orange" type="submit" th:value="Pending">
+                            </form>
+                            <form th:action="@{/admin/orders/cancelled(id=${order.getId()})}" method="post">
+                                <input class="btn btn-danger" type="submit" th:value="Cancelled">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Page end  -->
+        </div>
+    </div>
+</div>
+<!-- Wrapper End-->
+<div th:insert="~{common-admin/footer::footer}"></div>
+<div th:insert="~{common-admin/script::script}"></div>
+</body>
+</html>

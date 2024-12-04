@@ -31,46 +31,38 @@ public class OrderController {
         model.addAttribute("orders", orders);
         model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("payments", payments);
-        return "admin/orders/orderlist";
+        return "admin/orders/page-list-order";
     }
 
-    @GetMapping("/detail")
-    public String orderDetail(Model model, @RequestParam Long id) {
-        Optional<Order> order = orderService.findById(id);
-        model.addAttribute("orderStatus", OrderStatus.values());
-        model.addAttribute("order", order);
-        return "manager/orders/orderDetail";
-    }
-
-    @GetMapping("/edit")
+    @GetMapping("/update")
     public String edit(Model model, @RequestParam Long id) {
         Order order = orderService.findById(id).get();
         model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("order", order);
-        return "manager/orders/editOrder";
+        return "admin/orders/page-update-order";
     }
 
     @GetMapping("/delete")
     public String deleteProduct(@RequestParam Long id) {
         orderService.deleteById(id);
-        return "redirect:/manager/orders";
+        return "redirect:/admin/orders";
     }
 
     @PostMapping("/pending")
     public String pending(Model model, @RequestParam Long id) throws IOException {
         orderService.orderPending(id);
-        return "redirect:/manager/orders";
+        return "redirect:/admin/orders";
     }
 
     @PostMapping("/shipping")
     public String update(Model model, @RequestParam Long id) throws IOException {
         orderService.orderShipping(id);
-        return "redirect:/manager/orders";
+        return "redirect:/admin/orders";
     }
 
     @PostMapping("/cancelled")
     public String cancel(Model model, @RequestParam Long id) throws IOException {
         orderService.orderCancelled(id);
-        return "redirect:/manager/orders";
+        return "redirect:/admin/orders";
     }
 }
