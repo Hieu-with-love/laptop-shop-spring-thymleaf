@@ -1,10 +1,13 @@
 package devzeus.com.laptop_shop.repositories;
 
 import devzeus.com.laptop_shop.models.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +42,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 //            @Param("screenSize") String screenSize,
 //            @Param("feature") String feature,
 //            @Param("deviceType") String deviceType);
+
+    @Query("SELECT p FROM Product p WHERE p.price < :maxPrice")
+    Page<Product> findProductsByPriceBelow(@Param("maxPrice") long maxPrice, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.price < :minPrice")
+    Page<Product> findProductsByPriceGreaterThan(@Param("minPrice") long minPrice, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.price between :minPrice and :maxPrice")
+    Page<Product> findProductsByPriceBetween(@Param("minPrice") long minPrice, @Param("maxPrice") long maxPrice, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.createdAt >= :recentDate")
+    Page<Product> findRecentProducts(@Param("recentDate") LocalDate recentDate, Pageable pageable);
+
+    Page<Product> findAllBy(Pageable pageable);
+
 
 }

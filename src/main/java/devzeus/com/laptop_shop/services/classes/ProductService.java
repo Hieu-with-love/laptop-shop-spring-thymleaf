@@ -182,8 +182,66 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<Product> getProductsByPage(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> getProductsBelow5M(int page, int size, long maxPrice) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findProductsByPriceBelow(maxPrice, pageable);
+    }
+
+    @Override
+    public Page<Product> getProductsBetween(int page, int size, long minPrice, long maxPrice) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findProductsByPriceBetween(minPrice, maxPrice, pageable);
+    }
+
+    @Override
+    public Page<Product> getProductsAbove50M(int page, int size, long minPrice) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findProductsByPriceGreaterThan(minPrice, pageable);
+    }
+
+    @Override
+    public Page<Product> getProductRecent(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        LocalDate recentDate = LocalDate.now().minusDays(5);
+        return productRepository.findRecentProducts(recentDate, pageable);
+    }
+
+    @Override
+    public Page<Product> getProductsAToZ(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC.name()));
+
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> getProductsZToA(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC.name()));
+
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> getFilteredProducts(int page, int size, String priceRange, String criteria) {
+        if (priceRange != null && criteria == null) {
+            if (priceRange.equals("below5")) {
+                return getProductsBelow5M(page, size, 5000000);
+            } else if (priceRange.equals("5-10")) {
+                return getProductsBetween(page, size, 5000000, 10000000);
+            } else if (priceRange.equals("10-20")) {
+                return getProductsBetween(page, size, 10000000, 20000000);
+            } else if (priceRange.equals("20-40")) {
+                return getProductsBetween(page, size, 20000000, 40000000);
+            } else {
+                return getProductsAbove50M(page, size, 50000000);
+            }
+        }
+
+        return productRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")));
     }
 
     @Override
