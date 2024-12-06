@@ -38,8 +38,10 @@ public class HomeController {
     @GetMapping("/home")
     public String home(@RequestParam(defaultValue = "0") int pageNo,
                        @RequestParam(defaultValue = "12") int pageSize,
+                       @RequestParam(required = false) String priceRange,
+                       @RequestParam(required = false) String criteria,
                        Model model, HttpSession session) {
-        Page<Product> productPage = productService.getProductsByPage(pageNo, pageSize);
+        Page<Product> productPage = productService.getFilteredProducts(pageNo, pageSize, priceRange, criteria);
         List<ProductResponse> products = productService.getAllProductResponses(productPage.getContent());
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!username.equals("anonymousUser")) {
@@ -60,6 +62,8 @@ public class HomeController {
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("priceRange", priceRange);
+        model.addAttribute("criteria", criteria);
         return "user/home";
     }
 

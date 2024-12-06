@@ -31,7 +31,6 @@ public interface IProductService {
 
     List<ProductResponse> getAllProductResponses(List<Product> products);
 
-
     void createProductImage(Long productId, ProductImageDTO productDTO);
 
     List<Product> searchProductsByKeyword(String keyword);
@@ -39,4 +38,20 @@ public interface IProductService {
     Page<Product> getAllProducts(int pageNo);
 
     Page<Product> getProductsByPage(int page, int size);
+
+    Page<Product> getProductsBelow5M(int page, int size, long maxPrice);
+
+    Page<Product> getProductsBetween(int page, int size, long minPrice, long maxPrice);
+
+
+    Page<Product> getProductsAbove50M(int page, int size, long minPrice);
+
+    Page<Product> getProductRecent(int page, int size);
+
+    Page<Product> getProductsAToZ(int page, int size);
+
+    Page<Product> getProductsZToA(int page, int size);
+
+    Page<Product> getFilteredProducts(int page, int size, String priceRange, String criteria);
+
 }
